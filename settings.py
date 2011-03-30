@@ -15,7 +15,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': os.path.join(PROJECT_ROOT, 'site.db'),  # Or path to database file if using sqlite3.
+        'NAME': os.path.join(PROJECT_ROOT, 'db/site.db'),  # Or path to database file if using sqlite3.
         'USER': '',                      # Not used with sqlite3.
         'PASSWORD': '',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
@@ -64,6 +64,16 @@ STATIC_ROOT = '/usr/local/www/aksite/static/'
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
 STATIC_URL = '/static/'
+
+FEINCMS_TINYMCE_INIT_TEMPLATE = 'admin/content/richtext/init_tinymce.html'
+FEINCMS_TINYMCE_INIT_CONTEXT  = {
+    'TINYMCE_JS_URL': os.path.join(STATIC_URL,
+                                   'tinymce/jscripts/tiny_mce/tiny_mce.js'),
+    'TINYMCE_CONTENT_CSS_URL': None,
+    'TINYMCE_LINK_LIST_URL': None,
+}
+FEINCMS_RICHTEXT_INIT_CONTEXT = FEINCMS_TINYMCE_INIT_CONTEXT
+FEINCMS_RICHTEXT_INIT_TEMPLATE = FEINCMS_TINYMCE_INIT_TEMPLATE
 
 # URL prefix for admin static files -- CSS, JavaScript and images.
 # Make sure to use a trailing slash.
@@ -122,10 +132,14 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'mptt',
     'feincms',
+    'feincms.module.page',
+    'feincms.content.richtext',
+    'feincms.module.medialibrary',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
+    'core',
 )
 
 # A sample logging configuration. The only tangible logging
