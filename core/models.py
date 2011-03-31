@@ -16,6 +16,8 @@ Page.register_templates({
     'path': 'base.html',
     'regions': (
         ('main', _('Main content area')),
+        ('sidebar', _('Sidebar'), 'inherited'),
+        ('footer', _('Footer'), 'inherited'),
     ),
 })
 
