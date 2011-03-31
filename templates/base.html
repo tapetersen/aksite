@@ -54,16 +54,8 @@
             </ul>
 		</header>
 
-		<div id="main" role="main">
-            <h1>
-            {{ feincms_page.content_title }}
-            </h1>
+		<div id="main" class="clearfix" role="main">
             {% block main_content %}
-            {% for content in feincms_page.content.main %}
-            <div class="block">
-                {{ content.render }}
-            </div>
-            {% endfor %}
             {% endblock %}
 		</div>
 

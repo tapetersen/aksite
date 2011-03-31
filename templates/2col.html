@@ -1,0 +1,30 @@
+{% extends "base.html" %} 
+
+{% load feincms_tags %}
+{% load feincms_page_tags %}
+
+{% block main_content %}
+
+<div class="col-1" >
+{% block column_1 %}
+<h1>{{ feincms_page.content_title }}</h1>
+{% for content in feincms_page.content.col1 %}
+
+    {{ content.render }}
+    
+{% endfor %}
+{% endblock %}
+</div>
+
+<div class="col-2" >
+
+{% block column_2 %}
+{% for content in feincms_page.content.col2 %}
+
+    {{ content.render }}
+    
+{% endfor %}
+{% endblock %}
+
+</div>
+{% endblock main_content %}

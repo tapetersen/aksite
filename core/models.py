@@ -13,17 +13,26 @@ Page.register_extensions('datepublisher', 'navigation', 'titles') # Example set 
 
 Page.register_templates({
     'title': _('Main template'),
-    'path': 'base.html',
+    'path': '1col.html',
     'regions': (
         ('main', _('Main content area')),
-        ('sidebar', _('Sidebar'), 'inherited'),
+        ('footer', _('Footer'), 'inherited'),
+    ),
+})
+
+Page.register_templates({
+    'title': _('2 column template'),
+    'path': '2col.html',
+    'regions': (
+        ('col1', _('Column 1')),
+        ('col2', _('Column 2')),
         ('footer', _('Footer'), 'inherited'),
     ),
 })
 
 Page.create_content_type(RichTextContent)
 Page.create_content_type(MediaFileContent, POSITION_CHOICES=(
-    ('block', _('block')),
-    ('left', _('left')),
-    ('right', _('right')),
+    ('block', _('Block')),
+    ('left', _('Left')),
+    ('right', _('Right')),
 ))

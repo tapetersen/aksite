@@ -157,6 +157,18 @@ header #main-nav a:hover {
     font-size: 12px;
 }
 
+#main { padding 20px; }
+
+.col-1 {
+    float: left;
+    width: 45%;
+    margin: 15px;
+}
+.col-2 {
+    float: left;
+    width: 45%;
+    margin: 15px;
+}
 
 
 
