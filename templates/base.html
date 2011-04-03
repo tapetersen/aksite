@@ -17,7 +17,8 @@
 <![endif]-->
 <!--[if (gt IE 9)|!(IE)]><!-->
 <html lang="en" class="no-js">
-<!--<![endif]--><head>
+<!--<![endif]-->
+<head>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
@@ -31,24 +32,29 @@
 	<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 	<link rel="stylesheet" href="{{STATIC_URL}}css/style.css?v=2">
 
-    <script src="{{STATIC_URL}}js/libs/modernizr-1.7.min.js"></script>
+    <script src="{{ STATIC_URL }}js/libs/modernizr-1.7.min.js"></script>
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
 	<script>!window.jQuery && document.write(unescape('%3Cscript src="js/libs/jquery-1.5.1.min.js"%3E%3C/script%3E'))</script>
-	<script src="{{STATIC_URL}}js/plugins.js"></script>
-	<script src="{{STATIC_URL}}js/script.js"></script>
+	<script src="{{ STATIC_URL }}js/plugins.js"></script>
+	<script src="{{ STATIC_URL }}js/script.js"></script>
+	<!--[if lt IE 7 ]>
+	<script src="js/libs/dd_belatedpng.js"></script>
+    <script> $(function(){DD_belatedPNG.fix('img, .png_bg')});</script>
+    <![endif]-->
 </head>
 <body>
 	<div id="container">
         <header>
             <div class="ak-logo">
-                <img src="{{STATIC_URL}}/images/ak_logo.png" alt="altekamererens logo" />
+                <img src="{{ STATIC_URL }}images/ak_logo.png" alt="altekamererens logo" />
             </div>
             <div class="af-logo">
-                <img src="{{STATIC_URL}}/images/af_logo.png" alt="AFs logo" />
+                <img src="{{ STATIC_URL }}images/af_logo.png" alt="AFs logo" />
             </div>
             <ul class="nav" id="main-nav">
                 {% feincms_navigation of feincms_page as sublevel level=1,depth=1 %}
                 {% for p in sublevel %}
+                {{ request }}
                 <li ><a href="{{ p.get_absolute_url }}">{{ p.title }}</a></li>
                 {% endfor %}
             </ul>
@@ -69,9 +75,5 @@
             {% endblock %}
 		</footer>
 	</div>
-
-	<!--[if lt IE 7 ]>
-	<script src="js/libs/dd_belatedpng.js"></script>
-	<script> DD_belatedPNG.fix('img, .png_bg');</script>
-	<![endif]--></body>
+</body>
 </html>
