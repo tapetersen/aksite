@@ -69,7 +69,7 @@ instrument_choices = [(i[0]+i[-1], i) for i in sorted(instruments.keys())]
 
 import datetime
 
-class Repetition(models.Model):
+class Rehearsal(models.Model):
 	location = models.CharField(max_length=128, default = u"Hålan")
 	date = models.DateField()
 	time_hole = models.TimeField(default = datetime.time(19,00), blank=True, null=True)
@@ -80,7 +80,7 @@ class Repetition(models.Model):
 	fika = models.CharField(max_length=2, choices=section_choices)
 
 	def __unicode__(self):
-		return self.name
+		return self.location + u" - " + str(self.date)
 
 class Gig(models.Model):
 	name = models.CharField(max_length=128)
@@ -94,7 +94,8 @@ class Gig(models.Model):
 	info = models.TextField(blank=True)
 	
 	def __unicode__(self):
-		return self.name
+		return self.name + u" - " + str(self.date)
+
 
 from django.contrib.auth.models import User
 class Kamerer(models.Model):

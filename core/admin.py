@@ -1,8 +1,7 @@
 from django.contrib import admin
-from feincms.admin import editor, item_editor
-from core.models import Repetition, Gig, Kamerer
+from core.models import Rehearsal, Gig, Kamerer
 
-class RepetitionAdmin(admin.ModelAdmin):
+class RehearsalAdmin(admin.ModelAdmin):
 	fieldsets = (
         (None, {'fields': ('location', 'date', 
 			"time_hole", "time_location", "signup", "fika",
@@ -10,7 +9,7 @@ class RepetitionAdmin(admin.ModelAdmin):
         ('Hidden',{ 'fields': ("insiderinfo",),
                     'classes': ('collapse',) })
 	)
-admin.site.register(Repetition, RepetitionAdmin)
+admin.site.register(Rehearsal, RehearsalAdmin)
 	
 class GigAdmin(admin.ModelAdmin):
 	fieldsets = (
@@ -26,7 +25,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 
 # Define an inline admin descriptor for UserProfile model
-class KamererInline(admin.TabularInline):
+class KamererInline(admin.StackedInline):
 	model = Kamerer
 	fk_name = 'user'
 	max_num = 1
