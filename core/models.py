@@ -65,7 +65,7 @@ instruments = {
 	u"horn":u"komp",
 	u"balett":u"balett"
 }
-instrument_choices = [(i[0]+i[-1], i) for i in instruments.keys()]
+instrument_choices = [(i[0]+i[-1], i) for i in sorted(instruments.keys())]
 
 import datetime
 
@@ -99,8 +99,13 @@ class Gig(models.Model):
 from django.contrib.auth.models import User
 class Kamerer(models.Model):
 	user = models.ForeignKey(User, unique=True)
-	
+
 	address = models.CharField(max_length=128)
+	zip = models.CharField(max_length=5)
+	city = models.CharField(max_length=128)
+	phone = models.CharField(max_length=16)
+	nation = models.CharField(max_length=128)
+	instrument = models.CharField(max_length=2, choices=instrument_choices, blank=False)
 	
 from django.db.models.signals import post_save
 from django.dispatch import receiver
