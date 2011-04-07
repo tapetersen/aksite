@@ -1,17 +1,12 @@
 ﻿#coding: utf-8
 
 from django.db import models
-from feincms.content.medialibrary.models import MediaFileContent
-
-# Create your models here.
-
 from django.utils.translation import ugettext_lazy as _
-
 from feincms.module.page.models import Page
-from feincms.content.richtext.models import RichTextContent
-from feincms.content.image.models import ImageContent
+from feincms.module.page.extensions.navigation import NavigationExtension, \
+		PagePretender
 
-Page.register_extensions('datepublisher', 'navigation', 'titles') # Example set of
+# Templates
 
 Page.register_templates({
 	'title': _('Main template'),
@@ -32,41 +27,44 @@ Page.register_templates({
 	),
 })
 
-Page.create_content_type(RichTextContent)
+# Content types
+
+from feincms.utils import get_object
+
+
+Page.create_content_type(
+	get_object("feincms.content.richtext.models.RichTextContent"))
+
+from feincms.content.medialibrary.models import MediaFileContent
 Page.create_content_type(MediaFileContent, POSITION_CHOICES=(
 	('block', _('Block')),
 	('left', _('Left')),
 	('right', _('Right')),
 ))
 
-sections = (
-	u"flöjt",
-	u"klarinett",
-	u"saxofon",
-	u"trumpet",
-	u"trombon",
-	u"komp",
-	u"balett"
-)
-section_choices = [(s[0]+s[-1], s) for s in sections]
+from feincms.content.rss.models import RSSContent
+Page.create_content_type(RSSContent)
 
-instruments = {
-	u"flöjt":u"flöjt",
-	u"klarinett":u"klarinett",
-	u"altsax":u"saxofon",
-	u"tenorsax":u"saxofon",
-	u"barytonsax":u"saxofon",
-	u"trumpet":u"trumpet",
-	u"trombon":u"trombon",
-	u"tuba":u"komp",
-	u"banjo":u"komp",
-	u"slagverk":u"komp",
-	u"euphonium":u"komp",
-	u"horn":u"komp",
-	u"balett":u"balett"
-}
-instrument_choices = [(i[0]+i[-1], i) for i in sorted(instruments.keys())]
+from feincms.content.table.models import TableContent
+Page.create_content_type(TableContent)
 
+from feincms.content.template.models import TemplateContent
+Page.create_content_type(TemplateContent)
+
+from feincms.content.video.models import VideoContent
+Page.create_content_type(VideoContent)
+
+
+from feincms.content.application.models import ApplicationContent
+Page.create_content_type(ApplicationContent, APPLICATIONS=(
+    ("kamerer_urls", "Address Register"),
+))
+
+Page.register_extensions('datepublisher', 'navigation', 'titles')
+
+# Models
+
+from ak import instrument_choices, section_choices
 import datetime
 
 class Rehearsal(models.Model):
@@ -106,11 +104,13 @@ class Kamerer(models.Model):
 	city = models.CharField(max_length=128)
 	phone = models.CharField(max_length=16)
 	nation = models.CharField(max_length=128)
-	instrument = models.CharField(max_length=2, choices=instrument_choices, blank=False)
-	
+	instrument = models.CharField(max_length=2, choices=instrument_choices)
+
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 @receiver(post_save, sender=User)
 def user_modification_handler(sender, instance, created, **kwargs):
 	if created:
 		Kamerer(user=instance).save()
+		
+

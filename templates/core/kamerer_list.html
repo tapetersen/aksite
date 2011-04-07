@@ -1,0 +1,26 @@
+{% regroup object_list by instrument as instrument_list %}
+{% for instrument in instrument_list %}
+	{% for object in instrument.list %}
+	{% ifchanged object.instrument %}
+<h2>{{ object.get_instrument_display|capfirst }}</h2>
+<table class="address_register">
+	{% endifchanged %}
+	<tr>
+		<td>
+			{{ object.user.first_name }} {{ object.user.last_name }}<br /> 
+		    <a href=mailto:{{ object.user.email }}>{{ object.user.email }}</a>
+		</td>
+		<td>
+			{{ object.address }}<br />
+			{{ object.zip }} {{ object.city }}
+		</td>
+		<td>
+			{{ object.phone }}
+		</td>
+		<td>
+			{{ object.nation }}
+		</td>
+	</tr>
+	{% endfor %}
+</table>
+{% endfor %}
