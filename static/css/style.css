@@ -97,6 +97,7 @@ h1 {color: #b10000;
     line-height: 44px;
     font-size: 22px;
 }
+h2 {color: #b10000;}
 
 
 /* General Layout */
@@ -157,7 +158,7 @@ header #main-nav a:hover {
     font-size: 12px;
 }
 
-#main { padding 20px; }
+#main { padding: 20px; }
 
 .col-1 {
     float: left;
@@ -170,8 +171,21 @@ header #main-nav a:hover {
     margin: 15px;
 }
 
+table.address_register {
+	width: 100%;
+	table-layout: fixed;
+	margin-bottom: 10px;
+	margin-top: 10px;
+	border-bottom: dashed 1px #333333;
+}
 
+table.address_register tr{
+	border-top: dashed 1px #333333;
+}
 
+table.address_register td{
+	padding-bottom: 3px;
+}
 
 
 

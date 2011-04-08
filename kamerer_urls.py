@@ -1,9 +1,10 @@
 from django.conf.urls.defaults import *
-#from django.contrib.auth.models import User
 from core.models import Kamerer
 
 info_dict = {
-    'queryset': Kamerer.objects.all().order_by("instrument"),
+    'queryset': Kamerer.objects.all().order_by("instrument", 
+                                               "user__last_name", 
+                                               "user__first_name"),
 }
 
 urlpatterns = patterns('',
