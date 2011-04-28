@@ -138,24 +138,27 @@ header .af-logo {
 header #main-nav {
     display: block;
     position: absolute;
-    bottom: 15px;
+    bottom: 1px;
     right: 15px;
 }
 header #main-nav > * {
     display: inline-block;
 }
 header #main-nav a {
+	font-weight: bold;
     display: block;
-    border-color: white;
-    border-bottom-width: 4px;
+	color: #999999;
+    border-bottom: 4px solid white;
     font-size: 12px;
+	padding-bottom: 3px;
+	margin-left: 4px;
 }
 header #main-nav a.active,
 header #main-nav a:hover {
     display: block;
-    border-color: white;
-    border-bottom-width: 4px;
-    font-size: 12px;
+	color: #CCCCCC;
+    border-bottom-color: red;
+	text-decoration: none;
 }
 
 #main { padding: 20px; }

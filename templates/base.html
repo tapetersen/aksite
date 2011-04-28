@@ -54,8 +54,7 @@
             <ul class="nav" id="main-nav">
                 {% feincms_navigation of feincms_page as sublevel level=1,depth=1 %}
                 {% for p in sublevel %}
-                {{ request }}
-                <li ><a href="{{ p.get_absolute_url }}">{{ p.title }}</a></li>
+                <li><a href="{{ p.get_absolute_url }}"{% if p|is_equal_or_parent_of:feincms_page %} class="active"{% endif %}>{{ p.title }}</a></li>
                 {% endfor %}
             </ul>
 		</header>
@@ -74,6 +73,8 @@
             {% endfor %}
             {% endblock %}
 		</footer>
+		
+		{{ request }}
 	</div>
 </body>
 </html>
