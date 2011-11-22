@@ -102,7 +102,7 @@ class AddressRegister(models.Model):
 		abstract = True
 
 	def render(self, **kwargs):
-		return render_to_string('core/address_register.html', {
+		return render_to_string('content/address_register.html', {
 			'kamerers': Kamerer.objects.all().order_by("instrument", 
 			                                           "user__last_name", 
 			                                           "user__first_name"),
