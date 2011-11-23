@@ -1,5 +1,6 @@
 from django.conf.urls.defaults import patterns, include, url
 from django.conf.urls.static import static
+from feincms.views.generic.simple import direct_to_template
 
 import feincms
 import settings, os
@@ -7,6 +8,8 @@ import settings, os
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
+
+import views
 
 urlpatterns = patterns('',
 
@@ -19,6 +22,10 @@ urlpatterns = patterns('',
     url(r'^(favicon.ico)\/?$', 'django.views.static.serve', {
             'document_root': settings.STATICFILES_DIRS[0],
     }),
+    
+    url(r"^upcoming/$", views.Upcoming.as_view()),
+    
+    url(r"^members/$", views.AddressRegister.as_view()),
 
     url(r'', include('feincms.urls')),
 )

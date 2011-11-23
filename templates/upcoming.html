@@ -1,0 +1,30 @@
+﻿{% extends "1col.html" %}
+
+{% block main_content %}
+
+{% regroup entry_list by date.year as years %}
+{% for year in years %}
+    <h2>{{ year.grouper }}</h2>
+    {% for entry in year.list %}
+        {% ifchanged entry.date.month %}
+            <h2>{{ entry.date|date:"F" }}</h2>
+        {% endifchanged %}
+        <p>{{ entry.date|date:"D d/m" }}</p>
+        {% if entry.isGig %}
+            <p>{{ entry.name }}</p>
+        {% else %}
+            <p>Rep</p>
+        {% endif %}
+        {% if entry.location %}<p>Plats: {{ entry.location }}</p>{% endif %}
+        {% if entry.time_hole %}<p>Samling i hålan klockan {{ entry.time_hole }}</p>{% endif %}
+        {% if entry.time_location %}<p>Samling på plats klockan {{ entry.time_location }}</p>{% endif %}
+        {% if entry.isGig %}
+            {% if entry.time_playing %}<p>Spelning bör klockan {{ entry.time_playing }}</p>{% endif %}
+        {% else %}
+            <p>Fika: {{ entry.fika }}</p>
+        {% endif %}
+        
+    {% endfor %}
+{% endfor %}
+{% endblock %}
+

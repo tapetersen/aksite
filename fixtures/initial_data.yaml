@@ -1,0 +1,53 @@
+- model: auth.user
+  pk: 1
+  fields:
+    email: samiljan@gmail.com
+    is_active: true
+    is_staff: true
+    is_superuser: true
+    password: sha1$c4188$5afc969f4e9d45f2a4068bfd58c297d7ea226441
+    username: samiljan
+    
+- model: page.page
+  pk: 1
+  base_fields: &pagefields
+    level: 0
+    lft: 1
+    rght: 2
+    active: true
+    in_navigation: true
+    template_key: 1col.html
+  fields:
+    <<: *pagefields
+    tree_id: 1
+    title: Hem
+    slug: hem
+    override_url: /
+    _cached_url: /
+    
+- model: page.page
+  pk: 2
+  fields:
+    <<: *pagefields
+    tree_id: 2
+    title: Info
+    slug: info
+    _cached_url: /info/
+    
+- model: page.page
+  pk: 3
+  fields:
+    <<: *pagefields
+    tree_id: 3
+    title: På gång
+    slug: upcoming
+    _cached_url: /upcoming/
+    
+- model: page.page
+  pk: 4
+  fields:
+    <<: *pagefields
+    tree_id: 4
+    title: Adressregister
+    slug: members
+    _cached_url: /members/
