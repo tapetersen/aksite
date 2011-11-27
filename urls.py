@@ -2,6 +2,9 @@ from django.conf.urls.defaults import patterns, include, url
 from django.conf.urls.static import static
 from feincms.views.generic.simple import direct_to_template
 
+from django.views.generic import edit
+from django.contrib import auth
+
 import feincms
 import settings, os
 
@@ -9,7 +12,8 @@ import settings, os
 from django.contrib import admin
 admin.autodiscover()
 
-import views
+from app import views
+from django.contrib.auth.decorators import login_required
 
 urlpatterns = patterns('',
 
@@ -26,6 +30,19 @@ urlpatterns = patterns('',
     url(r"^upcoming/$", views.Upcoming.as_view()),
     
     url(r"^members/$", views.AddressRegister.as_view()),
+    
+    url(r'^users/', include('registration.backends.simple.urls')),
+    
+    url(r"^mailsender/$", views.mailsender),
+    
+    (r'^sentry/', include('sentry.web.urls')),
+    
+    url(r'^users/login/$', 'django.contrib.auth.views.login'),
+    url(r'^users/logout/$', 'django.contrib.auth.views.logout'),
+    url(r'^users/profile/$', lambda request: edit.UpdateView.as_view(
+         model=auth.models.User, form_class=views.UserForm,
+         success_url="/users/profile/")(
+         request, pk=request.user.pk)),
 
     url(r'', include('feincms.urls')),
 )

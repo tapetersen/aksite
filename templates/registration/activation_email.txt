@@ -1,0 +1,9 @@
+﻿Hej! Du har nu skapat ett en användare på altekamereren.org, 
+men för att kunna använda den måste du bekräfta din epostadress.
+Gör det genom att klicka på den här länken:
+
+    http://{{ site.domain }}/users/activate?activation_key={{ activation_key }}
+    
+Du har {{ expiration_days }} på dig att aktivera användaren.
+
+/Nintendo

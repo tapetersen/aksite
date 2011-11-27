@@ -93,23 +93,72 @@ body { font:13px/1.231 "Trebuchet MS" sans-serif; *font-size:small; }
 a { text-decoration: none; }
 a:hover { text-decoration: underline; }
 
-h1 {color: #b10000;
-    line-height: 44px;
-    font-size: 22px;
+h1 {
+  font-size: 22px;
+  line-height: 44px;
+  font-weight: bold;
+  margin-top: 0;
+  margin-bottom: 0;
+  color: #b10000;
+ }
+
+h2 {
+  font-size: 18px;
+  line-height: 40px;
+  font-weight: bold;
+  margin-top: 0;
+  margin-bottom: 0;
+  color: #b10000;
+ }
+
+h3 {
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: bold;
+  margin-top: 0;
+  margin-bottom: 0;
+  
+  color: #b10000;
 }
-h2 {color: #b10000;}
+
+h4 {
+  font-size: 14px;
+  line-height: 22px;
+  font-weight: bold;
+  margin-top: 0;
+  margin-bottom: 0;
+  color: #111;
+}
+
+h5 {
+  font-size: 10px;
+  line-height: 12px;
+  font-weight: normal;
+  margin-top: 0;
+  margin-bottom: 0;
+  color: #FFFFFF;
+}
 
 
 /* General Layout */
 
-body {background: url('../images/background.png') repeat scroll; }
+body {
+    background: url('../images/background.png') repeat scroll; 
+    height: 100%;
+}
+
+html {
+    height: 100%;
+}
+
 #container {
     display: block;
     min-height: 100%;
-    height:100%;
     margin: 0 auto;
     width: 800px;
     background: black;
+    border-left: 1px solid #222;
+    border-right: 1px solid #222;
 }
 
 header {
@@ -128,12 +177,6 @@ header .ak-logo {
     width: 366px;
     top: 15px;
     left:15px;
-}
-header .af-logo {
-    display:  block;
-    position: absolute;
-    top: 15px;
-    right:15px;
 }
 header #main-nav {
     display: block;

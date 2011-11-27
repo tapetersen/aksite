@@ -5,8 +5,18 @@
     is_active: true
     is_staff: true
     is_superuser: true
-    password: sha1$c4188$5afc969f4e9d45f2a4068bfd58c297d7ea226441
+    password: sha1$4ea69$279e3c02f03eac208ba14d37727876c39c4381d2
     username: samiljan
+    address: Magistratsvägen 55 Y 1216
+    city: Lund
+    first_name: Sam
+    instrument: ta
+    last_name: Persson
+    nation: Helsingkrona
+    phone: 070-5572927
+    zip: '22644'
+  model: auth.user
+  pk: 1
     
 - model: page.page
   pk: 1
@@ -51,3 +61,4 @@
     title: Adressregister
     slug: members
     _cached_url: /members/
+    require_login: true

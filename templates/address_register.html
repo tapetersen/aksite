@@ -1,7 +1,6 @@
 {% extends "1col.html" %}
 
-{% block main_content %}
-
+{% block content %}
 {% regroup kamerers by instrument as instrument_list %}
 {% for instrument in instrument_list %}
     {% for kamerer in instrument.list %}
@@ -11,8 +10,8 @@
     {% endifchanged %}
     <tr>
         <td>
-            {{ kamerer.user.first_name }} {{ kamerer.user.last_name }}<br /> 
-            <a href=mailto:{{ kamerer.user.email }}>{{ kamerer.user.email }}</a>
+            {{ kamerer.first_name }} {{ kamerer.last_name }}<br /> 
+            <a href=mailto:{{ kamerer.email }}>{{ kamerer.email }}</a>
         </td>
         <td>
             {{ kamerer.address }}<br />

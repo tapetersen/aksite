@@ -32,12 +32,9 @@ from ak import instrument_choices, section_choices
 import datetime
 from model_utils.managers import InheritanceManager
 
-class CalendarEntry(models.Model):
-    location = models.CharField(max_length=128, blank=True, null=True)
+class CalendarEntry(models.Model):   
     date = models.DateField()
-    time_hole = models.TimeField(blank=True, null=True)
     time_location = models.TimeField(blank=True, null=True)
-    signup = models.BooleanField(default=True)
     insiderinfo = models.TextField(blank=True)
     info = models.TextField(blank=True)
     
@@ -45,7 +42,6 @@ class CalendarEntry(models.Model):
     
     class Meta:
         ordering = ["date"]
-        app_label = "aksite"
     
     def __unicode__(self):
         return self.location + u" - " + str(self.date)
@@ -53,14 +49,9 @@ class CalendarEntry(models.Model):
 class Rehearsal(CalendarEntry):
     fika = models.CharField(max_length=2, choices=section_choices)
     
-    class Meta:
-        app_label = "aksite"
-    
-    def __init__(self, *args, **kwargs):
-        kwargs.setdefault('location', u"Hålan")
-        kwargs.setdefault('time_hole', datetime.time(19,00))
-        kwargs.setdefault('signup', False)
-        super(Rehearsal, self).__init__(*args, **kwargs)
+    location = models.CharField(max_length=128, default=u"Hålan")
+    time_hole = models.TimeField(default=datetime.time(19,00))
+    signup = models.BooleanField(default=False)
         
     def isGig(self): return False
 
@@ -68,28 +59,30 @@ class Gig(CalendarEntry):
     name = models.CharField(max_length=128)
     time_playing = models.TimeField(blank=True, null=True)
     
-    class Meta:
-        app_label = "aksite"
+    location = models.CharField(max_length=128, blank=True, null=True)
+    time_hole = models.TimeField(blank=True, null=True)
+    signup = models.BooleanField(default=True)
     
     def __unicode__(self):
         return self.name + u" - " + str(self.date)
         
     def isGig(self): return True
+    
+# User
 
 from django.contrib.auth.models import User
-class Kamerer(models.Model):
-    user = models.ForeignKey(User, unique=True)
 
-    address = models.CharField(max_length=128)
-    zip = models.CharField(max_length=5)
-    city = models.CharField(max_length=128)
-    phone = models.CharField(max_length=16)
-    second_phone = models.CharField(max_length=16, blank=True, null=True)
-    nation = models.CharField(max_length=128, blank=True, null=True)
-    instrument = models.CharField(max_length=2, choices=instrument_choices)
-    
-    class Meta:
-        app_label = "aksite"
+User.add_to_class("address", models.CharField(max_length=128, blank=True, null=True))
+User.add_to_class("zip", models.CharField(max_length=5, blank=True, null=True))
+User.add_to_class("city", models.CharField(max_length=128, blank=True, null=True))
+User.add_to_class("phone", models.CharField(max_length=16, blank=True, null=True))
+User.add_to_class("second_phone", models.CharField(max_length=16, blank=True, null=True))
+User.add_to_class("nation", models.CharField(max_length=128, blank=True, null=True))
+User.add_to_class("instrument", models.CharField(max_length=2, choices=instrument_choices))
+
+# Page
+
+Page.add_to_class("require_login", models.BooleanField(default=False))
 
 # Content types
 
@@ -118,18 +111,6 @@ Page.create_content_type(TemplateContent)
 from feincms.content.video.models import VideoContent
 Page.create_content_type(VideoContent)
 
-@Page.create_content_type
-class AddressRegister(models.Model):
-    class Meta:
-        abstract = True
-        app_label = "aksite"
 
-    def render(self, **kwargs):
-        return render_to_string('content/address_register.html', {
-            'kamerers': Kamerer.objects.all().order_by("instrument", 
-                                                       "user__last_name", 
-                                                       "user__first_name"),
-        })
-
-Page.register_extensions('datepublisher', 'titles')
+Page.register_extensions('titles')
 
