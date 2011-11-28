@@ -3,7 +3,6 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from feincms.module.page.models import Page
-from django.template.loader import render_to_string
 
 # Templates
 
@@ -68,9 +67,7 @@ class Gig(CalendarEntry):
         
     def isGig(self): return True
     
-class MailVerificationSent(models.Model):
-    email = models.CharField(max_length=128)
-    sent = models.DateTimeField(auto_now_add=True)
+from mailinglists import MailVerificationSent
     
 # User
 

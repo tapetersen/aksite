@@ -145,14 +145,6 @@ TEMPLATE_DIRS = (
     os.path.join(PROJECT_ROOT, 'templates/'),
 )
 
-try:
-    # Put Amazon SES keys in local_settings.py
-    from local_settings import *
-except ImportError:
-    pass
-else:
-    EMAIL_BACKEND = 'django_ses.SESBackend'
-
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -218,3 +210,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.request",
     "django.contrib.messages.context_processors.messages",
 )
+
+try:
+    from local_settings import *
+except ImportError:
+    pass

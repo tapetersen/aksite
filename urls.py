@@ -1,18 +1,16 @@
 from django.conf.urls.defaults import patterns, include, url
 from django.conf.urls.static import static
-from feincms.views.generic.simple import direct_to_template
 
 from django.views.generic import edit
 from django.contrib import auth
 
-import feincms
-import settings, os
+import settings
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
 
-from app import views
+from app import views, mailinglists
 from django.contrib.auth.decorators import login_required
 
 urlpatterns = patterns('',
@@ -33,7 +31,7 @@ urlpatterns = patterns('',
     
     url(r'^users/', include('registration.backends.simple.urls')),
     
-    url(r"^mailsender/$", views.mailsender),
+    url(r"^mailsender/$", mailinglists.mailsender),
     
     (r'^sentry/', include('sentry.web.urls')),
     

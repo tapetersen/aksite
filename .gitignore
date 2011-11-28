@@ -1,2 +1,3 @@
 *.pyc
 site.db
+local_settings.py
