@@ -1,7 +1,7 @@
 
 /* ==== Scroll down to find where to put your styles :) ==== */
 
-/*  HTML5 \° Boilerplate  */
+/*  HTML5 \ï¿½ Boilerplate  */
 
 html, body, div, span, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -66,17 +66,17 @@ input:valid, textarea:valid   {  }
 input:invalid, textarea:invalid { border-radius: 1px; -moz-box-shadow: 0px 0px 5px red; -webkit-box-shadow: 0px 0px 5px red; box-shadow: 0px 0px 5px red; }
 .no-boxshadow input:invalid, .no-boxshadow textarea:invalid { background-color: #f0dddd; }
 
-::-moz-selection{ background: #FF5E99; color:#fff; text-shadow: none; }
+/*::-moz-selection{ background: #FF5E99; color:#fff; text-shadow: none; }
 ::selection { background:#FF5E99; color:#fff; text-shadow: none; }
-a:link { -webkit-tap-highlight-color: #FF5E99; }
+a:link { -webkit-tap-highlight-color: #FF5E99; }*/ /* WTF pink? */
 
 button {  width: auto; overflow: visible; }
 .ie7 img { -ms-interpolation-mode: bicubic; }
 
 body, select, input, textarea {  color: #444; }
 h1, h2, h3, h4, h5, h6 { font-weight: bold; }
-a, a:active, a:visited { color: #607890; }
-a:hover { color: #036; }
+a, a:active, a:visited { color: #444444; }
+a:hover { color: white; }
 
 /*
     // ========================================== \\
@@ -204,6 +204,11 @@ header #main-nav a:hover {
 	text-decoration: none;
 }
 
+div.user {
+	text-align: right; 
+	padding: 5px;
+}
+
 #main { padding: 20px; }
 
 .col-1 {
@@ -216,29 +221,6 @@ header #main-nav a:hover {
     width: 45%;
     margin: 15px;
 }
-
-table.address_register {
-	width: 100%;
-	table-layout: fixed;
-	margin-bottom: 10px;
-	margin-top: 10px;
-	border-bottom: dashed 1px #333333;
-}
-
-table.address_register tr{
-	border-top: dashed 1px #333333;
-}
-
-table.address_register td{
-	padding-bottom: 3px;
-}
-
-
-
-
-
-
-
 
 
 .ir { display: block; text-indent: -999em; overflow: hidden; background-repeat: no-repeat; text-align: left; direction: ltr; }

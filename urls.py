@@ -1,8 +1,9 @@
 from django.conf.urls.defaults import patterns, include, url
 from django.conf.urls.static import static
 
-from django.views.generic import edit
+from django.views.generic.edit import UpdateView, CreateView
 from django.contrib import auth
+from django.contrib.auth.decorators import login_required
 
 import settings
 
@@ -10,39 +11,40 @@ import settings
 from django.contrib import admin
 admin.autodiscover()
 
-from app import views, mailinglists
-from django.contrib.auth.decorators import login_required
+from app import views, mailinglists, forms, models
+
 
 urlpatterns = patterns('',
-
     # Uncomment the admin/doc line below to enable admin documentation:
-    url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+    (r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # Uncomment the next line to enable the admin:
-    url(r'^admin/', include(admin.site.urls)),
+    (r'^admin/', include(admin.site.urls)),
 
-    url(r'^(favicon.ico)\/?$', 'django.views.static.serve', {
+    (r'^(favicon\.ico|robots\.txt|apple-touch-icon\.png)\/?$', 
+        'django.views.static.serve', {
             'document_root': settings.STATICFILES_DIRS[0],
     }),
     
-    url(r"^upcoming/$", views.Upcoming.as_view()),
+    (r"^mailsender/$", mailinglists.mailsender),
     
-    url(r"^members/$", views.AddressRegister.as_view()),
+    (r"^upcoming/$", views.Upcoming.as_view()),
+    (r"^members/$", views.AddressRegister.as_view()),
     
-    url(r'^users/', include('registration.backends.simple.urls')),
-    
-    url(r"^mailsender/$", mailinglists.mailsender),
-    
-    (r'^sentry/', include('sentry.web.urls')),
-    
-    url(r'^users/login/$', 'django.contrib.auth.views.login'),
-    url(r'^users/logout/$', 'django.contrib.auth.views.logout'),
-    url(r'^users/profile/$', lambda request: edit.UpdateView.as_view(
-         model=auth.models.User, form_class=views.UserForm,
+    (r'^users/', include('registration.backends.simple.urls')),
+    (r'^users/login/$', 'django.contrib.auth.views.login'),
+    (r'^users/logout/$', 'django.contrib.auth.views.logout'),
+    (r'^users/profile/$', lambda request: UpdateView.as_view(
+         model=auth.models.User, form_class=forms.UserForm,
          success_url="/users/profile/")(
          request, pk=request.user.pk)),
+                       
+    (r'^event/signup/(?P<event_pk>\d+)$', views.EventSignup.as_view(
+         success_url="/upcoming/")),
 
-    url(r'', include('feincms.urls')),
+    (r'^sentry/', include('sentry.web.urls')),
+    
+    (r'', include('feincms.urls')),
 )
 # media served if DEBUG = True
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

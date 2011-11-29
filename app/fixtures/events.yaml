@@ -1,0 +1,40 @@
+- fields: {location: AF Borgen, name: Bleckhornens julfest, signup: true, 
+    time_hole: '23:00:00', time_playing: '00:00:00'}
+  model: app.gig
+  pk: 1
+- fields: {location: "Malm\xF6, Triangeln", name: "Julspelning i Malm\xF6", 
+    signup: true, time_hole: '09:30:00', time_playing: '11:00:00'}
+  model: app.gig
+  pk: 2
+  
+- fields: {fika: kt, location: "K\xE5rhuset", signup: true, time_hole: '18:30:00'}
+  model: app.rehearsal
+  pk: 3
+- fields: {fika: tt, location: "H\xE5lan", signup: false, time_hole: '19:00:00'}
+  model: app.rehearsal
+  pk: 4
+  
+- fields: {date: 2011-12-01, info: 'Trumpet packar bussen, komp packar ur bussen.',
+    insiderinfo: '', time_location: '19:00:00'}
+  model: app.event
+  pk: 3
+
+- fields: {date: 2011-12-03, info: "Vi ska f\xF6rgylla Bleckhornens julbankett, kom\
+      \ och kravalla! Att anm\xE4la sig p\xE5 hemsidan i tid \xE4r ett m\xE5ste, annars\
+      \ f\xE5r man inte stanna kvar efter vi spelat pga serveringsregler.", insiderinfo: '',
+    time_location: '11:50:00'}
+  model: app.event
+  pk: 1
+
+- fields: {date: 2011-12-03, info: "Vi spelar ni julen l\xE4ngs Malm\xF6s gator med\
+      \ b\xF6rjar vid Triangeln! Vi r\xF6r oss sedan, under 2 timmar, mot stortorget.\
+      \ Det blir najs!\r\n\r\nBilar och kamererer beh\xF6vs! :)\r\n\r\np.s vi hinner\
+      \ tillbaka i tid till Bleckhornens julkonsert!\r\n\r\n_______________________\r\
+      \nVi spelar in julen l\xE4ngs Malm\xF6s gator med b\xF6rjan vid Triangeln kl\
+      \ 11.00! ", insiderinfo: '', time_location: '10:45:00'}
+  model: app.event
+  pk: 2
+
+- fields: {date: 2011-12-08, info: '', insiderinfo: '', time_location: null}
+  model: app.event
+  pk: 4

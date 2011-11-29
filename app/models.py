@@ -3,6 +3,7 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from feincms.module.page.models import Page
+from django.contrib.auth.models import User
 
 # Templates
 
@@ -31,7 +32,7 @@ from ak import instrument_choices, section_choices
 import datetime
 from model_utils.managers import InheritanceManager
 
-class CalendarEntry(models.Model):   
+class Event(models.Model):   
     date = models.DateField()
     time_location = models.TimeField(blank=True, null=True)
     insiderinfo = models.TextField(blank=True)
@@ -39,39 +40,68 @@ class CalendarEntry(models.Model):
     
     objects = InheritanceManager()
     
+    def get_signup(self, user):
+        signup = Signup.objects.filter(user=user, event=self)
+        if signup.exists(): return signup[0]
+        return None
+    
+    def num_signed_up(self):
+        return Signup.objects.filter(event=self).count()
+    
     class Meta:
         ordering = ["date"]
     
     def __unicode__(self):
-        return self.location + u" - " + str(self.date)
+        return u"Event - %s" % self.date
     
-class Rehearsal(CalendarEntry):
+    
+class Rehearsal(Event):
     fika = models.CharField(max_length=2, choices=section_choices)
     
     location = models.CharField(max_length=128, default=u"Hålan")
     time_hole = models.TimeField(default=datetime.time(19,00))
     signup = models.BooleanField(default=False)
-        
+            
     def isGig(self): return False
+    
+    def present(self, request):
+        columns = ([],[],[])
+        columns[0].append()
+        
+    def __unicode__(self):
+        return u"Rep - %s" % self.date
 
-class Gig(CalendarEntry):
+class Gig(Event):
     name = models.CharField(max_length=128)
     time_playing = models.TimeField(blank=True, null=True)
     
     location = models.CharField(max_length=128, blank=True, null=True)
     time_hole = models.TimeField(blank=True, null=True)
     signup = models.BooleanField(default=True)
-    
+        
     def __unicode__(self):
-        return self.name + u" - " + str(self.date)
+        return "%s - %s" % (self.name, self.date)
         
     def isGig(self): return True
+
+class Signup(models.Model):
+    user = models.ForeignKey(User, editable=False)
+    event = models.ForeignKey(Event, editable=False)
+    COMING_CHOICES = (
+        ("H", u"Kommer till hålan"),
+        ("D", u"Kommer direkt"),
+        ("I", u"Kan inte komma"),
+    )
+    coming = models.CharField(max_length=1, choices=COMING_CHOICES, default="H")
+    car = models.BooleanField()
+    
+    class Meta:
+        unique_together = ("user", "event")
+    
     
 from mailinglists import MailVerificationSent
     
 # User
-
-from django.contrib.auth.models import User
 
 User.add_to_class("address", models.CharField(max_length=128, blank=True, null=True))
 User.add_to_class("zip", models.CharField(max_length=5, blank=True, null=True))

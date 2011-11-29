@@ -8,9 +8,7 @@ class RehearsalAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {'fields': ('location', 'date', 
             "time_hole", "time_location", "signup", "fika",
-            "info")} ),
-        ('Hidden',{ 'fields': ("insiderinfo",),
-                    'classes': ('collapse',) })
+            "info", "insiderinfo")} ),
     )
     list_display = ('location', "date", "fika")
     
@@ -20,9 +18,7 @@ class GigAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {'fields': ('name', 'location', 'date', 
             "time_hole", "time_location", "time_playing", "signup",
-            "info")} ),
-        ('Hidden',{ 'fields': ("insiderinfo",),
-                    'classes': ('collapse',) })
+            "info", "insiderinfo")} ),
     )
     list_display = ('name', 'location', "date")
     
@@ -63,5 +59,5 @@ PageAdmin.require_login_toggle = editor.ajax_editable_boolean('require_login', _
 PageAdmin.list_display.insert(3, "require_login_toggle")
 PageAdmin.list_filter.insert(2, "require_login")
 
-admin.site.unregister(Page)
-admin.site.register(Page, PageAdmin)
+#admin.site.unregister(Page)
+#admin.site.register(Page, PageAdmin)

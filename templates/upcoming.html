@@ -1,30 +1,80 @@
-﻿{% extends "1col.html" %}
+﻿{% extends "base.html" %}
+
+
+{% block extra_css %}
+<style type="text/css">
+
+#upcoming div {
+	padding: 5px;
+}
+
+div.cell {
+	display: inline-block;
+	float: left;
+	width: 30%;
+	padding-left: 1%;
+	padding-right: 1%;
+	color: #cccccc;
+}
+
+</style>
+{% endblock %}
 
 {% block content %}
 
-{% regroup entry_list by date.year as years %}
-{% for year in years %}
-    <h2>{{ year.grouper }}</h2>
-    {% for entry in year.list %}
-        {% ifchanged entry.date.month %}
-            <h2>{{ entry.date|date:"F" }}</h2>
-        {% endifchanged %}
-        <p>{{ entry.date|date:"D d/m" }}</p>
-        {% if entry.isGig %}
-            <p>{{ entry.name }}</p>
-        {% else %}
-            <p>Rep</p>
-        {% endif %}
-        {% if entry.location %}<p>Plats: {{ entry.location }}</p>{% endif %}
-        {% if entry.time_hole %}<p>Samling i hålan klockan {{ entry.time_hole }}</p>{% endif %}
-        {% if entry.time_location %}<p>Samling på plats klockan {{ entry.time_location }}</p>{% endif %}
-        {% if entry.isGig %}
-            {% if entry.time_playing %}<p>Spelning bör klockan {{ entry.time_playing }}</p>{% endif %}
-        {% else %}
-            <p>Fika: {{ entry.fika }}</p>
-        {% endif %}
+<div id="upcoming">
+{% for year, list in events|groupby("date.year") %}
+    <h2>{{ year }}</h2>
+    {% for month, list in list|groupby("date.month") %}
+        <h2>{{ list[0].date.strftime("%B") }}</h2>
+            
+        {% for event in list %}
+	        <div class="cell" style="clear: both; font-weight: bold;">
+	        	<p>{{ event.date.strftime("%A %d/%m") }}</p>
+	       	{% if event.isGig() %}
+	            <p>{{ event.name }}</p>
+	        {% else %}
+	            <p>Rep</p>
+	        {% endif %}
+	        {% if event.location %}
+	        	<p>{{ event.location }}</p>
+	        {% endif %}
+	        </div>
+	        <div class="cell" >
+	        {% if event.time_hole %}
+	        	<p>Samling i hålan {{ event.time_hole }}</p>
+	       	{% endif %}
+	        {% if event.time_location %}
+	        	<p>Samling på plats {{ event.time_location }}</p>
+	       	{% endif %}
+	        {% if event.isGig() and event.time_playing %}
+	            <p>Spelning börjar {{ event.time_playing }}</p>
+	        {% endif %}
+	        </div>
+	        <div class="cell" >
+	        {% if not event.isGig() %}
+	            <p>Fika: {{ event.get_fika_display() }}</p>
+	        {% endif %}
+	        {% if user.is_authenticated() and event.signup %}
+	        	{% set signup = event.get_signup(user) %}
+	        	{% if signup %}
+	        		<p><a href="/event/signup/{{event.pk}}" style="color: #00cc00;">
+	        			Anmäld: {{ signup.get_coming_display() }}
+	        		</a></p>
+	        	{% else %}
+		        	<p><a href="/event/signup/{{event.pk}}" style="color: #cc0000;">Anmäl</a></p>
+				{% endif %}
+				<p>Antal anmälda: {{ event.num_signed_up() }}</p>
+			{% endif %}
+	        </div>
+	        <div style="clear: both;">
+	        	<p>{{event.info}}</p>
+	        </div>
+	        <hr style="border-color: #888888">
+	    {% endfor %}
         
     {% endfor %}
 {% endfor %}
+</div>
 {% endblock %}
 

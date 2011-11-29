@@ -38,7 +38,7 @@ LANGUAGE_CODE = 'sv'
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
-USE_I18N = False
+USE_I18N = True
 
 # If you set this to False, Django will not format dates, numbers and
 # calendars according to the current locale
@@ -117,7 +117,8 @@ SECRET_KEY = 'mbmt085yg^&^d7n7g7f+yeba-_6#wxnsi##=#o!rgzsvmy1ra('
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
+    'jinja2_for_django.Loader',
+#    'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
     'django.template.loaders.app_directories.load_template_source',
 #     'django.template.loaders.eggs.Loader',
@@ -197,6 +198,12 @@ LOGGING = {
             'level': 'DEBUG',
             'handlers': ['console'],
             'propagate': False,
+        },
+        'django.request': {
+            # Either replace 'mail_admins' by 'sentry' or use both if you want
+            'handlers': ['sentry'],
+            'level': 'DEBUG',
+            'propagate': True,
         },
     },
 }

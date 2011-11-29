@@ -59,7 +59,7 @@ def mailsender(request):
     logging.info("Mail from %s to %s recieved", from_, to)
     if not from_.endswith("@altekamereren.org") \
             and not from_.endswith("@altekamereren.com") \
-            and User.objects.filter(email=from_).count() < 1:
+            and User.objects.filter(email=from_).exists():
         logging.info("Sender not accepted.")
         return HttpResponse(status=400)
     
@@ -103,7 +103,7 @@ def mailsender(request):
         if message == "Email address is not verified.":
             if MailVerificationSent.objects.filter(email=from_, 
                     sent__gte=datetime.datetime.now() - datetime.timedelta(days=1)
-                        ).count() < 1:
+                        ).exists():
                 connection.verify_email_address(from_)
                 logging.error("Sending verify mail to: %s", from_)
                 MailVerificationSent(email=from_).save()

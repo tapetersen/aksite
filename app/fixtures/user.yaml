@@ -1,0 +1,22 @@
+- model: auth.user
+  pk: 1
+  fields:
+    email: samiljan@gmail.com
+    is_active: true
+    is_staff: true
+    is_superuser: true
+    password: sha1$4ea69$279e3c02f03eac208ba14d37727876c39c4381d2
+    username: samiljan
+    address: Magistratsvägen 55 Y 1216
+    city: Lund
+    first_name: Sam
+    instrument: ta
+    last_name: Persson
+    nation: Helsingkrona
+    phone: 070-5572927
+    zip: '22644'
+  model: auth.user
+  pk: 1
+    
+
+

@@ -1,10 +1,11 @@
-{% extends "1col.html" %}
+{% extends "base.html" %}
 
 {% block next_after_login %}/{% endblock %}
 
 {% block content %}
 
-<form action="" method="post">{% csrf_token %}
+<form action="" method="post">
+<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
 <table>
 {{ form.as_table }}
 </table>

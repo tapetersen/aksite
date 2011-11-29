@@ -1,9 +1,5 @@
 <!doctype html>
 
-{% load feincms_tags %}
-{% load feincms_page_tags %}
-{% load navigation %}
-
 <!--[if lt IE 7 ]>
 <html lang="en" class="no-js ie6">
 <![endif]-->
@@ -23,7 +19,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-    <title></title>
+	<title>{% if self.title().strip() %}{{ self.title() }} - {% endif %}Alte Kamereren</title>
+	
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -32,6 +29,9 @@
     <link rel="shortcut icon" href="/favicon.ico">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <link rel="stylesheet" href="{{STATIC_URL}}css/style.css?v=2">
+    
+    {% block extra_css %}{% endblock %}
+    {% block extra_script %}{% endblock %}
 
     <script src="{{ STATIC_URL }}js/libs/modernizr-1.7.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
@@ -53,6 +53,7 @@
             <div class="user">
                 {% if user.is_authenticated %}
                     <a href="/users/profile">profil</a> | <a href="/users/logout">logga ut</a>
+                    {% if user.is_staff %}| <a href="/admin">admin</a>{% endif %}
                 {% else %}
                     <a href="/users/login?next={% block next_after_login %}{{ request.get_full_path }}{% endblock %}">
                     	logga in
@@ -60,15 +61,14 @@
                 {% endif %}
             </div>
             <ul class="nav" id="main-nav">
-                {% navigation of request as sublevel level=1,depth=1 %}
-                {% for p in sublevel %}
-                <li><a href="{{ p.get_absolute_url }}"{% if p|is_equal_or_parent_of:feincms_page %} class="active"{% endif %}>{{ p.title }}</a></li>
+                {% for p in navigation(request) %}
+                	<li><a href="{{ p.get_absolute_url() }}"{% if feincms_page and is_equal_or_parent_of(p, feincms_page) %} class="active"{% endif %}>{{ p.title }}</a></li>
                 {% endfor %}
             </ul>
         </header>
 
         <div id="main" class="clearfix" role="main">
-            {% block content-header %}
+            {% block content_header %}
                 {% if error %}<div class="error">{{ error }}</div>{% endif %}
                 {% if info %}<div class="info">{{ info }}</div>{% endif %}
                 {% if messages %}
@@ -77,18 +77,26 @@
                     {% endfor %}
                 {% endif %}
             {% endblock %}
-            <h1>{% block title %}{% endblock %}</h1>
+            <h1>
+	            {% block title %}
+	            	{% if feincms_page %}
+	            		{{ feincms_page.content_title }}
+	            	{% endif %}
+	            {% endblock %}
+            </h1>
             {% block content %}
             {% endblock %}
         </div>
 
         <footer>
             {% block footer_content%}
-            {% for content in feincms_page.content.footer %}
-            <div class="block">
-                {{ content.render }}
-            </div>
-            {% endfor %}
+                {% if feincms_page %}
+                    {% for content in feincms_page.content.footer %}
+                        <div class="block">
+                            {{ content.render }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
             {% endblock %}
         </footer>
         

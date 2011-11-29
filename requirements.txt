@@ -11,3 +11,4 @@ django-debug-toolbar
 django-sentry
 raven
 south
+jinja2

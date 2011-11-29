@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<style type="text/css">
+
+table.signed_up {
+	width: 100%;
+	color: white; 
+}
+
+table.signed_up td {
+	border: 1px solid gray;
+	padding: 4px;
+}
+
+</style>
+{% endblock %}
+
+{% block content %}
+
+{{ event }}
+
+<form action="" method="post">
+<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+<table class="form">
+{{ form.as_table() }}
+</table>
+<input type="submit" value="Submit" />
+</form>
+
+<table class="signed_up">
+{% for signup in event.signup_set.order_by("coming", "user__instrument", 
+		"user__first_name", "user__last_name") %}
+	<tr>
+		<td>{{ signup.user.first_name }} {{ signup.user.last_name }}</td>
+		<td>{{ signup.user.get_instrument_display() }}</td>
+		<td>{{ signup.get_coming_display() }}{% if signup.car %}, har bil{% endif %}</td>
+	</tr>
+{% endfor %}
+<table>
+{% endblock %}
+
