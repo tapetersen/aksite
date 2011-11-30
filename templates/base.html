@@ -36,7 +36,6 @@
     <link rel="stylesheet" href="{{STATIC_URL}}css/style.css?v=2">
     
     {% block extra_css %}{% endblock %}
-    {% block extra_script %}{% endblock %}
 
     <script src="{{ STATIC_URL }}js/libs/modernizr-2.0.6.min.js"></script>
 </head>
@@ -106,6 +105,8 @@
   	
     <script src="{{ STATIC_URL }}js/plugins.js"></script>
     <script src="{{ STATIC_URL }}js/script.js"></script>
+    
+    {% block extra_script %}{% endblock %}
     
     {% if not user.is_authenticated() %}
     <!-- Google Analytics (only for non members) -->

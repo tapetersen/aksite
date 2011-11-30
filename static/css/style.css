@@ -314,6 +314,7 @@ header #main-nav {
     position: absolute;
     bottom: 1px;
     right: 15px;
+    margin: 0px;
 }
 header #main-nav > * {
     display: inline-block;
@@ -358,6 +359,35 @@ img.block {
     float: left;
     width: 45%;
     margin: 15px;
+}
+
+form table th {
+	text-align: left;
+	vertical-align: top;
+	padding: 5px;
+}
+form table td {
+	padding: 5px;
+}
+
+form table tr:hover {
+	background-color: #333333;
+}
+
+form table ul.errorlist {
+	color: #b10000;
+	margin: 3px 0;
+	font-weight: bold;
+	list-style: none
+}
+
+form table input {
+	width: 300px;
+}
+
+form input[type=submit] {
+	margin: 10px;
+	margin-left: 100px;
 }
 
 

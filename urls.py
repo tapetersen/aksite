@@ -33,14 +33,14 @@ urlpatterns = patterns('',
     
     (r'^users/', include('registration.backends.simple.urls')),
     (r'^users/login/$', 'django.contrib.auth.views.login'),
-    (r'^users/logout/$', 'django.contrib.auth.views.logout'),
-    (r'^users/profile/$', lambda request: UpdateView.as_view(
+    (r'^users/logout/$', login_required('django.contrib.auth.views.logout')),
+    (r'^users/profile/$', login_required(lambda request: UpdateView.as_view(
          model=auth.models.User, form_class=forms.UserForm,
          success_url="/users/profile/")(
-         request, pk=request.user.pk)),
+         request, pk=request.user.pk))),
                        
-    (r'^event/signup/(?P<event_pk>\d+)$', views.EventSignup.as_view(
-         success_url="/upcoming/")),
+    (r'^event/signup/(?P<event_pk>\d+)$', login_required(views.EventSignup.as_view(
+         success_url="/upcoming/"))),
 
     (r'^sentry/', include('sentry.web.urls')),
     

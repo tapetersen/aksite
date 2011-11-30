@@ -14,7 +14,6 @@ div.cell {
 	width: 30%;
 	padding-left: 1%;
 	padding-right: 1%;
-	color: #cccccc;
 }
 
 </style>
@@ -62,7 +61,7 @@ div.cell {
 	        			Anmäld: {{ signup.get_coming_display() }}
 	        		</a></p>
 	        	{% else %}
-		        	<p><a href="/event/signup/{{event.pk}}" style="color: #cc0000;">Anmäl</a></p>
+		        	<p><a href="/event/signup/{{event.pk}}">Anmäl</a></p>
 				{% endif %}
 				<p>Antal anmälda: {{ event.num_signed_up() }}</p>
 			{% endif %}
