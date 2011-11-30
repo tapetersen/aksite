@@ -1,45 +1,63 @@
-- model: page.page
-  pk: 1
-  base_fields: &pagefields
-    level: 0
-    lft: 1
-    rght: 2
-    active: true
-    in_navigation: true
-    template_key: 1col.html
-  fields:
-    <<: *pagefields
-    tree_id: 1
-    title: Hem
-    slug: hem
-    override_url: /
-    _cached_url: /
-    
-- model: page.page
-  pk: 2
-  fields:
-    <<: *pagefields
-    tree_id: 2
-    title: Info
-    slug: info
-    _cached_url: /info/
-    
-- model: page.page
-  pk: 3
-  fields:
-    <<: *pagefields
-    tree_id: 3
-    title: På gång
-    slug: upcoming
-    _cached_url: /upcoming/
-    
-- model: page.page
-  pk: 4
-  fields:
-    <<: *pagefields
-    tree_id: 4
-    title: Adressregister
-    slug: members
-    _cached_url: /members/
-    require_login: true
-    
+- fields: {_cached_url: /, _content_title: "V\xE4lkommen!", _page_title: Hem, active: true,
+    in_navigation: true, level: 0, lft: 1, override_url: /, parent: null, redirect_to: '',
+    require_login: false, rght: 2, slug: hem, template_key: 2col.html, title: Hem,
+    tree_id: 1}
+  model: page.page
+  pk: 1
+- fields: {_cached_url: /info/, _content_title: "Musikalliansen Alte Kamereren och\
+      \ Kamr\xE9rbaletten", _page_title: Info/kontakt, active: true, in_navigation: true,
+    level: 0, lft: 1, override_url: '', parent: null, redirect_to: '', require_login: false,
+    rght: 2, slug: info, template_key: 1col.html, title: Info/kontakt, tree_id: 2}
+  model: page.page
+  pk: 2
+- fields: {_cached_url: /upcoming/, _content_title: '', _page_title: '', active: true,
+    in_navigation: true, level: 0, lft: 1, override_url: '', parent: null, redirect_to: '',
+    require_login: false, rght: 2, slug: upcoming, template_key: 1col.html, title: "P\xE5\
+      \ g\xE5ng", tree_id: 3}
+  model: page.page
+  pk: 3
+- fields: {_cached_url: /members/, _content_title: '', _page_title: '', active: true,
+    in_navigation: true, level: 0, lft: 1, override_url: '', parent: null, redirect_to: '',
+    require_login: true, rght: 2, slug: members, template_key: 1col.html, title: Adressregister,
+    tree_id: 4}
+  model: page.page
+  pk: 4
+- fields: {ordering: 0, parent: 1, region: col1, text: "<big><p>Vill du spela eller\
+      \ dansa? Vill du se andra spela eller dansa? Vill du underh\xE5lla? Vill du\
+      \ bli \r\nunderh\xE5llen? Vill du ha roligt? D\xE5 har du kommit r\xE4tt!</p><p>Oavsett\
+      \ om du vill befinna dig framf\xF6r, i, bakom, under eller bortom Alte Kamereren\
+      \ - vi lever upp \r\ntill dina f\xF6rv\xE4ntningar.</p></big>"}
+  model: page.richtextcontent
+  pk: 1
+- fields: {ordering: 1, parent: 2, region: main, text: "<p>\r\n\tVi \xE4r en studentorkester\
+      \ med studenter fr\xE5n Lunds Universitet och Lunds Tekniska H\xF6gskola.\r\n\
+      </p>\r\n<p>\r\n\tVi st\xE5r f\xF6r en glad och spexig musikalisk underh\xE5\
+      llning, d\xE4r \r\nspelgl\xE4djen - och inte n\xF6dv\xE4ndigtvis den musikaliska\
+      \ ekvilibristiken - \r\nkommer i fr\xE4msta rummet. P\xE5 v\xE5r repertoar ryms\
+      \ allt fr\xE5n marsch till \r\nschweizisk schlager, s\xE5v\xE4l gammalt som\
+      \ nytt.\r\n</p>\r\n<p>\r\n\tVi spelar p\xE5 allt fr\xE5n firmafester via studentjippon\
+      \ till invigningar. \r\nN\xE4r du vill engagera oss f\xF6r en spelning eller\
+      \ helt enkelt bara ha tag \r\np\xE5 oss n\xE5r du oss l\xE4ttast p\xE5 nedanst\xE5\
+      ende adress/telefonnummer.\r\n</p>\r\n<p>\r\n\tVill du h\xF6ra hur vi l\xE5\
+      ter s\xE5 finns h\xE4r n\xE5gra smakprov fr\xE5n v\xE5r senaste CD-skiva <a\
+      \ href=\"http://www.altekamereren.com/?page=smakprov\">Tunav\xE4gen</a> eller\
+      \ titta p\xE5 v\xE5r <a href=\"http://www.youtube.com/user/AlteKamereren\">Youtubekanal</a>.&#160;</p><p>Vi\
+      \ har \xE4ven en seniorf\xF6rening \xC4ltere Kamereren som man kan n\xE5 <a\
+      \ href=\"http://aelterekamereren.org/\">h\xE4r</a>.</p><table style=\"width:\
+      \ 582px; height: 201px;\"><tbody><tr><td><strong>Postadress</strong></td><td\
+      \ style=\"vertical-align: top;\"><strong>Bankgiro</strong></td><td style=\"\
+      vertical-align: top;\"><strong>Org.nr.</strong></td></tr><tr><td>Alte Kamereren<br\
+      \ />\r\n\tBox 749<br />\r\n\t220 07 Lund<br />\r\n\t<a href=\"mailto:info@altekamereren.org\"\
+      ><img src=\"http://www.altekamereren.com/gfx/info.png\" /></a></td><td style=\"\
+      vertical-align: top;\">654-4506\r\n\t</td><td style=\"vertical-align: top;\"\
+      >845000-7128\r\n\t</td></tr><tr><td style=\"vertical-align: top;\">Annica Eriksson<br\
+      \ />\r\n\t\xD6verkamerer<br />\r\n\t070-2706065<br />\r\n\t<a href=\"mailto:ok@altekamereren.org\"\
+      ><img src=\"http://www.altekamereren.com/gfx/ok.png\" /></a></td><td style=\"\
+      vertical-align: top;\">Ludvig Hagmar<br />\r\n\tKamrerskamerer<br />\r\n\t0708-123685<br\
+      \ />\r\n\t<a href=\"mailto:kk@altekamereren.org\"><img src=\"http://www.altekamereren.com/gfx/kk.png\"\
+      \ /></a></td><td style=\"vertical-align: top;\">Elin Lundgren<br />\r\n\tSkrivkamerer<br\
+      \ />\r\n\t070-2948039<br />\r\n\t<a href=\"mailto:sk@altekamereren.org\"><img\
+      \ src=\"http://www.altekamereren.com/gfx/sk.png\" /></a></td></tr></tbody></table>\r\
+      \n"}
+  model: page.richtextcontent
+  pk: 2

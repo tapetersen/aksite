@@ -3,7 +3,7 @@
 {% block content %}
 {% for content in feincms_page.content.main %}
 
-    {{ content.render }}
+    {{ content.render() }}
     
 {% endfor %}
 {% endblock %}

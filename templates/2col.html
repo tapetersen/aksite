@@ -6,7 +6,7 @@
 {% block column_1 %}
 {% for content in feincms_page.content.col1 %}
 
-    {{ content.render }}
+    {{ content.render() }}
     
 {% endfor %}
 {% endblock %}
@@ -17,7 +17,7 @@
 {% block column_2 %}
 {% for content in feincms_page.content.col2 %}
 
-    {{ content.render }}
+    {{ content.render() }}
     
 {% endfor %}
 {% endblock %}

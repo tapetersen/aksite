@@ -46,11 +46,14 @@ USE_L10N = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-if not DEBUG:
-    MEDIA_ROOT = '/usr/local/www/aksite/media/'
-else:
-    MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media/')
+#if not DEBUG:
+#    MEDIA_ROOT = '/usr/local/www/aksite/media/'
+#else:
+MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media/')
 
+if "EPIO_DATA_DIRECTORY" in os.environ:
+    MEDIA_ROOT = os.environ["EPIO_DATA_DIRECTORY"]
+    
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
@@ -60,7 +63,8 @@ MEDIA_URL = '/media/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = '/usr/local/www/aksite/static/'
+#STATIC_ROOT = '/usr/local/www/aksite/static/'
+STATIC_ROOT = os.path.join(PROJECT_ROOT, "static_collected")
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -130,7 +134,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    #'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'compatibility.XUACompatibleMiddleware',
 )
 
 INTERNAL_IPS = ('127.0.0.1',"90.229.222.160")
@@ -162,7 +166,6 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     'registration',
     'django_ses',
-    #'debug_toolbar',
     'sentry',
     'raven.contrib.django',
     'south',

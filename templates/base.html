@@ -17,31 +17,28 @@
 <!--<![endif]-->
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-	<title>{% if self.title().strip() %}{{ self.title() }} - {% endif %}Alte Kamereren</title>
+	<title>
+		{% if feincms_page %}
+			{{ feincms_page.page_title }} - 
+		{% elif self.title().strip() %}
+			{{ self.title() }} - 
+		{% endif %}
+		Alte Kamereren
+	</title>
 	
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+  	<meta name="viewport" content="width=device-width,initial-scale=1">
 
-    <link rel="shortcut icon" href="/favicon.ico">
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <link rel="stylesheet" href="{{STATIC_URL}}css/style.css?v=2">
     
     {% block extra_css %}{% endblock %}
     {% block extra_script %}{% endblock %}
 
-    <script src="{{ STATIC_URL }}js/libs/modernizr-1.7.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
-    <script>!window.jQuery && document.write(unescape('%3Cscript src="js/libs/jquery-1.5.1.min.js"%3E%3C/script%3E'))</script>
-    <script src="{{ STATIC_URL }}js/plugins.js"></script>
-    <script src="{{ STATIC_URL }}js/script.js"></script>
-    <!--[if lt IE 7 ]>
-    <script src="js/libs/dd_belatedpng.js"></script>
-    <script> $(function(){DD_belatedPNG.fix('img, .png_bg')});</script>
-    <![endif]-->
+    <script src="{{ STATIC_URL }}js/libs/modernizr-2.0.6.min.js"></script>
 </head>
 <body>
     <div id="container">
@@ -51,11 +48,11 @@
             </div>
             
             <div class="user">
-                {% if user.is_authenticated %}
+                {% if user.is_authenticated() %}
                     <a href="/users/profile">profil</a> | <a href="/users/logout">logga ut</a>
                     {% if user.is_staff %}| <a href="/admin">admin</a>{% endif %}
                 {% else %}
-                    <a href="/users/login?next={% block next_after_login %}{{ request.get_full_path }}{% endblock %}">
+                    <a href="/users/login?next={% block next_after_login %}{{ request.get_full_path() }}{% endblock %}">
                     	logga in
                    	</a>
                 {% endif %}
@@ -93,7 +90,7 @@
                 {% if feincms_page %}
                     {% for content in feincms_page.content.footer %}
                         <div class="block">
-                            {{ content.render }}
+                            {{ content.render() }}
                         </div>
                     {% endfor %}
                 {% endif %}
@@ -101,5 +98,30 @@
         </footer>
         
     </div>
+    
+    <!-- JavaScript at the bottom for fast page loading -->
+    
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+  	<script>window.jQuery || document.write('<script src="{{ STATIC_URL }}js/libs/jquery-1.7.min.js"><\/script>')</script>
+  	
+    <script src="{{ STATIC_URL }}js/plugins.js"></script>
+    <script src="{{ STATIC_URL }}js/script.js"></script>
+    
+    {% if not user.is_authenticated() %}
+    <!-- Google Analytics (only for non members) -->
+	<script>
+	  window._gaq = [['_setAccount','UA-27394459-1'],['_trackPageview'],['_trackPageLoadTime']];
+	  Modernizr.load({
+	    load: ('https:' == location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js'
+	  });
+	</script>
+	{% endif %}
+	
+	<!-- Prompt IE 6 users to install Chrome Frame. Remove this if you want to support IE 6.
+      chromium.org/developers/how-tos/chrome-frame-getting-started -->
+	<!--[if lt IE 7 ]>
+	  <script src="//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js"></script>
+	  <script>window.attachEvent('onload',function(){CFInstall.check({mode:'overlay'})})</script>
+	<![endif]-->
 </body>
 </html>
