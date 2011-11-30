@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+
+{% block extra_css %}
+<style type="text/css">
+
+
+
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div id="gigs">
+{% for event in events %}
+	<p>{{ event.date|date("l d/m Y")}} {{ event.time_playing|time }}<br>
+	   {{ event.name }}, {{ event.location }}</p>
+    </div>
+{% endfor %}
+</div>
+{% endblock %}
+

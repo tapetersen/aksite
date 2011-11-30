@@ -13,7 +13,7 @@
     (function($){
         var richtext_init_fn = function(){
 			$('{% block selectors %}.order-machine textarea[class=item-richtext]:not(.wymified), #frontend_editor textarea[class=item-richtext]:not(.wymified){% endblock %}').wymeditor({
-				updateSelector: "input:submit",
+				updateSelector: '.submit-row input[type=submit]',
 				updateEvent:    "click"    
 			}).addClass('wymified');
 		};

@@ -1,4 +1,4 @@
-# endcoding: utf8
+# endcoding: utf-8
 
 import ak
 from django.db import models

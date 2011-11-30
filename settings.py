@@ -82,10 +82,13 @@ FEINCMS_TINYMCE_INIT_CONTEXT  = {
     'TINYMCE_CONTENT_CSS_URL': None,
     'TINYMCE_LINK_LIST_URL': None,
 }
+
+WYMEDITOR_URL = os.path.join(STATIC_URL,"wymeditor/wymeditor/jquery.wymeditor.min.js")
+JQUERY_URL = os.path.join(STATIC_URL,"js/libs/jquery-1.7.min.js")
+
 FEINCMS_WYMEDITOR_INIT_TEMPLATE = 'admin/content/richtext/init_wymeditor.html'
 FEINCMS_WYMEDITOR_INIT_CONTEXT  = {
-    'WYMEDITOR_JS_URL': os.path.join(STATIC_URL,
-                                   'wymeditor/wymeditor/jquery.wymeditor.js'),
+    'WYMEDITOR_JS_URL': WYMEDITOR_URL,
     #'TINYMCE_CONTENT_CSS_URL': None,
     #'TINYMCE_LINK_LIST_URL': None,
 }

@@ -1,6 +1,8 @@
 from django.contrib import admin
+from django.db import models
 
 from models import Rehearsal, Gig
+from widgets import RichEditor
 
 from django.utils.translation import ugettext_lazy as _
 
@@ -8,9 +10,12 @@ class RehearsalAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {'fields': ('location', 'date', 
             "time_hole", "time_location", "signup", "fika",
-            "info", "insiderinfo")} ),
+            "info")} ),
     )
     list_display = ('location', "date", "fika")
+    formfield_overrides = {
+        models.TextField: {'widget': RichEditor},
+    }
     
 admin.site.register(Rehearsal, RehearsalAdmin)
     
@@ -18,9 +23,12 @@ class GigAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {'fields': ('name', 'location', 'date', 
             "time_hole", "time_location", "time_playing", "signup",
-            "info", "insiderinfo")} ),
+            "info", "public_info")} ),
     )
     list_display = ('name', 'location', "date")
+    formfield_overrides = {
+        models.TextField: {'widget': RichEditor},
+    }
     
 admin.site.register(Gig, GigAdmin)
 
@@ -51,12 +59,11 @@ admin.site.register(User, CustomUserAdmin)
 # Page admin
 
 from feincms.module.page.models import Page, PageAdmin
-PageAdmin.unknown_fields.remove("require_login")
-PageAdmin.fieldsets[0][1]["fields"].insert(2, "require_login")
+#PageAdmin.unknown_fields.remove("require_login")
+PageAdmin.fieldsets[0][1]["fields"][1] += ("require_login",)
 
 from feincms.admin import editor
-PageAdmin.require_login_toggle = editor.ajax_editable_boolean('require_login', _('require login'))
-PageAdmin.list_display.insert(3, "require_login_toggle")
+PageAdmin.list_display.insert(3, editor.ajax_editable_boolean('require_login', _('require login')))
 PageAdmin.list_filter.insert(2, "require_login")
 
 #admin.site.unregister(Page)
