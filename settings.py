@@ -44,6 +44,11 @@ USE_I18N = True
 # calendars according to the current locale
 USE_L10N = True
 
+TIME_FORMAT = "H:i"
+
+LANGUAGES = (("sv", "Swedish"),
+             ("en", "English"))
+
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
 #if not DEBUG:

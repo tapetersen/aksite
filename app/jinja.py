@@ -6,7 +6,7 @@ __all__ = ["navigation", "is_equal_or_parent_of"]
 def navigation(request, parent=None):
     pages = Page.objects.active().filter(in_navigation=True, parent=parent)
     if not request.user.is_authenticated():
-        pages.filter(require_login=False)
+        pages = pages.filter(require_login=False)
     return pages
 
 def is_equal_or_parent_of(page1, page2):

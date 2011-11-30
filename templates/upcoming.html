@@ -16,6 +16,10 @@ div.cell {
 	padding-right: 1%;
 }
 
+div.cell p {
+	margin: 3px 0;
+}
+
 </style>
 {% endblock %}
 
@@ -25,11 +29,11 @@ div.cell {
 {% for year, list in events|groupby("date.year") %}
     <h2>{{ year }}</h2>
     {% for month, list in list|groupby("date.month") %}
-        <h2>{{ list[0].date.strftime("%B") }}</h2>
+        <h2>{{ list[0].date|date("F")}}</h2>
             
         {% for event in list %}
 	        <div class="cell" style="clear: both; font-weight: bold;">
-	        	<p>{{ event.date.strftime("%A %d/%m") }}</p>
+	        	<p>{{ event.date|date("l d/m")}}</p>
 	       	{% if event.isGig() %}
 	            <p>{{ event.name }}</p>
 	        {% else %}
@@ -41,13 +45,13 @@ div.cell {
 	        </div>
 	        <div class="cell" >
 	        {% if event.time_hole %}
-	        	<p>Samling i hålan {{ event.time_hole }}</p>
+	        	<p>Samling i hålan {{ event.time_hole|time }}</p>
 	       	{% endif %}
 	        {% if event.time_location %}
-	        	<p>Samling på plats {{ event.time_location }}</p>
+	        	<p>Samling på plats {{ event.time_location|time }}</p>
 	       	{% endif %}
 	        {% if event.isGig() and event.time_playing %}
-	            <p>Spelning börjar {{ event.time_playing }}</p>
+	            <p>Spelning börjar {{ event.time_playing|time }}</p>
 	        {% endif %}
 	        </div>
 	        <div class="cell" >

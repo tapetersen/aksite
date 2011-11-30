@@ -37,7 +37,17 @@ class Loader(BaseLoader):
     #env.globals['STATIC_URL'] = settings.STATIC_URL
     
     for fname in jinja.__all__:
-        env.globals[fname] = getattr(jinja, fname)    
+        env.globals[fname] = getattr(jinja, fname)
+        
+    def format(value, format=settings.DATE_FORMAT):
+        from django.utils import dateformat
+        return dateformat.format(value, format)
+    def time_format(value, format=settings.TIME_FORMAT):
+        from django.utils import dateformat
+        return dateformat.time_format(value, format)
+    
+    env.filters["date"] = format 
+    env.filters["time"] = time_format
 
     def load_template(self, template_name, template_dirs=None):
         try:

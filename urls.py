@@ -12,6 +12,7 @@ from django.contrib import admin
 admin.autodiscover()
 
 from app import views, mailinglists, forms, models
+import datetime
 
 
 urlpatterns = patterns('',
@@ -28,8 +29,24 @@ urlpatterns = patterns('',
     
     (r"^mailsender/$", mailinglists.mailsender),
     
-    (r"^upcoming/$", views.Upcoming.as_view()),
-    (r"^members/$", views.AddressRegister.as_view()),
+    (r"^upcoming/$", views.FeinListView.as_view(
+        context_object_name="events",
+        template_name = "upcoming.html",
+        queryset = models.Event.objects.filter(
+            date__gte=datetime.date.today()).select_subclasses())),
+                       
+    (r"^gigs/$", views.FeinListView.as_view(
+        context_object_name="events",
+        template_name = "gigs.html",
+        queryset = models.Gig.objects.filter(
+            date__gte=datetime.date.today()))),
+                       
+    (r"^members/$", views.FeinListView.as_view(
+        context_object_name="kamerers",
+        template_name = "address_register.html",
+        queryset = models.User.objects.all().order_by("instrument", 
+                                                      "last_name", 
+                                                      "first_name"))),
     
     (r'^users/', include('registration.backends.simple.urls')),
     (r'^users/login/$', 'django.contrib.auth.views.login'),

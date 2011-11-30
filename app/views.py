@@ -39,6 +39,8 @@ class FeinViewMixin(object):
             return login_required(super(FeinViewMixin, self).dispatch)(request, *args, **kwargs)
         return super(FeinViewMixin, self).dispatch(request, *args, **kwargs)
 
+class FeinListView(FeinViewMixin, ListView): pass
+
 class Upcoming(FeinViewMixin, ListView):
     context_object_name = "events"
     template_name = "upcoming.html"
