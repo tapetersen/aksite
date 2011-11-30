@@ -14,7 +14,9 @@
 <div id="gigs">
 {% for event in events %}
 	<p>{{ event.date|date("l d/m Y")}} {{ event.time_playing|time }}<br>
-	   {{ event.name }}, {{ event.location }}</p>
+	   {{ event.name }}, {{ event.location }}
+	   {% if event.public_info %}{{ event.public_info }}{% endif %}
+	</p>
     </div>
 {% endfor %}
 </div>

@@ -29,24 +29,30 @@ urlpatterns = patterns('',
     
     (r"^mailsender/$", mailinglists.mailsender),
     
-    (r"^upcoming/$", views.FeinListView.as_view(
-        context_object_name="events",
+    (r"^upcoming/$", views.GenericFeinView.as_view(
         template_name = "upcoming.html",
-        queryset = models.Event.objects.filter(
-            date__gte=datetime.date.today()).select_subclasses())),
+        extra_context = dict(
+            events=models.Event.objects.filter(
+                date__gte=datetime.date.today()
+            ).select_subclasses()
+        )
+    )),
                        
-    (r"^gigs/$", views.FeinListView.as_view(
-        context_object_name="events",
+    (r"^gigs/$", views.GenericFeinView.as_view(
         template_name = "gigs.html",
-        queryset = models.Gig.objects.filter(
-            date__gte=datetime.date.today()))),
+        extra_context = dict(
+            events=models.Gig.objects.filter(date__gte=datetime.date.today())
+        )
+    )),
                        
-    (r"^members/$", views.FeinListView.as_view(
-        context_object_name="kamerers",
+    (r"^members/$", views.GenericFeinView.as_view(
         template_name = "address_register.html",
-        queryset = models.User.objects.all().order_by("instrument", 
-                                                      "last_name", 
-                                                      "first_name"))),
+        extra_context = dict(
+            kamerers=models.User.objects.all().order_by("instrument", 
+                                                        "last_name", 
+                                                        "first_name")
+        )
+    )),
     
     (r'^users/', include('registration.backends.simple.urls')),
     (r'^users/login/$', 'django.contrib.auth.views.login'),

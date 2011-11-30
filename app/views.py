@@ -9,49 +9,29 @@ import datetime
 from django.utils.translation import ugettext_lazy as _
 import logging
 
-"""Bolt on login_required to feincms pages"""
+"""Monkeypatch feincms handler to handle on page.require_login"""
 
-from feincms.views.base import Handler
+from feincms.views.cbv.views import Handler
 from django.contrib.auth.decorators import login_required
 
-instancemethod = type(Handler.build_response)
-old_build_response = Handler.build_response
-def build_response(self, request, page):
-    bound_build_response = instancemethod(old_build_response, self, Handler)
-    if page.require_login:
-        return login_required(bound_build_response)(request, page)
-    return bound_build_response(request, page)
-Handler.build_response = instancemethod(build_response, None, Handler)
-
-class FeinViewMixin(object):
-    def get_context_data(self, **kwargs):
-        """Adds feincms_page to context to get working navigation on special views."""
-        
-        context = super(FeinViewMixin, self).get_context_data(**kwargs)
-        context['feincms_page'] = Page.objects.for_request(self.request, best_match=True)
-        
-        return context
+instancemethod = type(Handler.prepare)
+old_prepare = Handler.prepare
+def prepare(self):
+    bound_prepare = instancemethod(old_prepare, self, Handler)
     
-    def dispatch(self, request, *args, **kwargs):
-        """Bolt on login_required"""        
-        page = Page.objects.for_request(request, best_match=True)
-        if page.require_login:
-            return login_required(super(FeinViewMixin, self).dispatch)(request, *args, **kwargs)
-        return super(FeinViewMixin, self).dispatch(request, *args, **kwargs)
+    if self.page.require_login:
+        return login_required(lambda request: bound_prepare())(self.request)
+    return bound_prepare()
 
-class FeinListView(FeinViewMixin, ListView): pass
+Handler.prepare = instancemethod(prepare, None, Handler)
 
-class Upcoming(FeinViewMixin, ListView):
-    context_object_name = "events"
-    template_name = "upcoming.html"
-    queryset = Event.objects.filter(date__gte=datetime.date.today()).select_subclasses()    
+class GenericFeinView(Handler):
+    extra_context = {}
         
-class AddressRegister(FeinViewMixin, ListView):
-    context_object_name = "kamerers"
-    template_name = "address_register.html"
-    queryset = User.objects.all().order_by("instrument", 
-                                           "last_name", 
-                                           "first_name")
+    def get_context_data(self, **kwargs):
+        context = super(Handler, self).get_context_data()
+        context.update(self.extra_context)
+        return context
     
 from django import forms
     
