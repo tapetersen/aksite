@@ -58,7 +58,29 @@
             </div>
             <ul class="nav" id="main-nav">
                 {% for p in navigation(request) %}
-                	<li><a href="{{ p.get_absolute_url() }}"{% if feincms_page and is_equal_or_parent_of(p, feincms_page) %} class="active"{% endif %}>{{ p.title }}</a></li>
+                	<li>
+                		<a href="{{ p.url }}"
+                		{% if feincms_page and is_equal_or_parent_of(p, feincms_page) %} 
+                			class="active"
+                		{% endif %}>
+                			{{ p.title }}
+                		</a>
+                		
+                		{% if p.children %}
+                			<ul>
+	                		{% for p in p.children %}
+	                			<li>
+					        		<a href="{{ p.url }}"
+					        		{% if feincms_page and is_equal_or_parent_of(p, feincms_page) %} 
+					        			class="active"
+					        		{% endif %}>
+					        			{{ p.title }}
+					        		</a>
+	                			</li>
+			                {% endfor %}
+			                </ul>
+						{% endif %}
+                	</li>
                 {% endfor %}
             </ul>
         </header>

@@ -336,6 +336,31 @@ header #main-nav a:hover {
 	text-decoration: none;
 }
 
+header #main-nav li ul {
+    display: none;
+   	position: absolute;
+   	list-style: none;
+   	background-color: black;
+   	padding: 0px;
+   	margin: 0px;
+   	border:1px solid black;
+	border-radius: 0 10px 10px 10px;
+}
+
+header #main-nav li {
+   	position: relative;
+}
+
+header #main-nav li ul li {
+   	margin: 0px;
+   	padding: 8px;
+   	padding-left: 0;
+}
+
+header #main-nav li:hover ul { display: block; }
+
+
+
 div.user {
 	text-align: right; 
 	padding: 5px;
