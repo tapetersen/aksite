@@ -45,7 +45,7 @@ urlpatterns = patterns('',
         )
     )),
                        
-    (r"^members/$", views.GenericFeinView.as_view(
+    (r"^kamererersinfo/members/$", views.GenericFeinView.as_view(
         template_name = "address_register.html",
         extra_context = dict(
             kamerers=models.User.objects.all().order_by("instrument", 
