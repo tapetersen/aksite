@@ -53,6 +53,8 @@ urlpatterns = patterns('',
                                                         "first_name")
         )
     )),
+                       
+    (r"^ical(.php)?/$", views.CalEvents()),
     
     (r'^users/', include('registration.backends.simple.urls')),
     (r'^users/login/$', 'django.contrib.auth.views.login'),

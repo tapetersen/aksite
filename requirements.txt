@@ -10,3 +10,4 @@ feedparser==5.0.1
 django-sentry==1.12.1
 raven==0.7.0
 South==0.7.3
+https://github.com/statesofpop/django-cal/zipball/master

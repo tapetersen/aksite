@@ -39,6 +39,11 @@ class Event(models.Model):
     
     objects = InheritanceManager()
     
+    last_modified = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
+    
+    name = u"Event"
+    
     def get_signup(self, user):
         signup = Signup.objects.filter(user=user, event=self)
         if signup.exists(): return signup[0]
@@ -53,7 +58,7 @@ class Event(models.Model):
         verbose_name_plural = _('events')
     
     def __unicode__(self):
-        return u"Event - %s" % self.date
+        return u"%s - %s" % (self.name, self.date)
     
     
 class Rehearsal(Event):
@@ -63,14 +68,13 @@ class Rehearsal(Event):
     time_hole = models.TimeField(_("time hole"), default=datetime.time(19,00))
     signup = models.BooleanField(_("signup"), default=False)
             
+    name = u"Rep"
+    
     def isGig(self): return False
     
     def present(self, request):
         columns = ([],[],[])
         columns[0].append()
-        
-    def __unicode__(self):
-        return u"Rep - %s" % self.date
     
     class Meta:
         verbose_name = _("rehearsal")
@@ -87,8 +91,6 @@ class Gig(Event):
     
     public_info = models.TextField(_("public info"), blank=True)
         
-    def __unicode__(self):
-        return "%s - %s" % (self.name, self.date)
         
     def isGig(self): return True
     

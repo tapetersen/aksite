@@ -1,3 +1,5 @@
+# coding: utf-8
+
 from django.views.generic import ListView
 from django.views.generic.edit import UpdateView
 from django.utils.decorators import method_decorator
@@ -63,5 +65,67 @@ class EventSignup(UpdateView):
     def dispatch(self, *args, **kwargs):
         return super(EventSignup, self).dispatch(*args, **kwargs)
     
+import django_cal.views
+django_cal.views.EVENT_ITEMS += (("X-ALT-DESC;FMTTYPE=text/html", "item_html_description"),)
+from django_cal.views import Events
+import re
+import models
 
+class CalEvents(Events):
+    def items(self):
+        return models.Event.objects.filter(
+            date__gte=datetime.date.today() - datetime.timedelta(days=30)
+        ).select_subclasses()
 
+    def cal_name(self):
+        return "AKcal"
+
+    def cal_desc(self):
+        return "Alte Kamererens eventkalender"
+    
+    def item_summary(self, item):
+        return item.name
+
+    def item_html_description(self, item):
+        html = u""
+        if item.time_hole is not None:
+            html += u"<p>Hålan: %s</p>" % item.time_hole
+        if item.time_location is not None:
+            html += u"<p>Där: %s</p>" % item.time_location
+        if hasattr(item, "time_playing") and item.time_playing is not None:
+            html += u"<p>Spelning börjar: %s</p>" % item.time_playing
+        return html + item.info
+    
+    def item_description(self, item):
+        desc = self.item_html_description(item)
+        desc = desc.replace("</p", "\n</p")
+        desc = desc.replace("</br", "\n</br")
+        return re.sub(r"\<[^\>]*\>", "", desc)
+
+    def item_start(self, item):
+        time = item.time_hole
+        if time is None:
+            time = item.time_location
+        if time is None and hasattr(item, "time_playing"):
+            time = item.time_playing
+        if time is None:
+            time = datetime.time(12, 00)
+            
+        return datetime.datetime.combine(item.date, time)
+
+    def item_duration(self, item):
+        return datetime.timedelta(hours=2)
+    
+    def item_location(self, item):
+        return item.location
+    
+    def item_last_modified(self, item):
+        return item.last_modified
+    
+    def item_created(self, item):
+        return item.created
+    
+    def item_uid(self, item):
+        return str(item.pk)
+    
+    

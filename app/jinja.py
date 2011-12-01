@@ -24,7 +24,6 @@ def navigation(request):
                                          parent=p.parent.id if p.parent else None,
                                          url=p.get_absolute_url(), 
                                          children=[])
-
     
     while page_dict:
         for i, page in page_dict.items():
@@ -32,10 +31,7 @@ def navigation(request):
                 tree_dict[page.parent].append(page)
                 tree_dict[i] = page.children
                 del page_dict[i]
-        import logging
-        logging.warning(page_dict, extra=dict(request=request))
     
-    logging.warning(tree, extra=dict(request=request))
     return tree
 
 def is_equal_or_parent_of(page1, page2):
