@@ -140,7 +140,8 @@ Page.create_content_type(
 from feincms.content.medialibrary.v2 import MediaFileContent
 Page.create_content_type(MediaFileContent, TYPE_CHOICES=(
             ('default', _('Default')),
-            ('lightbox', _('Lightbox')),
+            ('left', _('Left')),
+            ('right', _('Right')),
             ('download', _('Download')),
 ))
 
