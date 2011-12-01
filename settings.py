@@ -132,7 +132,6 @@ TEMPLATE_LOADERS = (
     'jinja2_for_django.Loader',
 #    'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-    'django.template.loaders.app_directories.load_template_source',
 #     'django.template.loaders.eggs.Loader',
 )
 
@@ -157,6 +156,8 @@ TEMPLATE_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
     os.path.join(PROJECT_ROOT, 'templates/'),
 )
+
+LOCALE_PATHS = (os.path.join(PROJECT_ROOT, 'locale/'),)
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -228,6 +229,12 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.request",
     "django.contrib.messages.context_processors.messages",
 )
+
+SOUTH_MIGRATION_MODULES = {
+    'page': 'app.migrate.page',
+    'medialibrary': 'app.migrate.medialibrary', 
+    'auth': 'app.migrate.auth',
+}
 
 try:
     from local_settings import *

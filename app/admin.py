@@ -59,11 +59,11 @@ admin.site.register(User, CustomUserAdmin)
 # Page admin
 
 from feincms.module.page.models import Page, PageAdmin
-#PageAdmin.unknown_fields.remove("require_login")
+PageAdmin.unknown_fields.remove("require_login")
 PageAdmin.fieldsets[0][1]["fields"][1] += ("require_login",)
 
-from feincms.admin import editor
-PageAdmin.list_display.insert(3, editor.ajax_editable_boolean('require_login', _('require login')))
+from feincms.admin import tree_editor
+PageAdmin.list_display.insert(3, tree_editor.ajax_editable_boolean('require_login', _('require login')))
 PageAdmin.list_filter.insert(2, "require_login")
 
 #admin.site.unregister(Page)

@@ -137,11 +137,11 @@ from feincms.utils import get_object
 Page.create_content_type(
     get_object("feincms.content.richtext.models.RichTextContent"))
 
-from feincms.content.medialibrary.models import MediaFileContent
-Page.create_content_type(MediaFileContent, POSITION_CHOICES=(
-    ('block', _('Center')),
-    ('left', _('Left')),
-    ('right', _('Right')),
+from feincms.content.medialibrary.v2 import MediaFileContent
+Page.create_content_type(MediaFileContent, TYPE_CHOICES=(
+            ('default', _('Default')),
+            ('lightbox', _('Lightbox')),
+            ('download', _('Download')),
 ))
 
 from feincms.content.rss.models import RSSContent
