@@ -95,11 +95,6 @@ FEINCMS_WYMEDITOR_INIT_CONTEXT  = {
 FEINCMS_RICHTEXT_INIT_CONTEXT = FEINCMS_WYMEDITOR_INIT_CONTEXT
 FEINCMS_RICHTEXT_INIT_TEMPLATE = FEINCMS_WYMEDITOR_INIT_TEMPLATE
 
-# URL prefix for admin static files -- CSS, JavaScript and images.
-# Make sure to use a trailing slash.
-# Examples: "http://foo.com/static/admin/", "/static/admin/".
-ADMIN_MEDIA_PREFIX = '/static/admin/'
-
 """This is the number of days users will have to activate their
 accounts after registering. If a user does not activate within
 that period, the account will remain permanently inactive and may
