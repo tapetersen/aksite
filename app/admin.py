@@ -2,7 +2,6 @@ from django.contrib import admin
 from django.db import models
 from django import forms
 
-
 from models import *
 from widgets import RichEditor
 
@@ -33,9 +32,11 @@ class FutureListFilter(admin.SimpleListFilter):
         
 class DefaultFilterMixin(object):
     def changelist_view(self, request, extra_context=None):
-        test = request.META['HTTP_REFERER'].split(request.META['PATH_INFO'])
+        referer = request.META.get('HTTP_REFERER', "")
+        if referer:
+            test = referer.split(request.META.get('PATH_INFO', "/"))
 
-        if test[-1] and not test[-1].startswith('?'):
+        if not referer or not test[-1] or not test[-1].startswith('?'):
             for key, value in self.list_filter_default.items():
                 if not request.GET.has_key(key):
     
@@ -119,6 +120,9 @@ class SignupAdmin(DefaultFilterMixin, admin.ModelAdmin):
     list_display = ("user", "event", "coming", "car", "comment", "last_modified")
     list_filter = (FutureSignupFilter, EventListFilter, "coming", "car")
     list_filter_default = {"when":"future"}
+    def list_mail(self, request, queryset):
+        self.message_user(request, u";".join(signup.user.email for signup in queryset))
+    actions = ["list_mail"]
 
 admin.site.register(Signup, SignupAdmin)
 
@@ -149,21 +153,24 @@ class AlbumAdmin(admin.ModelAdmin):
     
 admin.site.register(Album,AlbumAdmin)
 
-admin.site.register(Medal)
-
 # User admin
 
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 
+UserAdmin.__bases__ = (DefaultFilterMixin,) + UserAdmin.__bases__
 UserAdmin.fieldsets[1][1]["fields"] += ("address", "zip", "city", 
                                         "phone", "second_phone", 
-                                        "nation", "instrument", "medals")
-
+                                        "nation", "instrument", "has_key", 
+                                        "medals_earned", "medals_awarded")
 UserAdmin.search_fields = ()
 UserAdmin.list_display =  ('first_name', 'last_name', "instrument")
 UserAdmin.list_display_links = ('first_name', 'last_name')
-UserAdmin.list_filter = ('instrument',)
+UserAdmin.list_filter = ('instrument', "is_active")
+UserAdmin.list_filter_default = {"is_active__exact":"1"}
+def list_mail(self, request, queryset):
+    self.message_user(request, u";".join(user.email for user in queryset))
+UserAdmin.actions = [list_mail]
 
 # Page admin
 

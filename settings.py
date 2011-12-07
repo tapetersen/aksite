@@ -155,7 +155,7 @@ TEMPLATE_DIRS = (
 
 LOCALE_PATHS = (os.path.join(PROJECT_ROOT, 'locale/'),)
 
-INSTALLED_APPS = (
+INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -175,7 +175,7 @@ INSTALLED_APPS = (
     'south',
     'guardian',
     'app',
-)
+]
 
 LOGGING = {
     'version': 1,

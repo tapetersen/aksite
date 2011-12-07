@@ -118,16 +118,6 @@ class Signup(models.Model):
         
         verbose_name = _("signup")
         verbose_name_plural = _('signups')
-        
-class Medal(models.Model):
-    name = models.CharField(_("name"), max_length=128)
-    
-    def __unicode__(self):
-        return self.name
-    
-    class Meta:
-        verbose_name = _("medal")
-        verbose_name_plural = _('medals')
     
 from mailinglists import MailVerificationSent
 
@@ -173,7 +163,9 @@ User.add_to_class("phone", models.CharField(_("phone"), max_length=16, blank=Tru
 User.add_to_class("second_phone", models.CharField(_("second phone"), max_length=16, blank=True, null=True))
 User.add_to_class("nation", models.CharField(_("nation"), max_length=128, blank=True, null=True))
 User.add_to_class("instrument", models.CharField(_("instrument"), max_length=2, choices=instrument_choices))
-User.add_to_class("medals", models.ManyToManyField(Medal))
+User.add_to_class("has_key", models.BooleanField(_("has key"), default=False))
+User.add_to_class("medals_earned", models.IntegerField(_("medals earned"), default=0))
+User.add_to_class("medals_awarded", models.IntegerField(_("medals awarded"), default=0))
 
 # Page
 Page.add_to_class("require_login", models.BooleanField(_("require login"), default=False))
