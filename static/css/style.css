@@ -316,9 +316,15 @@ header #main-nav {
     right: 15px;
     margin: 0px;
 }
+
 header #main-nav > * {
     display: inline-block;
 }
+
+.ie7 header #main-nav > * {
+    display: inline;
+}
+
 header #main-nav a {
 	font-weight: bold;
     display: block;
@@ -403,10 +409,14 @@ form table ul.errorlist {
 	color: #b10000;
 	margin: 3px 0;
 	font-weight: bold;
+}
+
+form table ul {
 	list-style: none
 }
 
-form table input {
+form table input[type=text],
+form table input[type=password]  {
 	width: 300px;
 }
 

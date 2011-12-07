@@ -90,6 +90,8 @@ class Gig(Event):
     signup = models.BooleanField(_("signup"), default=True)
     
     public_info = models.TextField(_("public info"), blank=True)
+    
+    secret = models.BooleanField(_("secret"), default=False)
         
         
     def isGig(self): return True
@@ -99,7 +101,7 @@ class Gig(Event):
         verbose_name_plural = _('gigs')
 
 class Signup(models.Model):
-    user = models.ForeignKey(User, editable=False)
+    user = models.ForeignKey(User)
     event = models.ForeignKey(Event, editable=False)
     COMING_CHOICES = (
         ("H", u"Kommer till hålan"),
@@ -108,17 +110,62 @@ class Signup(models.Model):
     )
     coming = models.CharField(_("coming"), max_length=1, choices=COMING_CHOICES, default="H")
     car = models.BooleanField(_("can bring car"))
+    comment = models.CharField(_("comment"), max_length=128, blank=True)
+    last_modified = models.DateTimeField(auto_now=True)
     
     class Meta:
         unique_together = ("user", "event")
         
         verbose_name = _("signup")
         verbose_name_plural = _('signups')
+        
+class Medal(models.Model):
+    name = models.CharField(_("name"), max_length=128)
+    
+    def __unicode__(self):
+        return self.name
+    
+    class Meta:
+        verbose_name = _("medal")
+        verbose_name_plural = _('medals')
     
 from mailinglists import MailVerificationSent
+
+from feincms.module.medialibrary.models import MediaFile, Category
+
+class Album(models.Model):
+    name = models.CharField(_("name"), max_length=128)
+    image = models.ForeignKey(MediaFile, 
+                              limit_choices_to={"type":"image"},
+                              related_name="image")
+    description = models.TextField(_("description"), blank=True)
+    year = models.IntegerField()
+    
+    tunes = models.ManyToManyField(MediaFile, through="Tune")
+    
+    class Meta:
+        verbose_name = _("album")
+        verbose_name_plural = _('albums')
+        
+    def __unicode__(self):
+        return u"%d - %s" % (self.year, self.name)
+    
+class Tune(models.Model):
+    album = models.ForeignKey(Album)
+    audio = models.ForeignKey(MediaFile, 
+                              limit_choices_to={"type":"audio"})
+    track = models.IntegerField()
+    
+    class Meta:
+        verbose_name = _("tune")
+        verbose_name_plural = _('tunes')
     
 # User
 
+User.__unicode__ = lambda self: u"%s %s" % (self.first_name, self.last_name)
+User._meta.fields[2].blank = False # First name
+User._meta.fields[3].blank = False # Last name
+User._meta.fields[4].blank = False # Email
 User.add_to_class("address", models.CharField(_("address"), max_length=128, blank=True, null=True))
 User.add_to_class("zip", models.CharField(_("zip"), max_length=5, blank=True, null=True))
 User.add_to_class("city", models.CharField(_("city"), max_length=128, blank=True, null=True))
@@ -126,10 +173,19 @@ User.add_to_class("phone", models.CharField(_("phone"), max_length=16, blank=Tru
 User.add_to_class("second_phone", models.CharField(_("second phone"), max_length=16, blank=True, null=True))
 User.add_to_class("nation", models.CharField(_("nation"), max_length=128, blank=True, null=True))
 User.add_to_class("instrument", models.CharField(_("instrument"), max_length=2, choices=instrument_choices))
+User.add_to_class("medals", models.ManyToManyField(Medal))
 
 # Page
-
 Page.add_to_class("require_login", models.BooleanField(_("require login"), default=False))
+Page.add_to_class("require_permission", models.BooleanField(default=False))
+
+from django.contrib.auth.models import Permission
+from django.contrib.contenttypes.models import ContentType
+
+content_type = ContentType.objects.get(app_label='page', model='page')
+permission = Permission.objects.get_or_create(codename='can_view',
+                                       name='Can view page',
+                                       content_type=content_type)
 
 # Content types
 

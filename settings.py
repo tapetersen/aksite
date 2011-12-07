@@ -174,11 +174,11 @@ INSTALLED_APPS = (
     'feincms.module.medialibrary',
     'django.contrib.admin',
     'django.contrib.admindocs',
-    'registration',
     'django_ses',
     'sentry',
     'raven.contrib.django',
     'south',
+    'guardian',
     'app',
 )
 
@@ -236,6 +236,13 @@ SOUTH_MIGRATION_MODULES = {
     'medialibrary': 'app.migrate.medialibrary', 
     'auth': 'app.migrate.auth',
 }
+
+ANONYMOUS_USER_ID = -1
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend', # this is default
+    'guardian.backends.ObjectPermissionBackend',
+)
 
 try:
     from local_settings import *

@@ -11,7 +11,7 @@ import settings
 from django.contrib import admin
 admin.autodiscover()
 
-from app import views, mailinglists, forms, models
+from app import views, mailinglists, forms, models, ical
 import datetime
 
 
@@ -45,6 +45,13 @@ urlpatterns = patterns('',
         )
     )),
                        
+    (r"^music/$", views.GenericFeinView.as_view(
+        template_name = "music.html",
+        extra_context = dict(
+            albums=models.Album.objects.all()
+        )
+    )),
+                       
     (r"^kamererersinfo/members/$", views.GenericFeinView.as_view(
         template_name = "address_register.html",
         extra_context = dict(
@@ -54,11 +61,10 @@ urlpatterns = patterns('',
         )
     )),
                        
-    (r"^ical(.php|.ics)?/$", views.CalEvents()),
+    (r"^ical(.php|.ics)?/$", ical.CalEvents()),
     
-    (r'^users/', include('registration.backends.simple.urls')),
     (r'^users/login/$', 'django.contrib.auth.views.login'),
-    (r'^users/logout/$', login_required('django.contrib.auth.views.logout')),
+    (r'^users/logout/$', login_required(auth.views.logout)),
     (r'^users/profile/$', login_required(lambda request: UpdateView.as_view(
          model=auth.models.User, form_class=forms.UserForm,
          success_url="/users/profile/")(

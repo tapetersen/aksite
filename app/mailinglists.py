@@ -3,6 +3,7 @@
 import ak
 from django.db import models
 from django.contrib.auth.models import User
+from django.http import HttpResponse
 import datetime
 
 import logging
@@ -15,7 +16,6 @@ from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt
 def mailsender(request):
-    from django.http import HttpResponse
     
     mail = request.FILES[u"file"].read()
     to = request.GET["to"]

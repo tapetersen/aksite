@@ -34,6 +34,7 @@ table.signed_up td {
 		<td>{{ signup.user.first_name }} {{ signup.user.last_name }}</td>
 		<td>{{ signup.user.get_instrument_display() }}</td>
 		<td>{{ signup.get_coming_display() }}{% if signup.car %}, har bil{% endif %}</td>
+		<td>{{ signup.comment }}</td>
 	</tr>
 {% endfor %}
 <table>

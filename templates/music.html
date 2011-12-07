@@ -1,0 +1,698 @@
+{% extends "base.html" %}
+
+
+{% block extra_css %}
+
+<style type="text/css">
+.mp_wrapper{
+	position:relative;
+	left: -5px;
+}
+.mp_content_wrapper{
+	position:absolute;
+	top:0px;
+	left:0px;
+	width:550px;
+	height:380px;
+	background-color: #111111;
+	border-radius:10px 0px 0px 0px;
+	border-top-left-radius:10px;
+}
+.mp_player{
+	position:absolute;
+	top:0px;
+	left:555px;
+	width:215px;
+	height:526px;
+	background-color: #111111;
+	border-radius:0px 10px 10px 0px;
+	border-top-right-radius:10px;
+	border-bottom-right-radius:10px;
+}
+
+.mp_image {
+	height:200px;
+	overflow: hidden;
+	margin:20px 20px 10px 20px;
+}
+
+.mp_image img{
+	width:200px;
+	border:1px solid #000;
+	box-shadow:1px 1px 4px #000;
+}
+
+
+.mp_description{
+	width:540px;
+	height:145px;
+	margin:0 auto;
+	overflow:hidden;
+	text-overflow:ellipsis;
+}
+.mp_description h2{
+	font-size:34px;
+	margin-bottom:5px;
+	color:#f0f0f0;
+	background-color: #0A0A0A;
+	padding:3px 0px 4px 10px;
+	-moz-box-shadow:0px 0px 4px #000 inset;
+	-webkit-box-shadow:0px 0px 4px #000 inset;
+	box-shadow:0px 0px 4px #000 inset;
+}
+.mp_description p{
+	text-shadow:1px 1px 1px #000;
+	text-transform:uppercase;
+	padding:5px;
+	line-height:17px;
+}
+a.mp_playall{
+	background:#000 url({{STATIC_URL}}images/icons/play_big.png) no-repeat center center;
+	width:50px;
+	height:50px;
+	position:absolute;
+	top:98px;
+	left:96px;
+	text-indent:-9000px;
+	outline:none;
+	display:none;
+	border-radius:10px;
+	border-radius:10px;
+	opacity:0.7;
+	filter:progid:DXImageTransform.Microsoft.Alpha(opacity=70);
+}
+.mp_songs{
+	width:300px;
+	height:203px;
+	position:absolute;
+	right:15px;
+	top:20px;
+	overflow-y: auto;
+}
+.mp_songs > div{
+	background-color: #0A0A0A;
+	width:100%;
+	margin-bottom:5px;
+	height:30px;
+}
+.mp_songs div h3{
+	width:220px;
+	height: 30px;
+	line-height:30px;
+	margin-left:10px;
+	float:left;
+	font-size: 13px;
+	overflow:hidden;
+	text-overflow:ellipsis;
+	white-space: nowrap;
+}
+.mp_options{
+	width:48px;
+	float:right;
+}
+.mp_options span{
+	text-indent:-9000px;
+	width:20px;
+	height:26px;
+	margin:2px 2px 0px 0px;
+	float:left;
+	cursor:pointer;
+}
+.mp_options span.mp_addpl{
+	background:transparent url({{STATIC_URL}}images/icons/add.png) no-repeat center center;
+}
+.mp_options span.mp_play{
+	background:transparent url({{STATIC_URL}}images/icons/play.png) no-repeat center center;
+}
+ul.mp_albums img{
+	width:110px;
+	-moz-box-shadow:1px 1px 4px #000;
+	-webkit-box-shadow:1px 1px 4px #000;
+	box-shadow:1px 1px 4px #000;
+	cursor:pointer;
+	margin-top:3px;
+}
+
+.jcarousel-skin .jcarousel-container {
+	position:absolute;
+	top:385px;
+	left:0px;
+	background-color: #111111;
+	border-radius:0px 0px 0px 10px;
+	border-bottom-left-radius:10px;
+}
+.jcarousel-skin .jcarousel-container-horizontal {
+    width: 470px;
+    padding: 12px 40px;
+}
+.jcarousel-skin .jcarousel-clip-horizontal {
+    width:  470px;
+    height: 117px;
+}
+.jcarousel-skin .jcarousel-item {
+    width: 110px;
+    height: 117px;
+}
+.jcarousel-skin .jcarousel-item-horizontal {
+    margin: 0px 19px 0px 0px;
+}
+
+.jcarousel-skin .jcarousel-item-placeholder {
+    background: #fff;
+    color: #000;
+}
+.jcarousel-skin .jcarousel-next-horizontal {
+    position: absolute;
+    top: 60px;
+    right: 10px;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    background: transparent url({{STATIC_URL}}images/icons/br_next.png) no-repeat center center;
+}
+.jcarousel-skin .jcarousel-prev-horizontal {
+    position: absolute;
+    top: 60px;
+    left: 10px;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    background: transparent url({{STATIC_URL}}images/icons/br_prev.png) no-repeat center center;
+}
+
+
+div.jp-single-player,
+div.jp-playlist-player {
+
+	/* Edit the font-size to counteract inherited font sizing.
+	 * Eg. 1.25em = 1 / 0.8em
+	 */
+	font-size:1em; /* No parent CSS that can effect the size in these demos */
+	line-height:1.6;
+	color: #666;
+	margin-top:10px;
+}
+div.jp-interface {
+	position: relative;
+	width:215px;
+	height:60px;
+}
+div.jp-single-player div.jp-interface {
+	border-bottom:none;
+}
+div.jp-interface ul.jp-controls {
+	list-style-type:none;
+	padding:0;
+	margin: 0;
+}
+div.jp-interface ul.jp-controls li {
+	position: absolute;
+}
+div.jp-interface ul.jp-controls a {
+	position: absolute;
+	overflow:hidden;
+	text-indent:-9999px;
+	opacity:0.9;
+}
+div.jp-interface ul.jp-controls a:hover{
+	opacity:1.0;
+}
+a.jp-previous {
+	left:4px;
+	top:0px;
+	width:20px;
+	height:20px;
+	background: url({{STATIC_URL}}images/icons/playback_prev.png) no-repeat center center;
+}
+div.jp-playlist-player a.jp-play,
+div.jp-playlist-player a.jp-pause {
+	left:24px;
+}
+a.jp-play {
+	background: url({{STATIC_URL}}images/icons/playback_play.png) no-repeat center center;
+	width:20px;
+	height:20px;
+}
+a.jp-pause {
+	background: url({{STATIC_URL}}images/icons/playback_pause.png) no-repeat center center;
+	display: none;
+	width:20px;
+	height:20px;
+}
+a.jp-next {
+	left:45px;
+	top:0px;
+	width:20px;
+	height:20px;
+	background: url({{STATIC_URL}}images/icons/playback_next.png) no-repeat center center;
+}
+a.jp-stop {
+	top:0px;
+	background: url({{STATIC_URL}}images/icons/playback_stop.png) no-repeat center center;
+	width:20px;
+	height:20px;
+}
+div.jp-playlist-player a.jp-stop {
+	left:72px;
+}
+div.jp-play-time,
+div.jp-total-time {
+	position: absolute;
+	top:42px;
+	width:200px;
+	font-size:10px;
+	color:#fff;
+}
+div.jp-total-time {
+	text-align: right;
+}
+div.jp-playlist-player div.jp-play-time,
+div.jp-playlist-player div.jp-total-time {
+	left:7px;
+}
+div.jp-progress {
+	position: absolute;
+	overflow:hidden;
+	top:25px;
+	border:1px solid #000;
+	width:200px;
+	height:15px;
+}
+div.jp-playlist-player div.jp-progress {
+	left:7px;
+}
+div.jp-load-bar {
+	background: url({{STATIC_URL}}images/jplayer.codrops.png) 0 0 repeat-x;
+	width:0px;
+	height:15px;
+	cursor: pointer;
+}
+div.jp-play-bar {
+	background: url({{STATIC_URL}}images/jplayer.codrops.png) 0 -15px repeat-x ;
+	width:0px;
+	height:15px;
+}
+a.jp-volume-min {
+	top:2px;
+	background: url({{STATIC_URL}}images/icons/sound_mute.png) no-repeat center center;
+	width:18px;
+	height:15px;
+	left:100px;
+}
+a.jp-volume-max {
+	top:2px;
+	background: url({{STATIC_URL}}images/icons/sound_high.png) no-repeat center center;
+	width:18px;
+	height:15px;
+	left:174px;
+}
+div.jp-volume-bar {
+	position: absolute;
+	overflow:hidden;
+	top:7px;
+	background: url({{STATIC_URL}}images/jplayer.codrops.png) 0 0px repeat-x;
+	width:46px;
+	height:5px;
+	cursor: pointer;
+	left:123px;
+}
+div.jp-volume-bar-value {
+	background: url({{STATIC_URL}}images/jplayer.codrops.png) 0 -30px repeat-x;
+	width:0px;
+	height:5px;
+}
+div.jp-playlist {
+	width:215px;
+	height:435px;
+	overflow-y:auto;
+	overflow-x:hidden;
+}
+div.jp-playlist ul{
+	list-style-type:none;
+	margin:0;
+	padding:0;
+	border-top:none;
+	width:215px;
+	font-size:10px;
+}
+div.jp-playlist-player div.jp-playlist li {
+	padding:0px;
+	margin:0px 6px;
+	background:transparent url({{STATIC_URL}}images/icons/bg.png) repeat top left;
+}
+div.jp-playlist-player div.jp-playlist li span{
+	width:16px;
+	height:16px;
+	float:right;
+	cursor: pointer;
+	background: url({{STATIC_URL}}images/icons/remove.png) no-repeat center center;
+}
+div.jp-playlist-player div.jp-playlist li.jplayer_playlist_current {
+
+}
+div.jp-playlist-player div.jp-playlist a {
+	color: #ccc;
+	text-shadow:1px 1px 1px #000;
+	text-transform:uppercase;
+	text-decoration: none;
+	display: inline-block;
+	width: 165px;
+	overflow:hidden;
+	text-overflow:ellipsis;
+	white-space: nowrap;
+}
+div.jp-playlist-player div.jp-playlist a:hover {
+	color:#fff;
+}
+div.jp-playlist-player div.jp-playlist a.jplayer_playlist_current {
+	color:#c4000c;
+}
+
+</style>
+{% endblock %}
+
+{% block extra_script %}
+
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js"></script>
+<script src="{{STATIC_URL}}js/music/jquery.jcarousel.min.js" type="text/javascript"></script>
+<script src="{{STATIC_URL}}js/music/jquery.jplayer.min.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+$(function() {
+	/**
+	* build the carousel for the Albums
+	*/
+	$('#mp_albums').jcarousel({
+		scroll : 3
+	}).children('li')
+	  .bind('click',function(){
+		//when clicking on an album, display its info, and hide the current one
+		var $this = $(this);
+		$('#mp_content_wrapper').find('.mp_content:visible')
+								.hide();
+								
+									$('#mp_content_wrapper')
+									.find('.mp_content:nth-child('+ parseInt($this.index()+1) +')')
+								    .fadeIn(1000);
+								
+	});
+
+	/****  The Player  ****/
+	// Local copy of jQuery selectors, for performance.
+	var jpPlayTime = $("#jplayer_play_time");
+	var jpTotalTime = $("#jplayer_total_time");
+	var $list 		= $("#jplayer_playlist ul");
+
+	/**
+	* Innitialize the Player 
+	* (see jPlayer documentation for other options)
+	*/
+	$("#jquery_jplayer").jPlayer({
+		oggSupport	: false,
+		preload		:"auto",
+		swfPath		:"{{STATIC_URL}}js/music"
+	})
+	.jPlayer("onProgressChange", 
+		function(loadPercent, playedPercentRelative, playedPercentAbsolute, playedTime, totalTime) {
+		jpPlayTime.text($.jPlayer.convertTime(playedTime));
+		jpTotalTime.text($.jPlayer.convertTime(totalTime));
+	})
+	.jPlayer("onSoundComplete", function() {
+		playListNext();
+	});
+
+	/**
+	* click previous button, plays previous song
+	*/
+	$("#jplayer_previous").bind('click', function(){
+		playListPrev();
+		$(this).blur();
+		return false;
+	});
+
+	/**
+	* click next button, plays next song
+	*/
+	$("#jplayer_next").bind('click', function() {
+		playListNext();
+		$(this).blur();
+		return false;
+	});
+
+	/**
+	* plays song in position i of the list of songs (playlist)
+	*/
+	function playSong(i){
+		var $next_song 		= $list.find('li:nth-child('+ i +')');
+		var mp3				= $next_song.find('.mp_mp3').html();
+		var ogg				= $next_song.find('.mp_ogg').html();
+		$list.find('.jplayer_playlist_current').removeClass("jplayer_playlist_current");
+		$next_song.find('a').addClass("jplayer_playlist_current");
+		$("#jquery_jplayer").jPlayer("setFile", mp3, ogg).jPlayer("play");
+	}
+
+	/**
+	* plays the next song in the playlist
+	*/
+	function playListNext() {
+		var $list_nmb_elems = $list.children().length;
+		var $curr 			= $list.find('.jplayer_playlist_current');
+		var idx				= $curr.parent().index();
+		var index 			= (idx < $list_nmb_elems-1) ? idx+1 : 0;
+		playSong(index+1);
+	}
+
+	/**
+	* plays the previous song in the playlist
+	*/
+	function playListPrev() {
+		var $list_nmb_elems = $list.children().length;
+		var $curr 			= $list.find('.jplayer_playlist_current');
+		var idx				= $curr.parent().index();
+		var index 			= (idx-1 >= 0) ? idx-1 : $list_nmb_elems-1;
+		playSong(index+1);
+	}
+	
+	/**
+	* User clicks the play icon on one of the songs listed for an Album.
+	* Adds it to the Playlist, and plays it
+	*/
+	function addFirst(song_idx,name,mp3,ogg) {
+		$list.empty();
+		/**
+		* each song element in the playlist has:
+		* - span for the close / remove action
+		* - the mp3 path
+		* - the ogg path
+		*/
+		var song_html = "<a href='#' class='jplayer_playlist_current' tabindex='1'>" + name + "</a>";
+		song_html 	 += "<span></span>";
+		song_html 	 += "<div class='mp_mp3' style='display:none;'>"+mp3+"</div>";
+		song_html 	 += "<div class='mp_ogg' style='display:none;'>"+ogg+"</div>";
+		var $listItem = $("<li/>",{
+			id			: song_idx,	
+			className	: 'jplayer_playlist_current',
+			html 		: song_html
+		});
+		$list.append($listItem);
+		//event to play the song when User clicks on it
+		$listItem.find('a').bind('click',clickSong);
+		//event to remove the song from the playlist when User clicks the remove button
+		$listItem.find('span').bind('click',removeSong);
+		//start playing it
+		$("#jquery_jplayer").jPlayer("setFile", mp3, ogg).jPlayer("play");
+		jpTotalTime.show();
+		jpPlayTime.show();
+	}
+	
+	/**
+	* adds a song to the playlist, if not there already.
+	* if it is the only one, start playing it
+	*/
+	function addToPlayList(song_idx,name,mp3,ogg) {
+		var $list_nmb_elems = $list.children().length;
+		//if already in the list return
+		if($list.find('#'+song_idx).length)
+			return;
+		//class for the current song being played
+		var c = '';
+		if($list_nmb_elems == 0)
+			c = 'jplayer_playlist_current';
+		var song_html = "<a href='#' class="+c+" tabindex='1'>" + name + "</a>";
+		song_html 	 += "<span></span>";
+		song_html 	 += "<div class='mp_mp3' style='display:none;'>"+mp3+"</div>";
+		song_html 	 += "<div class='mp_ogg' style='display:none;'>"+ogg+"</div>";
+		var $listItem = $("<li/>",{
+			id			: song_idx,	
+			html 		: song_html
+		});
+		$list.append($listItem);
+		//if its the only song play it
+		if($list_nmb_elems == 0){
+			$("#jquery_jplayer").jPlayer("setFile", mp3, ogg).jPlayer("play");
+			jpTotalTime.show();
+			jpPlayTime.show();
+		}
+		$listItem.find('a').bind('click',clickSong);
+		$listItem.find('span').bind('click',removeSong);
+	}
+	
+	/**
+	* removes a song from the playlist.
+	* if the song was the current one, and there are more songs 
+	* in the playlist, then plays the next one.
+	* if there are no more, stops the player, and removes the status bar
+	* otherwise keeps playing whatever song was being played
+	*/
+	function removeSong() {
+		var $this 	= $(this); 
+		var current = $this.parent().find('a.jplayer_playlist_current').length;
+		$this.parent().remove();
+		var $list_nmb_elems = $list.children().length;
+		if($list_nmb_elems > 0 && current)
+			playListNext();
+		else if($list_nmb_elems == 0){
+			$("#jquery_jplayer").jPlayer("clearFile");
+			jpTotalTime.hide();
+			jpPlayTime.hide();
+		}	
+		return false;
+	}
+	
+	/**
+	* User clicks on a song in the playlist. Plays it
+	*/
+	function clickSong() {
+			var index = $(this).parent().index();
+			playSong(index+1);
+			return false;
+	}
+	
+	/**
+	* The next are the events for clicking on both "play" and "add to playlist" icons
+	*/
+	$('#mp_content_wrapper').find('.mp_play').bind('click',function(){
+		var $this 		= $(this);
+		var $paths		= $this.parent().siblings('.mp_song_info');
+		var title   	= $paths.find('.mp_song_title').html();
+		var mp3			= $paths.find('.mp_mp3').html();
+		var ogg			= $paths.find('.mp_ogg').html();
+		var album_id 	= $this.closest('.mp_content').attr('id');
+		var song_index	= $this.parent().parent().index();
+		var song_idx	= album_id + '_' + song_index;
+		//add to playlist and play the song
+		addFirst(song_idx,title,mp3,ogg);
+	});
+	$('#mp_content_wrapper').find('.mp_addpl').bind('click',function(){
+		var $this 		= $(this);
+		var $paths		= $this.parent().siblings('.mp_song_info');
+		var title   	= $paths.find('.mp_song_title').html();
+		var mp3			= $paths.find('.mp_mp3').html();
+		var ogg			= $paths.find('.mp_ogg').html();
+		var album_id 	= $this.closest('.mp_content').attr('id');
+		var song_index	= $this.parent().parent().index();
+		var song_idx	= album_id + '_' + song_index;
+		//add to playlist and play the song if none is there
+		addToPlayList(song_idx,title,mp3,ogg);
+	});
+	
+	/**
+	* we want to show on the album image, the play button for playing the whole album
+	*/
+	$('#mp_content_wrapper').find('.mp_content').bind('mouseenter',function(){
+		var $this 		= $(this);
+		$this.find('.mp_playall').show();
+	}).bind('mouseleave',function(){
+		var $this 		= $(this);
+		$this.find('.mp_playall').hide();
+	});
+	
+	/**
+	* to play the whole album, we play the first song and add all the others to the playlist.
+	* playing the first one, guarantees us that the playlist is set to empty before
+	*/
+	$('#mp_content_wrapper').find('.mp_playall').bind('click',function(){
+		var $this 		= $(this);
+		var $album		= $this.parent();
+		$album.find('.mp_play:first').trigger('click');
+		$album.find('.mp_addpl').trigger('click');
+	})
+	
+	/**
+	* playlist songs can be reordered
+	*/
+	$list.sortable();
+	$list.disableSelection();
+	
+});
+</script>
+{% endblock %}
+
+{% block content %}
+
+<div class="mp_wrapper">
+	<div id="mp_content_wrapper" class="mp_content_wrapper">
+		{% for album in albums %}
+		<div class="mp_content" id="c_album_{{ album.pk }}">
+			<div class="mp_image">
+				<img src="{{ album.image.file.url }}" alt="{{ album.image.translation.caption }}"/>
+			</div>
+			<a href="#" class="mp_playall">Play all</a>
+			<div class="mp_description">
+				<h2>{{ album.name }}</h2>
+				<p>{{ album.description }}</p>
+			</div>
+			<div class="mp_songs">
+				{% for tune in album.tune_set.all() %}
+				<div>
+					<h3>{{ tune.audio.translation.caption }}</h3>
+					<div class="mp_options">
+						<span class="mp_play">Play</span>
+						<span class="mp_addpl">Add to playlist</span>
+					</div>
+					<div class="mp_song_info" style="display:none;">
+						<span class="mp_song_title">{{ tune.audio.translation.caption }}</span>
+						<span class="mp_mp3">{{ tune.audio.file.url }}</span>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+	<div class="mp_player">
+		<div id="jquery_jplayer"></div>
+		<div class="jp-playlist-player">
+			<div class="jp-interface">
+				<ul class="jp-controls">
+					<li><a href="#" id="jplayer_play" class="jp-play" tabindex="1">play</a></li>
+					<li><a href="#" id="jplayer_pause" class="jp-pause" tabindex="1">pause</a></li>
+					<li><a href="#" id="jplayer_stop" class="jp-stop" tabindex="1">stop</a></li>
+					<li><a href="#" id="jplayer_volume_min" class="jp-volume-min" tabindex="1">min volume</a></li>
+					<li><a href="#" id="jplayer_volume_max" class="jp-volume-max" tabindex="1">max volume</a></li>
+					<li><a href="#" id="jplayer_previous" class="jp-previous" tabindex="1">previous</a></li>
+					<li><a href="#" id="jplayer_next" class="jp-next" tabindex="1">next</a></li>
+				</ul>
+				<div class="jp-progress">
+					<div id="jplayer_load_bar" class="jp-load-bar">
+						<div id="jplayer_play_bar" class="jp-play-bar"></div>
+					</div>
+				</div>
+				<div id="jplayer_volume_bar" class="jp-volume-bar">
+					<div id="jplayer_volume_bar_value" class="jp-volume-bar-value"></div>
+				</div>
+				<div id="jplayer_play_time" class="jp-play-time"></div>
+				<div id="jplayer_total_time" class="jp-total-time"></div>
+			</div>
+			<div id="jplayer_playlist" class="jp-playlist"><ul></ul></div>
+		</div>
+	</div>
+	<ul id="mp_albums" class="mp_albums jcarousel-skin">
+		{% for album in albums %}
+		<li><img src="{{ album.image.file.url }}" alt="{{ album.image.translation.caption }}" /></li>
+		{% endfor %}
+	</ul>
+</div>
+
+{% endblock %}
+
