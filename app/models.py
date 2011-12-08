@@ -171,14 +171,6 @@ User.add_to_class("medals_awarded", models.IntegerField(_("medals awarded"), def
 Page.add_to_class("require_login", models.BooleanField(_("require login"), default=False))
 Page.add_to_class("require_permission", models.BooleanField(default=False))
 
-from django.contrib.auth.models import Permission
-from django.contrib.contenttypes.models import ContentType
-
-content_type = ContentType.objects.get(app_label='page', model='page')
-permission = Permission.objects.get_or_create(codename='can_view',
-                                       name='Can view page',
-                                       content_type=content_type)
-
 # Content types
 
 from feincms.utils import get_object
