@@ -5,7 +5,6 @@ from south.v2 import SchemaMigration
 from django.db import models
 
 class Migration(SchemaMigration):
-
     def forwards(self, orm):
         
         # Adding model 'Permission'
@@ -82,8 +81,8 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal('auth', ['Message'])
         
-        from django.core.management import call_command
-        call_command("loaddata", "auth.yaml")
+        #from django.core.management import call_command
+        #call_command("loaddata", "auth.yaml")
 
 
     def backwards(self, orm):
