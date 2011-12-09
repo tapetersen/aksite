@@ -24,11 +24,11 @@ http://www.activestate.com/activepython/downloads
 
 You also need git for windows: http://git-scm.com/ . You need to select OpenSSH when installing.
 
-Open git bash from the start menu and run::
+Open git bash from the start menu and run (since you want a precompiled binary package)::
 
-    pypm-script.py install pil
+    easy_install-script.py pil
     
-cd to some good develop-directory and run the commands above.
+Then you can cd to some good develop-directory and run the commands above.
 
 Setting up the db
 -----------------
