@@ -180,10 +180,6 @@ INSTALLED_APPS = [
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': True,
-    'root': {
-        'level': 'INFO',
-        'handlers': ['sentry'],
-    },
     'formatters': {
         'verbose': {
             'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
@@ -213,6 +209,11 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': True,
         },
+        '': {
+            'handlers': ['sentry'],
+            'level': 'WARNING',
+            'propagate': True,
+        }
     },
 }
 
@@ -227,9 +228,9 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 SOUTH_MIGRATION_MODULES = {
-    'page': 'app.migrate.page',
-    'medialibrary': 'app.migrate.medialibrary', 
-    'auth': 'app.migrate.auth',
+    'page': 'migrations.page',
+    'medialibrary': 'migrations.medialibrary', 
+    'auth': 'migrations.auth',
 }
 
 ANONYMOUS_USER_ID = -1

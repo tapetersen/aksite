@@ -59,8 +59,7 @@ class EventSignup(UpdateView):
     def get_context_data(self, **kwargs):
         context = super(EventSignup, self).get_context_data(**kwargs)
         
-        context['event'] = Event.objects.select_subclasses().get(pk=self.kwargs["event_pk"])
-        
+        context['event'] = Event.objects.select_subclasses().get(pk=self.kwargs["event_pk"])        
         return context
     
     def form_valid(self, form):
