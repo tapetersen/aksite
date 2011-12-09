@@ -632,7 +632,8 @@ $(function() {
 
 <div class="mp_wrapper">
 	<div id="mp_content_wrapper" class="mp_content_wrapper">
-		{% for album in albums %}
+		{% for album_content in feincms_page.content.albums %}
+		{% set album = album_content.album %}
 		<div class="mp_content" id="c_album_{{ album.pk }}">
 			<div class="mp_image">
 				<img src="{{ album.image.file.url }}" alt="{{ album.image.translation.caption }}"/>
@@ -643,7 +644,7 @@ $(function() {
 				<p>{{ album.description }}</p>
 			</div>
 			<div class="mp_songs">
-				{% for tune in album.tune_set.all() %}
+				{% for tune in album.content.tunes %}
 				<div>
 					<h3>{{ tune.audio.translation.caption }}</h3>
 					<div class="mp_options">
@@ -688,7 +689,8 @@ $(function() {
 		</div>
 	</div>
 	<ul id="mp_albums" class="mp_albums jcarousel-skin">
-		{% for album in albums %}
+		{% for album_content in feincms_page.content.albums %}
+		{% set album = album_content.album %}
 		<li><img src="{{ album.image.file.url }}" alt="{{ album.image.translation.caption }}" /></li>
 		{% endfor %}
 	</ul>

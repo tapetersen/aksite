@@ -26,6 +26,14 @@ Page.register_templates({
     ),
 })
 
+Page.register_templates({
+    'title': _('Music player'),
+    'path': 'music.html',
+    'regions': (
+        ('albums', _("Albums")),
+    ),
+})
+
 # Models
 
 from ak import instrument_choices, section_choices
@@ -122,16 +130,14 @@ class Signup(models.Model):
 from mailinglists import MailVerificationSent
 
 from feincms.module.medialibrary.models import MediaFile, Category
-
-class Album(models.Model):
+from feincms.models import create_base_model
+class Album(create_base_model()):
     name = models.CharField(_("name"), max_length=128)
     image = models.ForeignKey(MediaFile, 
                               limit_choices_to={"type":"image"},
                               related_name="image")
     description = models.TextField(_("description"), blank=True)
     year = models.IntegerField()
-    
-    tunes = models.ManyToManyField(MediaFile, through="Tune")
     
     class Meta:
         verbose_name = _("album")
@@ -140,16 +146,21 @@ class Album(models.Model):
     def __unicode__(self):
         return u"%d - %s" % (self.year, self.name)
     
+Album.register_regions(
+    ("tunes", _("Tunes")),
+)
+
 class Tune(models.Model):
-    album = models.ForeignKey(Album)
     audio = models.ForeignKey(MediaFile, 
                               limit_choices_to={"type":"audio"})
-    track = models.IntegerField()
     
     class Meta:
+        abstract = True
         verbose_name = _("tune")
         verbose_name_plural = _('tunes')
-    
+        
+Album.create_content_type(Tune)
+
 # User
 
 User.__unicode__ = lambda self: u"%s %s" % (self.first_name, self.last_name)
@@ -175,6 +186,14 @@ Page.add_to_class("require_permission", models.BooleanField(default=False))
 
 from feincms.utils import get_object
 
+class AlbumContent(models.Model):
+    album = models.ForeignKey(Album)
+    class Meta:
+        abstract = True
+        verbose_name = _("album")
+        verbose_name_plural = _('albums')
+        
+Page.create_content_type(AlbumContent, regions=("albums",))
 
 Page.create_content_type(
     get_object("feincms.content.richtext.models.RichTextContent"))

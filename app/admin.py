@@ -142,14 +142,11 @@ class InitialFieldsMixin(object):
         form.__init__ = new_init
 
         return form
+    
+from feincms.admin import item_editor 
 
-class TuneInline(InitialFieldsMixin, admin.TabularInline):
-    model = Tune
-
-class AlbumAdmin(admin.ModelAdmin):
-    inlines = [
-        TuneInline,
-    ]
+class AlbumAdmin(item_editor.ItemEditor):
+    pass
     
 admin.site.register(Album,AlbumAdmin)
 

@@ -45,13 +45,6 @@ urlpatterns = patterns('',
         )
     )),
                        
-    (r"^music/$", views.GenericFeinView.as_view(
-        template_name = "music.html",
-        extra_context = dict(
-            albums=models.Album.objects.all()
-        )
-    )),
-                       
     (r"^kamererersinfo/members/$", views.GenericFeinView.as_view(
         template_name = "address_register.html",
         extra_context = dict(
