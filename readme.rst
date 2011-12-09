@@ -19,8 +19,11 @@ Then run::
 Windows
 ~~~~~~~
 
-For Windows I recommend the x86 python 2.7 from activestate: http://www.activestate.com/activepython/downloads
-You also need git for windows: http://git-scm.com/ .
+For Windows I recommend the x86 python 2.7 from activestate: 
+http://www.activestate.com/activepython/downloads
+
+You also need git for windows: http://git-scm.com/
+
 Then open a console and run::
 
     pypm install pil
