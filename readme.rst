@@ -22,7 +22,7 @@ Windows
 For Windows I recommend the x86 python 2.7 from activestate: 
 http://www.activestate.com/activepython/downloads
 
-You also need git for windows: http://git-scm.com/
+You also need git for windows: http://git-scm.com/ . You need to select OpenSSH when installing.
 
 Open git bash from the start menu and run::
 
@@ -42,8 +42,8 @@ Run (ignore the error about auth_permission after the first command)::
 Uploading to ep.io
 ==================
 
-You need to get local_settings.py (it contains amazon 
-keys that should not be uploaded to a public git-repo).
+You need to get local_settings.py (it contains keys 
+that should not be uploaded to a public git-repo).
 
 Then you need an account at ep.io and to be added to the
 altekamereren app.
@@ -59,4 +59,17 @@ Then you can run::
     epio upload
     
 to upload a new version of the app.
+
+To get the database run::
+
+    epio django "dumpdata app page medialibrary auth.group auth.user sites guardian --natural --format=yaml --indent=2" > data.yaml
+    manage.py loaddata data.yaml
+    
+To get uploaded files run::
+
+    rsync -rv vcs@ssh.ep.io:altekamereren/ media/
+    
+On windows, get MSYS rsync and run::
+    
+    rsync -rv --iconv=cp1252,UTF-8 vcs@ssh.ep.io:altekamereren/ media/
 
