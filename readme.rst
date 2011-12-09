@@ -50,6 +50,9 @@ altekamereren app.
 
 Ask Sam how.
 
+You need to get the static files from feincms too, 
+copy and put in static manually for now, until collectstatic works better.
+
 Then run (only once per computer)::
 
     epio upload_ssh_key
