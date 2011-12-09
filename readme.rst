@@ -26,7 +26,7 @@ You also need git for windows: http://git-scm.com/ . You need to select OpenSSH 
 
 Open git bash from the start menu and run::
 
-    pypm install pil
+    pypm-script.py install pil
     
 cd to some good develop-directory and run the commands above.
 
