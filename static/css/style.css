@@ -366,7 +366,9 @@ header #main-nav li ul li {
 
 header #main-nav li:hover ul { display: block; }
 
-
+ul.feedlist {
+   	list-style: none;
+}
 
 div.user {
 	text-align: right; 
