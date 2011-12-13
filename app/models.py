@@ -27,6 +27,14 @@ Page.register_templates({
 })
 
 Page.register_templates({
+    'title': _('Special page'),
+    'path': 'special.html',
+    'regions': (
+        ('special', _("Special content")),
+    ),
+})
+
+Page.register_templates({
     'title': _('Music player'),
     'path': 'music.html',
     'regions': (
@@ -184,6 +192,8 @@ Page.add_to_class("require_permission", models.BooleanField(default=False))
 
 # Content types
 
+common_regions = ("main", "col1", "col2", "footer")
+
 from feincms.utils import get_object
 
 class AlbumContent(models.Model):
@@ -192,11 +202,29 @@ class AlbumContent(models.Model):
         abstract = True
         verbose_name = _("album")
         verbose_name_plural = _('albums')
-        
 Page.create_content_type(AlbumContent, regions=("albums",))
 
+from django.template.loader import render_to_string
+
+class AddressRegisterContent(models.Model):
+    class Meta:
+        abstract = True
+        verbose_name = _("address register")
+        verbose_name_plural = _('address registers')
+        
+    def render(self, **kwargs):
+        ctx = dict(kamerers=User.objects.filter(is_active=True).order_by(
+                                                        "instrument", 
+                                                        "last_name", 
+                                                        "first_name"))
+        ctx.update(kwargs)
+        return render_to_string("address_register.html", ctx)
+    
+Page.create_content_type(AddressRegisterContent, regions=("special",))
+
 Page.create_content_type(
-    get_object("feincms.content.richtext.models.RichTextContent"))
+    get_object("feincms.content.richtext.models.RichTextContent"),
+    regions=common_regions)
 
 from feincms.content.medialibrary.v2 import MediaFileContent
 Page.create_content_type(MediaFileContent, TYPE_CHOICES=(
@@ -204,16 +232,18 @@ Page.create_content_type(MediaFileContent, TYPE_CHOICES=(
             ('left', _('Left')),
             ('right', _('Right')),
             ('download', _('Download')),
-))
+        ),
+        regions=common_regions
+)
 
 from feincms.content.rss.models import RSSContent
-Page.create_content_type(RSSContent)
+Page.create_content_type(RSSContent, regions=common_regions)
 
 from feincms.content.template.models import TemplateContent
-Page.create_content_type(TemplateContent)
+Page.create_content_type(TemplateContent, regions=common_regions)
 
 from feincms.content.video.models import VideoContent
-Page.create_content_type(VideoContent)
+Page.create_content_type(VideoContent, regions=common_regions)
 
 
 Page.register_extensions('titles')

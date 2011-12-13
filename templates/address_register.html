@@ -1,6 +1,3 @@
-{% extends "base.html" %}
-
-{% block extra_css %}
 <style type="text/css">
 
 table.address_register {
@@ -20,10 +17,7 @@ table.address_register td{
 }
 
 </style>
-{% endblock %}
 
-
-{% block content %}
 {% for instrument, list in kamerers|groupby("instrument") %}
 <h2>{{ list[0].get_instrument_display()|capitalize }}</h2>
 		{% for kamerer in list %}
@@ -48,4 +42,3 @@ table.address_register td{
 	    {% endfor %}
 </table>
 {% endfor %}
-{% endblock %}

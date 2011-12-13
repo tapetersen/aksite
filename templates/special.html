@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% for content in feincms_page.content.special %}
+
+    {{ content.render() }}
+    
+{% endfor %}
+{% endblock %}
+
