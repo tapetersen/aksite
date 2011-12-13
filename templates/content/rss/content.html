@@ -1,0 +1,8 @@
+<h2><a href="{{ feed_link }}">{{ feed_title }}</a></h2>
+
+<ul>
+{% for entry in entries %}
+    <li>{{ entry.updated }}: <a href="{{ entry.link }}">{{ entry.title.split(": ", 1)[1] }}</a></li>
+{% endfor %}
+</ul>
+

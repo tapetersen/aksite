@@ -188,7 +188,8 @@ User.add_to_class("medals_awarded", models.IntegerField(_("medals awarded"), def
 
 # Page
 Page.add_to_class("require_login", models.BooleanField(_("require login"), default=False))
-Page.add_to_class("require_permission", models.BooleanField(default=False))
+Page.add_to_class("require_permission", models.BooleanField(_("require permission"), default=False))
+Page.add_to_class("only_public", models.BooleanField(_("only public"), default=False))
 
 # Content types
 

@@ -12,10 +12,11 @@ def navigation(request):
     if not request.user.is_authenticated():
         pages = pages.filter(require_login=False)
     else:
-        allpages = pages
+        allpages = pages.filter(only_public=False)
         pages = list(allpages.filter(require_permission=False))
         pages += list(get_objects_for_user(request.user, "page.can_view", 
                      allpages.filter(require_permission=True)))
+        pages.sort(key=lambda p: (p.tree_id, p.lft))
         
     return tree_item_iterator(pages)
 
