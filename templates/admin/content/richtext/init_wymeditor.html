@@ -14,7 +14,13 @@
         var richtext_init_fn = function(){
 			$('{% block selectors %}.order-machine textarea[class=item-richtext]:not(.wymified), #frontend_editor textarea[class=item-richtext]:not(.wymified){% endblock %}').wymeditor({
 				updateSelector: '.submit-row input[type=submit]',
-				updateEvent:    "click"    
+				updateEvent:    "click",
+                classesItems: [
+                    {'name': 'infobox', 'title': 'PARA: Infobox', 'expr': 'p'}
+                ],
+                editorStyles: [
+                    {'name': '.infobox', 'css': 'border: 2px solid #ff0000;'}
+                ]
 			}).addClass('wymified');
 		};
 {% block enable %}
