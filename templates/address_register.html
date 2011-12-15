@@ -1,6 +1,6 @@
 <style type="text/css">
 
-table.address_register {
+table.address-register {
 	width: 100%;
 	table-layout: fixed;
 	margin-bottom: 10px;
@@ -8,12 +8,16 @@ table.address_register {
 	border-bottom: dashed 1px #333333;
 }
 
-table.address_register tr{
+table.address-register tr{
 	border-top: dashed 1px #333333;
 }
 
-table.address_register td{
+table.address-register td{
 	padding-bottom: 3px;
+}
+
+.address-register .name-email {
+    width: 33%;
 }
 
 </style>
@@ -21,9 +25,9 @@ table.address_register td{
 {% for instrument, list in kamerers|groupby("instrument") %}
 <h2>{{ list[0].get_instrument_display()|capitalize }}</h2>
 		{% for kamerer in list %}
-<table class="address_register">
+<table class="address-register">
     <tr>
-        <td>
+        <td class="name-email" >
             {{ kamerer.first_name|default }} {{ kamerer.last_name|default }}<br /> 
             <a href=mailto:{{ kamerer.email }}>{{ kamerer.email }}</a>
         </td>
