@@ -6,33 +6,26 @@ from django.http import HttpResponseRedirect
 from django.utils.http import urlquote
 from models import Event, Signup
 import ak
+import settings
 
 from django.utils.translation import ugettext_lazy as _
 import logging
 
-"""Monkeypatch feincms handler to handle on page.require_login"""
+
+from feincms.module.page.models import Page
+from django.contrib.auth import REDIRECT_FIELD_NAME
+def require_login_processor(page, request):
+    if ((page.require_permission and not request.user.has_perm("page.can_view",
+                                                              page))
+    or (page.require_login and not request.user.is_authenticated())):
+        return HttpResponseRedirect("%s?%s=%s" % (settings.LOGIN_URL, 
+            REDIRECT_FIELD_NAME, urlquote(request.get_full_path())))
+    else:
+        return None
+
+Page.register_request_processors(require_login_processor)
 
 from feincms.views.cbv.views import Handler
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth import REDIRECT_FIELD_NAME
-import settings
-
-instancemethod = type(Handler.prepare)
-old_prepare = Handler.prepare
-def prepare(self):
-    bound_prepare = instancemethod(old_prepare, self, Handler)
-    
-    if self.page.require_permission:
-        if not self.request.user.has_perm("page.can_view", self.page):
-            return HttpResponseRedirect("%s?%s=%s" % (settings.LOGIN_URL, 
-                REDIRECT_FIELD_NAME, urlquote(self.request.get_full_path())))
-
-    if self.page.require_login:
-        return login_required(lambda request: bound_prepare())(self.request)
-    return bound_prepare()
-
-Handler.prepare = instancemethod(prepare, None, Handler)
-
 class GenericFeinView(Handler):
     extra_context = {}
         
@@ -42,6 +35,7 @@ class GenericFeinView(Handler):
         return context
     
 from django import forms
+from django.contrib.auth.decorators import login_required
     
 class EventSignup(UpdateView):
     model = Signup
