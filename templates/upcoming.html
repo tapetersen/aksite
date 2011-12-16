@@ -1,7 +1,4 @@
-﻿{% extends "base.html" %}
-
-
-{% block extra_css %}
+﻿
 <style type="text/css">
 
 #upcoming div {
@@ -21,9 +18,6 @@ div.cell p {
 }
 
 </style>
-{% endblock %}
-
-{% block content %}
 
 <div id="upcoming">
 {% for year, list in events|groupby("date.year") %}
@@ -79,5 +73,4 @@ div.cell p {
     {% endfor %}
 {% endfor %}
 </div>
-{% endblock %}
 

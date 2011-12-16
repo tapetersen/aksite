@@ -192,10 +192,10 @@ Page.add_to_class("require_permission", models.BooleanField(_("require permissio
 Page.add_to_class("only_public", models.BooleanField(_("only public"), default=False))
 
 # Content types
+from feincms.utils import get_object
+from django.template.loader import render_to_string
 
 common_regions = ("main", "col1", "col2", "footer")
-
-from feincms.utils import get_object
 
 class AlbumContent(models.Model):
     album = models.ForeignKey(Album)
@@ -205,13 +205,11 @@ class AlbumContent(models.Model):
         verbose_name_plural = _('albums')
 Page.create_content_type(AlbumContent, regions=("albums",))
 
-from django.template.loader import render_to_string
 
 class AddressRegisterContent(models.Model):
     class Meta:
         abstract = True
         verbose_name = _("address register")
-        verbose_name_plural = _('address registers')
         
     def render(self, **kwargs):
         ctx = dict(kamerers=User.objects.filter(is_active=True).order_by(
@@ -222,6 +220,36 @@ class AddressRegisterContent(models.Model):
         return render_to_string("address_register.html", ctx)
     
 Page.create_content_type(AddressRegisterContent, regions=("special",))
+
+class GigsContent(models.Model):
+    class Meta:
+        abstract = True
+        verbose_name = _("gigs")
+        
+    def render(self, **kwargs):
+        ctx = dict(
+            events=Gig.objects.filter(date__gte=datetime.date.today())
+        )
+        ctx.update(kwargs)
+        return render_to_string("gigs.html", ctx)
+    
+Page.create_content_type(GigsContent, regions=("special",))
+
+class UpcomingContent(models.Model):
+    class Meta:
+        abstract = True
+        verbose_name = _("upcoming")
+        
+    def render(self, **kwargs):
+        ctx = dict(
+            events=Event.objects.filter(
+                date__gte=datetime.date.today()
+            ).select_subclasses()
+        )
+        ctx.update(kwargs)
+        return render_to_string("upcoming.html", ctx)
+    
+Page.create_content_type(UpcomingContent, regions=("special",))
 
 Page.create_content_type(
     get_object("feincms.content.richtext.models.RichTextContent"),

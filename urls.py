@@ -28,22 +28,6 @@ urlpatterns = patterns('',
     }),
     
     (r"^mailsender/$", mailinglists.mailsender),
-    
-    (r"^upcoming/$", views.GenericFeinView.as_view(
-        template_name = "upcoming.html",
-        extra_context = dict(
-            events=models.Event.objects.filter(
-                date__gte=datetime.date.today()
-            ).select_subclasses()
-        )
-    )),
-                       
-    (r"^gigs/$", views.GenericFeinView.as_view(
-        template_name = "gigs.html",
-        extra_context = dict(
-            events=models.Gig.objects.filter(date__gte=datetime.date.today())
-        )
-    )),
                        
     (r"^ical(.php|.ics)?/$", ical.CalEvents()),
     
