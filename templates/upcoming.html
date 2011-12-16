@@ -1,24 +1,4 @@
 ﻿
-<style type="text/css">
-
-#upcoming div {
-	padding: 5px;
-}
-
-div.cell {
-	display: inline-block;
-	float: left;
-	width: 30%;
-	padding-left: 1%;
-	padding-right: 1%;
-}
-
-div.cell p {
-	margin: 3px 0;
-}
-
-</style>
-
 <div id="upcoming">
 {% for year, list in events|groupby("date.year") %}
     <h2>{{ year }}</h2>

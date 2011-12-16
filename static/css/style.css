@@ -438,6 +438,42 @@ p.infobox {
 }
 
 
+#upcoming div {
+	padding: 5px;
+}
+
+#upcoming div.cell {
+	display: inline-block;
+	float: left;
+	width: 30%;
+	padding-left: 1%;
+	padding-right: 1%;
+}
+
+#upcoming div.cell p {
+	margin: 3px 0;
+}
+
+table.address-register {
+	width: 100%;
+	table-layout: fixed;
+	margin-bottom: 10px;
+	margin-top: 10px;
+	border-bottom: dashed 1px #333333;
+}
+
+table.address-register tr{
+	border-top: dashed 1px #333333;
+}
+
+table.address-register td{
+	padding-bottom: 3px;
+}
+
+table.address-register .name-email {
+    width: 33%;
+}
+
 /* ==|== non-semantic helper classes ========================================
    Please define your styles before this section.
    ========================================================================== */
