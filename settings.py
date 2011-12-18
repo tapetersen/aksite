@@ -207,7 +207,7 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': True,
         },
-        'mailinglists': {
+        'app.mailinglists': {
             'handlers': ['sentry', 'console'],
             'level': 'DEBUG',
             'propagate': True,
