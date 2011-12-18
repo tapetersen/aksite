@@ -153,7 +153,19 @@ admin.site.register(Album,AlbumAdmin)
 # User admin
 
 from django.contrib.auth.admin import UserAdmin
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
+
+class GroupFilter(admin.SimpleListFilter):
+    title = _('group')
+    parameter_name = 'group'
+    
+    def lookups(self, request, model_admin):
+        groups = Group.objects.all()
+        return [(g.pk, g) for g in groups]
+        
+    def queryset(self, request, queryset):
+        if self.value():
+            return queryset.filter(groups=self.value())
 
 UserAdmin.__bases__ = (DefaultFilterMixin,) + UserAdmin.__bases__
 UserAdmin.fieldsets[1][1]["fields"] += ("address", "zip", "city", 
@@ -161,9 +173,14 @@ UserAdmin.fieldsets[1][1]["fields"] += ("address", "zip", "city",
                                         "nation", "instrument", "has_key", 
                                         "medals_earned", "medals_awarded")
 UserAdmin.search_fields = ()
-UserAdmin.list_display =  ('first_name', 'last_name', "instrument")
+
+def groups_display(user):
+    return u", ".join(group.name for group in user.groups.all())
+groups_display.short_description = _("groups")
+    
+UserAdmin.list_display =  ('first_name', 'last_name', "instrument", groups_display)
 UserAdmin.list_display_links = ('first_name', 'last_name')
-UserAdmin.list_filter = ('instrument', "is_active")
+UserAdmin.list_filter = ('instrument', "is_active", GroupFilter)
 UserAdmin.list_filter_default = {"is_active__exact":"1"}
 def list_mail(self, request, queryset):
     self.message_user(request, u";".join(user.email for user in queryset))
