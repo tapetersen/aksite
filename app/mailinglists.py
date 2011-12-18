@@ -7,6 +7,8 @@ from django.http import HttpResponse
 import datetime
 
 import logging
+logger = logging.getLogger('mailinglists')
+logger.info("Hello log")
 
 class MailVerificationSent(models.Model):
     email = models.CharField(max_length=128)
@@ -20,6 +22,7 @@ def mailsender(request):
     mail = request.FILES[u"file"].read()
     to = request.GET["to"]
     
+    #split headers
     i = mail.find("\n\n")
     headers, mail = mail[:i], mail[i:]
     headers = headers.split("\n")
@@ -32,7 +35,6 @@ def mailsender(request):
     i=0
     while i<len(headers):
         add = False
-        print i
         header = headers[i][:headers[i].find(":")]
         if header in allowed:
             add = True
@@ -48,35 +50,39 @@ def mailsender(request):
             
     mail = "\n".join(h) + mail
     
+    #find from email
     i = from_.find("<")
     if i != -1:
         from_ = from_[i+1:]
         from_ = from_[:from_.find(">")]
     
-    #logging.info("headers: %s", str(headers))
-    #logging.info("h: %s", str(h))
+    #logger.info("headers: %s", str(headers))
+    #logger.info("h: %s", str(h))
     
-    logging.info("Mail from %s to %s recieved", from_, to)
-    if not from_.endswith("@altekamereren.org") \
-            and not from_.endswith("@altekamereren.com") \
+    logger.info("Mail from %s to %s recieved", from_, to)
+    if not to.endswith("@altekamereren.org") \
+            and not to.endswith("@altekamereren.com") \
+            and not to.endswith("@altekamereren-hr.appspotmail.com") \
             and User.objects.filter(email=from_).exists():
-        logging.info("Sender not accepted.")
-        return HttpResponse(status=400)
+        logger.info("Sender not accepted.")
+        return HttpResponse(status=403)
     
-    if to == u"flojt":
-        to = u"flöjt"
-    
-    if to in ak.sections:
-        to = [user.email for user in User.objects.filter(
-            instrument__in=ak.section_to_short_instruments[to], 
+    to = to.replace(u"flojt", u"flöjt")
+    reciever = to.split("@")[0]
+    if reciever in ak.sections:
+        user_emails = [user.email for user in User.objects.filter(
+            instrument__in=ak.section_to_short_instruments[reciever], 
             is_active=True)]
+
         
-        logging.info("Sending to section: %s", str(to))
-    elif to == u"infolistan":
-        to = [user.email for user in User.objects.filter(is_active=True)]
-        logging.info("Sending to infolistan: %s", str(to))
+
+        logger.info("Sending to section %s: %s", to, str(user_emails))
+
+    elif reciever == u"infolistan":
+        reciever = [user.email for user in User.objects.filter(is_active=True)]
+        logger.info("Sending to infolistan: %s", str(reciever))
     else:
-        logging.info("List not accepted.")
+        logger.info("List not accepted.")
         return HttpResponse(status=400)
     
     from django.conf import settings
@@ -93,8 +99,11 @@ def mailsender(request):
                 host=api_endpoint,
     )
     
+    if not user_emails:
+        return HttpResponse(status=400)
+
     try:
-        connection.send_raw_email(mail, "sam@bostream.nu", to)
+        connection.send_raw_email(mail, settings.ADMINS[0][1], user_emails)
     except BotoServerError as e:
         i = e.body.find("<Message>")
         message = e.body[i+len("<Message>"):]
@@ -105,12 +114,13 @@ def mailsender(request):
                     sent__gte=datetime.datetime.now() - datetime.timedelta(days=1)
                         ).exists():
                 connection.verify_email_address(from_)
-                logging.error("Sending verify mail to: %s", from_)
+                logger.error("Sending verify mail to: %s", from_)
                 MailVerificationSent(email=from_).save()
             else:
-                logging.error("Verify mail already sent today: %s", from_)
+                logger.error("Verify mail already sent today: %s", from_)
             return HttpResponse(status=444)
         else:
             raise
+
     
     return HttpResponse()

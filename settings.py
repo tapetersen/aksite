@@ -6,9 +6,7 @@ PROJECT_ROOT = os.path.dirname(os.path.realpath(__file__))
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
-ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
-)
+ADMINS = ()
 
 MANAGERS = ADMINS
 
@@ -139,7 +137,7 @@ MIDDLEWARE_CLASSES = (
     'sentry.client.middleware.Sentry404CatchMiddleware',
 )
 
-INTERNAL_IPS = ('127.0.0.1',"90.229.222.160")
+INTERNAL_IPS = ('127.0.0.1')
 
 ROOT_URLCONF = 'urls'
 LOGIN_URL = "/users/login"
@@ -206,6 +204,11 @@ LOGGING = {
         'django.request': {
             # Either replace 'mail_admins' by 'sentry' or use both if you want
             'handlers': ['sentry'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'mailinglists': {
+            'handlers': ['sentry', 'console'],
             'level': 'DEBUG',
             'propagate': True,
         },
