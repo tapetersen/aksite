@@ -207,6 +207,11 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': True,
         },
+        'mailinglists': {
+            'handlers': ['sentry', 'console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
         '': {
             'handlers': ['sentry'],
             'level': 'WARNING',

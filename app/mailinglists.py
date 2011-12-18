@@ -7,6 +7,8 @@ from django.http import HttpResponse
 import datetime
 
 import logging
+logger = logging.getLogger('mailinglists')
+logger.info("Hello log")
 
 class MailVerificationSent(models.Model):
     email = models.CharField(max_length=128)
@@ -54,15 +56,15 @@ def mailsender(request):
         from_ = from_[i+1:]
         from_ = from_[:from_.find(">")]
     
-    #logging.info("headers: %s", str(headers))
-    #logging.info("h: %s", str(h))
+    #logger.info("headers: %s", str(headers))
+    #logger.info("h: %s", str(h))
     
-    logging.info("Mail from %s to %s recieved", from_, to)
+    logger.info("Mail from %s to %s recieved", from_, to)
     if not to.endswith("@altekamereren.org") \
             and not to.endswith("@altekamereren.com") \
             and not to.endswith("@altekamereren-hr.appspotmail.com") \
             and User.objects.filter(email=from_).exists():
-        logging.info("Sender not accepted.")
+        logger.info("Sender not accepted.")
         return HttpResponse(status=403)
     
     to = to.replace(u"flojt", u"flöjt")
@@ -71,14 +73,16 @@ def mailsender(request):
         user_emails = [user.email for user in User.objects.filter(
             instrument__in=ak.section_to_short_instruments[reciever], 
             is_active=True)]
+
         
-        logging.info("Sending to section %s: %s", to, str(user_emails))
+
+        logger.info("Sending to section %s: %s", to, str(user_emails))
 
     elif reciever == u"infolistan":
         reciever = [user.email for user in User.objects.filter(is_active=True)]
-        logging.info("Sending to infolistan: %s", str(reciever))
+        logger.info("Sending to infolistan: %s", str(reciever))
     else:
-        logging.info("List not accepted.")
+        logger.info("List not accepted.")
         return HttpResponse(status=400)
     
     from django.conf import settings
@@ -95,6 +99,9 @@ def mailsender(request):
                 host=api_endpoint,
     )
     
+    if not user_emails:
+        return HttpResponse(status=400)
+
     try:
         connection.send_raw_email(mail, settings.ADMINS[0][1], user_emails)
     except BotoServerError as e:
@@ -107,10 +114,10 @@ def mailsender(request):
                     sent__gte=datetime.datetime.now() - datetime.timedelta(days=1)
                         ).exists():
                 connection.verify_email_address(from_)
-                logging.error("Sending verify mail to: %s", from_)
+                logger.error("Sending verify mail to: %s", from_)
                 MailVerificationSent(email=from_).save()
             else:
-                logging.error("Verify mail already sent today: %s", from_)
+                logger.error("Verify mail already sent today: %s", from_)
             return HttpResponse(status=444)
         else:
             raise
