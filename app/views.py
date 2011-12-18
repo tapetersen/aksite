@@ -26,7 +26,7 @@ def require_login_processor(page, request):
 Page.register_request_processors(require_login_processor)
 
 CONTENT_TYPES = ('text/html','application/xhtml+xml','application/xml')
-HEADER_VALUE = getattr(settings, 'X_UA_COMPATIBLE', 'IE=edge')
+HEADER_VALUE = getattr(settings, 'X_UA_COMPATIBLE', 'IE=edge,chrome=1')
 
 def set_XUACompatible_processor(page, request, response):
     response_ct = response.get('Content-Type','').split(';', 1)[0].lower()
