@@ -5,6 +5,8 @@ from django.views.generic.edit import UpdateView, CreateView
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 
+from feincms.module.page.sitemap import PageSitemap, Page
+
 import settings
 
 # Uncomment the next two lines to enable the admin:
@@ -42,6 +44,11 @@ urlpatterns = patterns('',
          success_url="/upcoming/"))),
 
     (r'^sentry/', include('sentry.web.urls')),
+    (r'^sitemap\.xml$', 'django.contrib.sitemaps.views.sitemap', 
+        {'sitemaps': {'pages':
+                      PageSitemap(queryset=Page.objects.filter(require_login=False,
+                                                              require_permission=False))}}),
+
     
     (r'', include('feincms.urls')),
 )

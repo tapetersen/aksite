@@ -11,3 +11,4 @@ raven==0.7.0
 https://bitbucket.org/andrewgodwin/south/get/tip.zip
 https://github.com/statesofpop/django-cal/zipball/master
 django-guardian==1.0.3
+docutils==0.8.1
