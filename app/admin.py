@@ -14,12 +14,28 @@ class SignupInline(admin.TabularInline):
     model = Signup
     extra = 0
     
-class FutureListFilter(admin.SimpleListFilter):
+class DefaultListFilter(admin.SimpleListFilter):
+    def choices(self, cl):
+        for lookup, title in self.lookup_choices:
+            yield {
+                'selected': self.value() == lookup or (
+                        self.value() is None and lookup==self.default),
+                'query_string': cl.get_query_string({
+                    self.parameter_name: lookup,
+                }, []),
+                'display': title,
+            }
+    def value(self):
+        return self.used_parameters.get(self.parameter_name, self.default)
+    
+class FutureListFilter(DefaultListFilter):
     title = _('when')
     parameter_name = 'when'
+    default = "future"
     
     def lookups(self, request, model_admin):
         return (
+            ("all", _("All")),
             ("future", _("In the future")),
             ("past", _("In the past")),
         )
@@ -29,24 +45,8 @@ class FutureListFilter(admin.SimpleListFilter):
             return queryset.filter(date__gte=datetime.date.today())
         elif self.value() == "past":
             return queryset.filter(date__lt=datetime.date.today())
-        
-class DefaultFilterMixin(object):
-    def changelist_view(self, request, extra_context=None):
-        referer = request.META.get('HTTP_REFERER', "")
-        if referer:
-            test = referer.split(request.META.get('PATH_INFO', "/"))
 
-        if not referer or not test[-1] or not test[-1].startswith('?'):
-            for key, value in self.list_filter_default.items():
-                if not request.GET.has_key(key):
-    
-                    q = request.GET.copy()
-                    q[key] = value
-                    request.GET = q
-                    request.META['QUERY_STRING'] = request.GET.urlencode()
-        return super(DefaultFilterMixin,self).changelist_view(request, extra_context=extra_context)
-
-class RehearsalAdmin(DefaultFilterMixin, admin.ModelAdmin):
+class RehearsalAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {'fields': ('location', 'date', 
             "time_hole", "time_location", "signup", "fika",
@@ -60,12 +60,11 @@ class RehearsalAdmin(DefaultFilterMixin, admin.ModelAdmin):
         SignupInline,
     ]
     list_filter = (FutureListFilter,)
-    list_filter_default = {"when":"future"}
     
     
 admin.site.register(Rehearsal, RehearsalAdmin)
     
-class GigAdmin(DefaultFilterMixin, admin.ModelAdmin):
+class GigAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {'fields': ('name', 'location', 'date', 
             "time_hole", "time_location", "time_playing", "signup",
@@ -79,7 +78,6 @@ class GigAdmin(DefaultFilterMixin, admin.ModelAdmin):
         SignupInline,
     ]
     list_filter = (FutureListFilter,)
-    list_filter_default = {"when":"future"}
     
 admin.site.register(Gig, GigAdmin)
 
@@ -100,12 +98,14 @@ class EventListFilter(admin.SimpleListFilter):
         if self.value():
             return queryset.filter(event=self.value())
         
-class FutureSignupFilter(admin.SimpleListFilter):
+class FutureSignupFilter(DefaultListFilter):
     title = _('when')
     parameter_name = 'when'
+    default = "future"
     
     def lookups(self, request, model_admin):
         return (
+            ("all", _("All")),
             ("future", _("In the future")),
             ("past", _("In the past")),
         )
@@ -116,10 +116,9 @@ class FutureSignupFilter(admin.SimpleListFilter):
         elif self.value() == "past":
             return queryset.filter(event__date__lt=datetime.date.today())
 
-class SignupAdmin(DefaultFilterMixin, admin.ModelAdmin):
+class SignupAdmin(admin.ModelAdmin):
     list_display = ("user", "event", "coming", "car", "comment", "last_modified")
     list_filter = (FutureSignupFilter, EventListFilter, "coming", "car")
-    list_filter_default = {"when":"future"}
     def list_mail(self, request, queryset):
         self.message_user(request, u";".join(signup.user.email for signup in queryset))
     actions = ["list_mail"]
@@ -167,21 +166,36 @@ class GroupFilter(admin.SimpleListFilter):
         if self.value():
             return queryset.filter(groups=self.value())
 
-UserAdmin.__bases__ = (DefaultFilterMixin,) + UserAdmin.__bases__
 UserAdmin.fieldsets[1][1]["fields"] += ("address", "zip", "city", 
                                         "phone", "second_phone", 
                                         "nation", "instrument", "has_key", 
                                         "medals_earned", "medals_awarded")
 UserAdmin.search_fields = ()
 
+class ActiveFilter(DefaultListFilter):
+    title = _('is active')
+    parameter_name = 'active'
+    default = "1"
+    
+    def lookups(self, request, model_admin):
+        return (
+            ("all", _("All")),
+            ("1", _("is active")),
+            ("0", _("not active")),
+        )
+        
+    def queryset(self, request, queryset):
+        if self.value() == "1":
+            return queryset.filter(is_active=True)
+        elif self.value() == "0":
+            return queryset.filter(is_active=False)
+
 def groups_display(user):
     return u", ".join(group.name for group in user.groups.all())
 groups_display.short_description = _("groups")
     
 UserAdmin.list_display =  ('first_name', 'last_name', "instrument", groups_display)
-UserAdmin.list_display_links = ('first_name', 'last_name')
-UserAdmin.list_filter = ('instrument', "is_active", GroupFilter)
-UserAdmin.list_filter_default = {"is_active__exact":"1"}
+UserAdmin.list_filter = ('instrument', ActiveFilter, GroupFilter)
 def list_mail(self, request, queryset):
     self.message_user(request, u";".join(user.email for user in queryset))
 UserAdmin.actions = [list_mail]
