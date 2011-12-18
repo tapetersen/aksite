@@ -20,6 +20,7 @@ def mailsender(request):
     mail = request.FILES[u"file"].read()
     to = request.GET["to"]
     
+    #split headers
     i = mail.find("\n\n")
     headers, mail = mail[:i], mail[i:]
     headers = headers.split("\n")
@@ -32,7 +33,6 @@ def mailsender(request):
     i=0
     while i<len(headers):
         add = False
-        print i
         header = headers[i][:headers[i].find(":")]
         if header in allowed:
             add = True
@@ -48,6 +48,7 @@ def mailsender(request):
             
     mail = "\n".join(h) + mail
     
+    #find from email
     i = from_.find("<")
     if i != -1:
         from_ = from_[i+1:]
@@ -57,24 +58,25 @@ def mailsender(request):
     #logging.info("h: %s", str(h))
     
     logging.info("Mail from %s to %s recieved", from_, to)
-    if not from_.endswith("@altekamereren.org") \
-            and not from_.endswith("@altekamereren.com") \
+    if not to.endswith("@altekamereren.org") \
+            and not to.endswith("@altekamereren.com") \
+            and not to.endswith("@altekamereren-hr.appspotmail.com") \
             and User.objects.filter(email=from_).exists():
         logging.info("Sender not accepted.")
-        return HttpResponse(status=400)
+        return HttpResponse(status=403)
     
-    if to == u"flojt":
-        to = u"flöjt"
-    
-    if to in ak.sections:
-        to = [user.email for user in User.objects.filter(
-            instrument__in=ak.section_to_short_instruments[to], 
+    to = to.replace(u"flojt", u"flöjt")
+    reciever = to.split("@")[0]
+    if reciever in ak.sections:
+        user_emails = [user.email for user in User.objects.filter(
+            instrument__in=ak.section_to_short_instruments[reciever], 
             is_active=True)]
         
-        logging.info("Sending to section: %s", str(to))
-    elif to == u"infolistan":
-        to = [user.email for user in User.objects.filter(is_active=True)]
-        logging.info("Sending to infolistan: %s", str(to))
+        logging.info("Sending to section %s: %s", to, str(user_emails))
+
+    elif reciever == u"infolistan":
+        reciever = [user.email for user in User.objects.filter(is_active=True)]
+        logging.info("Sending to infolistan: %s", str(reciever))
     else:
         logging.info("List not accepted.")
         return HttpResponse(status=400)
@@ -94,7 +96,7 @@ def mailsender(request):
     )
     
     try:
-        connection.send_raw_email(mail, "sam@bostream.nu", to)
+        connection.send_raw_email(mail, settings.ADMINS[0][1], user_emails)
     except BotoServerError as e:
         i = e.body.find("<Message>")
         message = e.body[i+len("<Message>"):]
@@ -112,5 +114,6 @@ def mailsender(request):
             return HttpResponse(status=444)
         else:
             raise
+
     
     return HttpResponse()
