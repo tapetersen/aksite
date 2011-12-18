@@ -25,6 +25,18 @@ def require_login_processor(page, request):
 
 Page.register_request_processors(require_login_processor)
 
+CONTENT_TYPES = ('text/html','application/xhtml+xml','application/xml')
+HEADER_VALUE = getattr(settings, 'X_UA_COMPATIBLE', 'IE=edge')
+
+def set_XUACompatible_processor(page, request, response):
+    response_ct = response.get('Content-Type','').split(';', 1)[0].lower()
+    if response_ct in CONTENT_TYPES:
+        if not 'X-UA-Compatible' in response:
+            response['X-UA-Compatible'] = HEADER_VALUE
+    return response
+
+Page.register_response_processors(set_XUACompatible_processor)
+
 from feincms.views.cbv.views import Handler
 class GenericFeinView(Handler):
     extra_context = {}

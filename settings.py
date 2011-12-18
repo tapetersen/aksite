@@ -137,7 +137,6 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'sentry.client.middleware.Sentry404CatchMiddleware',
-    'compatibility.XUACompatibleMiddleware',
 )
 
 INTERNAL_IPS = ('127.0.0.1',"90.229.222.160")
