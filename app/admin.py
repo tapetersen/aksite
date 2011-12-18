@@ -92,7 +92,7 @@ class EventListFilter(admin.SimpleListFilter):
                 queryset = queryset.filter(date__gte=datetime.date.today())
             elif request.GET["when"] == "past":
                 queryset = queryset.filter(date__lt=datetime.date.today())
-        return [(e.pk, e) for e in queryset.select_subclasses()]
+        return [(str(e.pk), e) for e in queryset.select_subclasses()]
         
     def queryset(self, request, queryset):
         if self.value():
@@ -160,7 +160,7 @@ class GroupFilter(admin.SimpleListFilter):
     
     def lookups(self, request, model_admin):
         groups = Group.objects.all()
-        return [(g.pk, g) for g in groups]
+        return [(str(g.pk), g) for g in groups]
         
     def queryset(self, request, queryset):
         if self.value():
