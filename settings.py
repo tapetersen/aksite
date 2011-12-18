@@ -6,9 +6,6 @@ PROJECT_ROOT = os.path.dirname(os.path.realpath(__file__))
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
-ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
-)
 
 MANAGERS = ADMINS
 
@@ -139,7 +136,7 @@ MIDDLEWARE_CLASSES = (
     'sentry.client.middleware.Sentry404CatchMiddleware',
 )
 
-INTERNAL_IPS = ('127.0.0.1',"90.229.222.160")
+INTERNAL_IPS = ('127.0.0.1')
 
 ROOT_URLCONF = 'urls'
 LOGIN_URL = "/users/login"
