@@ -42,10 +42,7 @@ Run (ignore the error about auth_permission after the first command)::
 Uploading to ep.io
 ==================
 
-You need to get local_settings.py (it contains keys 
-that should not be uploaded to a public git-repo).
-
-Then you need an account at ep.io and to be added to the
+You need an account at ep.io and to be added to the
 altekamereren app.
 
 Ask Sam how.
@@ -53,6 +50,11 @@ Ask Sam how.
 Then run (only once per computer)::
 
     epio upload_ssh_key
+    
+You need to get local_settings.py (it contains keys 
+that should not be uploaded to a public git-repo)::
+    
+    epio run cat local_settings.py > local_settings.py
     
 Then you can run::
     
