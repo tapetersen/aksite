@@ -23,7 +23,7 @@ msgstr "när"
 
 #: .\admin.py:38 .\admin.py:108 .\admin.py:182
 msgid "All"
-msgstr "Alla"
+msgstr "Allt"
 
 #: .\admin.py:39 .\admin.py:109
 msgid "In the future"
@@ -248,12 +248,11 @@ msgstr ""
 
 #: .\models\templates.py:35
 msgid "Music player"
-msgstr ""
+msgstr "Musikspelare"
 
 #: .\models\templates.py:38
-#, fuzzy
 msgid "Albums"
-msgstr "album"
+msgstr "Album"
 
 #: .\models\user.py:12
 msgid "address"
@@ -288,14 +287,12 @@ msgid "has key"
 msgstr "har nyckel"
 
 #: .\models\user.py:20
-#, fuzzy
 msgid "medals earned"
-msgstr "medaljer"
+msgstr "medaljer förtjänade"
 
 #: .\models\user.py:21
-#, fuzzy
 msgid "medals awarded"
-msgstr "medaljer"
+msgstr "medaljer utdelade"
 
 #: .\templates\admin\page_editor.html.py:8
 msgid "Object permissions"
@@ -307,7 +304,7 @@ msgstr ""
 
 #: .\templates\admin\page_editor.html.py:15
 msgid "Preview"
-msgstr "Förhandsgrandska"
+msgstr "Förhandsgranskning"
 
 #: .\templates\admin\page_editor.html.py:23
 msgid "Home"

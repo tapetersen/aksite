@@ -6,21 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"#-#-#-#-#  app.po (PACKAGE VERSION)  #-#-#-#-#\n"
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-12-19 14:30+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"#-#-#-#-#  feincms.po (PACKAGE VERSION)  #-#-#-#-#\n"
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-12-07 17:45+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -35,13 +23,8 @@ msgstr "när"
 
 #: .\admin.py:38 .\admin.py:108 .\admin.py:182 admin/filterspecs.py:46
 #: admin/filterspecs.py:84
-#, fuzzy
 msgid "All"
-msgstr ""
-"#-#-#-#-#  app.po (PACKAGE VERSION)  #-#-#-#-#\n"
-"Alla\n"
-"#-#-#-#-#  feincms.po (PACKAGE VERSION)  #-#-#-#-#\n"
-"Allt"
+msgstr "Allt"
 
 #: .\admin.py:39 .\admin.py:109
 msgid "In the future"
@@ -267,12 +250,11 @@ msgstr ""
 
 #: .\models\templates.py:35
 msgid "Music player"
-msgstr ""
+msgstr "Musikspelare"
 
 #: .\models\templates.py:38
-#, fuzzy
 msgid "Albums"
-msgstr "album"
+msgstr "Album"
 
 #: .\models\user.py:12
 msgid "address"
@@ -307,14 +289,12 @@ msgid "has key"
 msgstr "har nyckel"
 
 #: .\models\user.py:20
-#, fuzzy
 msgid "medals earned"
-msgstr "medaljer"
+msgstr "medaljer förtjänade"
 
 #: .\models\user.py:21
-#, fuzzy
 msgid "medals awarded"
-msgstr "medaljer"
+msgstr "medaljer utdelade"
 
 #: .\templates\admin\page_editor.html.py:8
 msgid "Object permissions"
@@ -327,13 +307,8 @@ msgstr ""
 
 #: .\templates\admin\page_editor.html.py:15 module/medialibrary/models.py:335
 #: templates/admin/feincms/page/page/item_editor.html:14
-#, fuzzy
 msgid "Preview"
-msgstr ""
-"#-#-#-#-#  app.po (PACKAGE VERSION)  #-#-#-#-#\n"
-"Förhandsgrandska\n"
-"#-#-#-#-#  feincms.po (PACKAGE VERSION)  #-#-#-#-#\n"
-"Förhandsgranskning"
+msgstr "Förhandsgranskning"
 
 #: .\templates\admin\page_editor.html.py:23
 #: templates/admin/feincms/recover_form.html:7
