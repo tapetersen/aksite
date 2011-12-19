@@ -7,8 +7,7 @@ from django.http import HttpResponse
 import datetime
 
 import logging
-logger = logging.getLogger('mailinglists')
-logger.info("Hello log")
+logger = logging.getLogger(__name__)
 
 class MailVerificationSent(models.Model):
     email = models.CharField(max_length=128)
