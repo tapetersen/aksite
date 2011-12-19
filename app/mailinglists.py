@@ -59,9 +59,9 @@ def mailsender(request):
     #logger.info("h: %s", str(h))
     
     logger.info("Mail from %s to %s recieved", from_, to)
-    if not to.endswith("@altekamereren.org") \
-            and not to.endswith("@altekamereren.com") \
-            and not to.endswith("@altekamereren-hr.appspotmail.com") \
+    # Only allow sending from altekamereren domains and registered users.
+    if not from_.endswith("@altekamereren.org") \
+            and not from_.endswith("@altekamereren.com") \
             and User.objects.filter(email=from_).exists():
         logger.info("Sender not accepted.")
         return HttpResponse(status=403)
