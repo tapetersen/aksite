@@ -16,7 +16,6 @@ admin.autodiscover()
 from app import views, mailinglists, forms, models, ical
 import datetime
 
-
 urlpatterns = patterns('',
     # Uncomment the admin/doc line below to enable admin documentation:
     (r'^admin/doc/', include('django.contrib.admindocs.urls')),
@@ -33,7 +32,8 @@ urlpatterns = patterns('',
                        
     (r"^ical(.php|.ics)?/$", ical.CalEvents()),
     
-    (r'^users/login/$', 'django.contrib.auth.views.login'),
+    (r'^users/login/$', 'django.contrib.auth.views.login', 
+        dict(authentication_form=forms.LoginForm)),
     (r'^users/logout/$', login_required(auth.views.logout)),
     (r'^users/profile/$', login_required(lambda request: UpdateView.as_view(
          model=auth.models.User, form_class=forms.UserForm,
