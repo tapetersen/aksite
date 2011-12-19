@@ -77,5 +77,15 @@ class EventSignup(UpdateView):
     def dispatch(self, *args, **kwargs):
         return super(EventSignup, self).dispatch(*args, **kwargs)
     
+from django.contrib.auth import REDIRECT_FIELD_NAME
+from django.contrib.auth.decorators import user_passes_test, login_required
+def is_active_required(function):
+    actual_decorator = user_passes_test(
+        lambda u: u.is_active,
+        login_url=None,
+        redirect_field_name=REDIRECT_FIELD_NAME
+    )
+    return login_required(actual_decorator(function))
+    
 
     

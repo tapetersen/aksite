@@ -32,7 +32,7 @@
 	        {% if not event.isGig() %}
 	            <p>Fika: {{ event.get_fika_display() }}</p>
 	        {% endif %}
-	        {% if user.is_authenticated() and event.signup %}
+	        {% if user.is_authenticated() and user.is_active and event.signup %}
 	        	{% set signup = event.get_signup(user) %}
 	        	{% if signup %}
 	        		<p><a href="/event/signup/{{event.pk}}" style="color: #00cc00;">
