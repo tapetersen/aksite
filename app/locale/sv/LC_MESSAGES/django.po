@@ -162,11 +162,11 @@ msgstr "beskrivning"
 
 #: .\models\models.py:113 .\models\page.py:23
 msgid "album"
-msgstr "album"
+msgstr "skiva"
 
 #: .\models\models.py:114 .\models\page.py:24
 msgid "albums"
-msgstr "album"
+msgstr "skivor"
 
 #: .\models\models.py:121
 msgid "Tunes"
@@ -254,7 +254,7 @@ msgstr "Musikspelare"
 
 #: .\models\templates.py:38
 msgid "Albums"
-msgstr "Album"
+msgstr "Skivor"
 
 #: .\models\user.py:12
 msgid "address"
