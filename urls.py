@@ -1,7 +1,7 @@
 from django.conf.urls.defaults import patterns, include, url
 from django.conf.urls.static import static
 
-from django.views.generic.edit import UpdateView, CreateView
+from django.views.generic.edit import UpdateView
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 
@@ -9,18 +9,14 @@ from feincms.module.page.sitemap import PageSitemap, Page
 
 import settings
 
-# Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
 
-from app import views, mailinglists, forms, models, ical
-import datetime
+from app import views, mailinglists, forms, ical
 
 urlpatterns = patterns('',
-    # Uncomment the admin/doc line below to enable admin documentation:
     (r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
-    # Uncomment the next line to enable the admin:
     (r'^admin/', include(admin.site.urls)),
 
     (r'^(favicon\.ico|robots\.txt|apple-touch-icon\.png)\/?$', 
@@ -46,13 +42,12 @@ urlpatterns = patterns('',
 
     (r'^sentry/', include('sentry.web.urls')),
     (r'^sitemap\.xml$', 'django.contrib.sitemaps.views.sitemap', 
-        {'sitemaps': {'pages':
-                      PageSitemap(queryset=Page.objects.filter(require_login=False,
-                                                              require_permission=False))}}),
-
+        {'sitemaps': {'pages': PageSitemap(
+            queryset=Page.objects.filter(require_login=False,
+                                         require_permission=False))}}),
     
     (r'', include('feincms.urls')),
 )
-# media served if DEBUG = True
+
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
