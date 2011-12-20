@@ -635,7 +635,7 @@ $(function() {
 	<div id="mp_content_wrapper" class="mp_content_wrapper">
 		{% for album_content in feincms_page.content.albums %}
 		{% set album = album_content.album %}
-		<div class="mp_content" id="c_album_{{ album.pk }}">
+		<div class="mp_content" id="c_album_{{ album.pk }}"{% if not loop.first %} style="display: none;"{% endif %}>
 			<div class="mp_image">
 				<img src="{{ album.image.file.url }}" alt="{{ album.image.translation.caption }}"/>
 			</div>
