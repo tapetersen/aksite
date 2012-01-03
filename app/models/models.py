@@ -26,7 +26,7 @@ class Event(models.Model):
         return None
     
     def num_signed_up(self):
-        return Signup.objects.filter(event=self).count()
+        return self.signup_set.filter(coming__in=[Signup.HOLE, Signup.DIRECT]).count()
     
     class Meta:
         ordering = ["date"]
