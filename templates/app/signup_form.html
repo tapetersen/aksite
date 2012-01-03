@@ -18,23 +18,34 @@ table.signed_up td {
 {% block title %} {{ event }} {% endblock %}
 
 {% block content %}
-
-
 <form action="" method="post">
 <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
 <table class="form">
-{{ form.as_table() }}
+    {{ form.as_table() }}
 </table>
 <input type="submit" value="Submit" />
 </form>
 
+<h2>Kommer</h2>
 <table class="signed_up">
-{% for signup in event.signup_set.order_by("coming", "user__instrument", 
+{% for signup in coming.order_by("user__instrument", 
 		"user__first_name", "user__last_name") %}
 	<tr>
 		<td>{{ signup.user.first_name }} {{ signup.user.last_name }}</td>
 		<td>{{ signup.user.get_instrument_display() }}</td>
 		<td>{{ signup.get_coming_display() }}{% if signup.car %}, har bil{% endif %}</td>
+		<td>{{ signup.comment }}</td>
+	</tr>
+{% endfor %}
+</table>
+
+<h2>Kommer inte</h2>
+<table class="signed_up">
+{% for signup in not_coming.order_by("user__instrument", 
+		"user__first_name", "user__last_name") %}
+	<tr>
+		<td>{{ signup.user.first_name }} {{ signup.user.last_name }}</td>
+		<td>{{ signup.user.get_instrument_display() }}</td>
 		<td>{{ signup.comment }}</td>
 	</tr>
 {% endfor %}

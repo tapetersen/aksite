@@ -80,14 +80,20 @@ class Gig(Event):
         app_label = "app"
 
 class Signup(models.Model):
+
     user = models.ForeignKey(User)
     event = models.ForeignKey(Event, editable=False)
+
+    HOLE = 'H'
+    DIRECT = 'D'
+    NOT_COMING = 'I'
     COMING_CHOICES = (
-        ("H", u"Kommer till hålan"),
-        ("D", u"Kommer direkt"),
-        ("I", u"Kan inte komma"),
+        (HOLE, u"Kommer till hålan"),
+        (DIRECT, u"Kommer direkt"),
+        (NOT_COMING, u"Kan inte komma"),
     )
     coming = models.CharField(_("coming"), max_length=1, choices=COMING_CHOICES, default="H")
+
     car = models.BooleanField(_("can bring car"))
     comment = models.CharField(_("comment"), max_length=128, blank=True)
     last_modified = models.DateTimeField(auto_now=True)
