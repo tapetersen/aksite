@@ -15,9 +15,10 @@ table.signed_up td {
 </style>
 {% endblock %}
 
+{% block title %} {{ event }} {% endblock %}
+
 {% block content %}
 
-{{ event }}
 
 <form action="" method="post">
 <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
@@ -37,6 +38,6 @@ table.signed_up td {
 		<td>{{ signup.comment }}</td>
 	</tr>
 {% endfor %}
-<table>
+</table>
 {% endblock %}
 
