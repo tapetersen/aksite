@@ -476,6 +476,17 @@ table.address-register .name-email {
     width: 33%;
 }
 
+.gigs  {padding: 0 10px;}
+.gigs dt {
+    color: #b10000;
+    font-weight: bold;
+    font-size: 14px;
+}
+.gigs .datetime {
+    font-style: italic;
+}
+
+
 /* ==|== non-semantic helper classes ========================================
    Please define your styles before this section.
    ========================================================================== */

@@ -1,10 +1,11 @@
 
-<div id="gigs">
-{% for event in events %}
-	<p>{{ event.date|date("l d/m Y")}} {{ event.time_playing|time }}<br>
-	   {{ event.name }}, {{ event.location }}
+<dl class="gigs">
+    {% for event in events %}
+    <dt>{{ event.name }}, {{ event.location }}</dt>
+    <dd><span class="datetime">{{ event.date|date("l d/m Y")}} {{
+        event.time_playing|time }}</span><br>
 	   {% if event.public_info %}{{ event.public_info }}{% endif %}
-	</p>
+	</dd>
 {% endfor %}
-</div>
+</dl>
 
