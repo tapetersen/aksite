@@ -68,8 +68,11 @@ class EventSignup(UpdateView):
         event = Event.objects.select_subclasses().get(pk=self.kwargs["event_pk"])        
         context['event'] = event
         context['coming'] = event.signup_set.filter(coming__in=[Signup.HOLE,
-                                                                Signup.DIRECT])
-        context['not_coming'] = event.signup_set.filter(coming=Signup.NOT_COMING)
+                                                                Signup.DIRECT])\
+            .select_related('user')
+        context['not_coming'] = event.signup_set.filter(coming=Signup.NOT_COMING)\
+                .select_related('user')
+
         return context
     
     def form_valid(self, form):
