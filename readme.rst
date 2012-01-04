@@ -64,8 +64,8 @@ to upload a new version of the app.
 
 To get the database run::
 
-    epio django "dumpdata app page medialibrary auth.group auth.user sites guardian --natural --format=yaml --indent=2" > data.yaml
-    manage.py loaddata data.yaml
+    epio django "dumpdata app page medialibrary auth.group auth.user sites guardian --natural" > data.json
+    manage.py loaddata data.json
     
 To get uploaded files run::
 

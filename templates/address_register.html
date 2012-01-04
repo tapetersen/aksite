@@ -1,8 +1,10 @@
 
-{% for instrument, list in kamerers|groupby("instrument") %}
-<h2>{{ list[0].get_instrument_display()|capitalize }}</h2>
-		{% for kamerer in list %}
 <table class="address-register">
+{% for instrument, list in kamerers|groupby("instrument") %}
+    <tr>
+        <th><h2>{{ list[0].get_instrument_display()|capitalize }}</h2></th>
+    </tr>
+	{% for kamerer in list %}
     <tr>
         <td class="name-email" >
             {{ kamerer.first_name|default }} {{ kamerer.last_name|default }}<br /> 
@@ -14,12 +16,12 @@
         </td>
         <td>
             {{ kamerer.phone|default }}<br />
-            {{ kamerer.second_phone|default }}
-        </td>
-        <td>
+            {% if kamerer.second_phone %}
+                {{ kamerer.second_phone }}<br />
+            {% endif %}
             {{ kamerer.nation|default }}
         </td>
     </tr>
-	    {% endfor %}
-</table>
+	{% endfor %}
 {% endfor %}
+</table>

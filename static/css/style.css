@@ -430,6 +430,15 @@ form input[type=submit] {
 	margin-left: 100px;
 }
 
+table td {
+    padding: 10px;
+}
+
+table ul {
+    padding: 0 0 0 20px;
+    margin: 0px;
+}
+
 p.infobox {
   background-color: #6e1601;
   color: dddddd;
@@ -458,22 +467,17 @@ p.infobox {
 
 table.address-register {
 	width: 100%;
-	table-layout: fixed;
 	margin-bottom: 10px;
 	margin-top: 10px;
 	border-bottom: dashed 1px #333333;
 }
 
-table.address-register tr{
+table.address-register tr {
 	border-top: dashed 1px #333333;
 }
 
-table.address-register td{
-	padding-bottom: 3px;
-}
-
-table.address-register .name-email {
-    width: 33%;
+table.address-register th {
+    text-align: left;
 }
 
 .gigs  {padding: 0 10px;}
