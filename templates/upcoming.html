@@ -33,7 +33,7 @@
 	            <p>Fika: {{ event.get_fika_display() }}</p>
 	        {% endif %}
 	        {% if user.is_authenticated() and user.is_active and event.signup %}
-	        	{% set signup = event.get_signup(user) %}
+                {% set signup = event.user_signup %}
 	        	{% if signup %}
 	        		<p><a href="/event/signup/{{event.pk}}" style="color: #00cc00;">
 	        			Anmäld: {{ signup.get_coming_display() }}
@@ -41,7 +41,7 @@
 	        	{% else %}
 		        	<p><a href="/event/signup/{{event.pk}}">Anmäl</a></p>
 				{% endif %}
-				<p>Antal anmälda: {{ event.num_signed_up() }}</p>
+                <p>Kommer: {{ event.get_coming() }} Anmälda: {{ event.get_signed_up() }}</p>
 			{% endif %}
 	        </div>
 	        <div style="clear: both;">

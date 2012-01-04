@@ -9,6 +9,7 @@ from django.utils.translation import ugettext_lazy as _
 import templates
 
 from models import *
+from event import *
 
 import user
 import page
