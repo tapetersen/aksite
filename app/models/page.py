@@ -1,7 +1,8 @@
 from feincms.module.page.models import Page
-from models import Album, Gig, Event
+from models import Album, Gig, Event, Signup
 from user import User
 from django.db import models
+from django.db.models import Count
 import datetime
 
 from django.utils.translation import ugettext_lazy as _
@@ -63,7 +64,10 @@ class UpcomingContent(models.Model):
         ctx = dict(
             events=Event.objects.filter(
                 date__gte=datetime.date.today()
-            ).select_subclasses()
+            )
+            .filter(signup__coming__in=[Signup.HOLE, Signup.DIRECT])
+            .annotate(Count('signup'))
+            .select_subclasses()
         )
         ctx.update(kwargs)
         return render_to_string("upcoming.html", ctx)

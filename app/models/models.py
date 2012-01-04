@@ -1,12 +1,12 @@
 ﻿#coding: utf-8
-from django.db import models
-from django.contrib.auth.models import User
 import datetime
 
+from django.db import models
+from django.contrib.auth.models import User
 from model_utils.managers import InheritanceManager
-from ..ak import section_choices
-
 from django.utils.translation import ugettext_lazy as _
+
+from ..ak import section_choices
 
 class Event(models.Model):   
     date = models.DateField(_("date"))
@@ -21,12 +21,16 @@ class Event(models.Model):
     name = u"Event"
     
     def get_signup(self, user):
-        signup = Signup.objects.filter(user=user, event=self)
-        if signup.exists(): return signup[0]
-        return None
+        try:
+            return Signup.objects.get(user=user, event=self)
+        except Signup.DoesNotExist:
+            return None
     
     def num_signed_up(self):
-        return self.signup_set.filter(coming__in=[Signup.HOLE, Signup.DIRECT]).count()
+        try:
+            return self.event_ptr.signup__count
+        except AttributeError:
+            return self.signup_set.filter(coming__in=[Signup.HOLE, Signup.DIRECT]).count()
     
     class Meta:
         ordering = ["date"]
