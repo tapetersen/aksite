@@ -6,49 +6,51 @@
         <h2>{{ list[0].date|date("F")}}</h2>
             
         {% for event in list %}
-	        <div class="cell" style="clear: both; font-weight: bold;">
-	        	<p>{{ event.date|date("l d/m")}}</p>
-	       	{% if event.isGig() %}
-	            <p>{{ event.name }}</p>
-	        {% else %}
-	            <p>Rep</p>
-	        {% endif %}
-	        {% if event.location %}
-	        	<p>{{ event.location }}</p>
-	        {% endif %}
-	        </div>
-	        <div class="cell" >
-	        {% if event.time_hole %}
-	        	<p>Samling i hålan {{ event.time_hole|time }}</p>
-	       	{% endif %}
-	        {% if event.time_location %}
-	        	<p>Samling på plats {{ event.time_location|time }}</p>
-	       	{% endif %}
-	        {% if event.isGig() and event.time_playing %}
-	            <p>Spelning börjar {{ event.time_playing|time }}</p>
-	        {% endif %}
-	        </div>
-	        <div class="cell" >
-	        {% if not event.isGig() %}
-	            <p>Fika: {{ event.get_fika_display() }}</p>
-	        {% endif %}
-	        {% if user.is_authenticated() and user.is_active and event.signup %}
-	        	{% set signup = event.get_signup(user) %}
-	        	{% if signup %}
-	        		<p><a href="/event/signup/{{event.pk}}" style="color: #00cc00;">
-	        			Anmäld: {{ signup.get_coming_display() }}
-	        		</a></p>
-	        	{% else %}
-		        	<p><a href="/event/signup/{{event.pk}}">Anmäl</a></p>
-				{% endif %}
+            <div class="cell" style="clear: both; font-weight: bold;">
+                <p>{{ event.date|date("l d/m")}}</p>
+            {% if event.isGig() %}
+                <p>{{ event.name }}</p>
+            {% else %}
+                <p>Rep</p>
+            {% endif %}
+            {% if event.location %}
+                <p>{{ event.location }}</p>
+            {% endif %}
+            </div>
+            <div class="cell" >
+            {% if event.time_hole %}
+                <p>Samling i hålan {{ event.time_hole|time }}</p>
+            {% endif %}
+            {% if event.time_location %}
+                <p>Samling på plats {{ event.time_location|time }}</p>
+            {% endif %}
+            {% if event.isGig() and event.time_playing %}
+                <p>Spelning börjar {{ event.time_playing|time }}</p>
+            {% endif %}
+            </div>
+            <div class="cell" >
+            {% if not event.isGig() %}
+                <p>Fika: {{ event.get_fika_display() }}</p>
+            {% endif %}
+            {% if user.is_authenticated() and user.is_active and event.signup %}
+                {% set signup = event.get_signup(user) %}
+                {% if signup %}
+                    <p><a href="/event/signup/{{event.pk}}" style="color: #00cc00;">
+                        Anmäld: {{ signup.get_coming_display() }}
+                    </a></p>
+                {% else %}
+                    <p><a href="/event/signup/{{event.pk}}">Anmäl</a></p>
+                {% endif %}
                 <p>Kommer: {{ event.get_coming() }} Anmälda: {{ event.get_signed_up() }}</p>
-			{% endif %}
-	        </div>
-	        <div style="clear: both;">
-	        	<p>{{event.info}}</p>
-	        </div>
-	        <hr style="border-color: #888888">
-	    {% endfor %}
+            {% endif %}
+            </div>
+            <div style="clear: both;">
+                {% if event.info and event.info != "<br />" %}
+                    {{event.info}}
+                {% endif %}
+            </div>
+            <hr style="border-color: #888888">
+        {% endfor %}
         
     {% endfor %}
 {% endfor %}
