@@ -1,20 +1,5 @@
 {% extends "base.html" %}
 
-{% block extra_css %}
-<style type="text/css">
-
-table.signed_up {
-	width: 100%;
-}
-
-table.signed_up td {
-	border: 1px solid gray;
-	padding: 4px;
-}
-
-</style>
-{% endblock %}
-
 {% block title %} {{ event }} {% endblock %}
 
 {% block content %}
@@ -26,27 +11,29 @@ table.signed_up td {
 <input type="submit" value="Submit" />
 </form>
 
-<h2>Kommer</h2>
 <table class="signed_up">
+    <tr>
+        <th colspan="4"><h2>Kommer</h2></th>
+    </tr>
 {% for signup in coming.order_by("user__instrument", 
 		"user__first_name", "user__last_name") %}
 	<tr>
 		<td>{{ signup.user.first_name }} {{ signup.user.last_name }}</td>
 		<td>{{ signup.user.get_instrument_display() }}</td>
 		<td>{{ signup.get_coming_display() }}{% if signup.car %}, har bil{% endif %}</td>
-		<td>{{ signup.comment }}</td>
+		<td class="comment">{{ signup.comment }}</td>
 	</tr>
 {% endfor %}
-</table>
 
-<h2>Kommer inte</h2>
-<table class="signed_up">
+    <tr>
+        <th colspan="4"><h2>Kommer inte</h2></th>
+    </tr>
 {% for signup in not_coming.order_by("user__instrument", 
 		"user__first_name", "user__last_name") %}
 	<tr>
 		<td>{{ signup.user.first_name }} {{ signup.user.last_name }}</td>
 		<td>{{ signup.user.get_instrument_display() }}</td>
-		<td>{{ signup.comment }}</td>
+		<td  class="comment" colspan="2">{{ signup.comment }}</td>
 	</tr>
 {% endfor %}
 </table>

@@ -490,6 +490,20 @@ table.address-register tr {
     font-style: italic;
 }
 
+table.signed_up {
+	width: 100%;
+}
+
+table.signed_up td {
+	border: 1px solid gray;
+	padding: 4px 8px;
+    white-space: nowrap;
+}
+
+table.signed_up td.comment {
+    white-space: normal;
+}
+
 
 /* ==|== non-semantic helper classes ========================================
    Please define your styles before this section.
