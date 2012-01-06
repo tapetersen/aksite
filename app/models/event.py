@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.models import User
 from model_utils.managers import InheritanceManager
 from django.utils.translation import ugettext_lazy as _
+from collections import OrderedDict
 
 from ..ak import section_choices
 
@@ -35,13 +36,13 @@ class Event(models.Model):
     
     def get_coming(self):
         try:
-            return self.event_ptr.num_coming
+            return self.num_coming
         except AttributeError:
             return self.signup_set.filter(coming__in=[Signup.HOLE, Signup.DIRECT]).count()
 
     def get_signed_up(self):
         try:
-            return self.signup__count
+            return self.event_ptr.signup__count
         except AttributeError:
             return self.signup_set.count()
     
@@ -123,18 +124,18 @@ class Signup(models.Model):
 
 
 def get_upcoming_events(user=None):
-    events = dict( (e.pk, e) for e in \
+    events = OrderedDict( (e.pk, e) for e in
         Event.objects.filter(
             date__gte=datetime.date.today())
-        .filter(signup__coming__in=[Signup.HOLE, Signup.DIRECT])
-        .annotate(num_coming=Count('signup'))
+        .annotate(Count('signup'))
         .select_subclasses())
 
-    # get number signuped in total
-    tmp = Event.objects.filter(pk__in=events.keys())\
-        .annotate(Count('signup'))
+    # get number coming
+    tmp = (Event.objects.filter(pk__in=events.keys())
+        .filter(signup__coming__in=[Signup.HOLE, Signup.DIRECT])
+        .annotate(num_coming=Count('signup')))
     for e in tmp:
-        events[e.pk].signup__count = e.signup__count
+        events[e.pk].num_coming = e.num_coming
 
     if user is not None:
         # get if user has signed up
