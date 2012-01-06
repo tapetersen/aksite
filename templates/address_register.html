@@ -1,7 +1,7 @@
 
 <table class="address-register">
 {% for instrument, list in kamerers|groupby("instrument") %}
-    <tr>
+    <tr class="header">
         <th><h2>{{ list[0].get_instrument_display()|capitalize }}</h2></th>
     </tr>
 	{% for kamerer in list %}
