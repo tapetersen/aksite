@@ -2,8 +2,13 @@
 <dl class="gigs">
     {% for event in events %}
     <dt>{{ event.name }}, {{ event.location }}</dt>
-    <dd><span class="datetime">{{ event.date|date("l d/m Y")}} {{
-        event.time_playing|time }}</span><br>
+    <dd>
+        <span class="datetime">
+            {{ event.date|date("l d/m Y")}}
+            {% if event.time_playing %}
+                {{event.time_playing|time }}
+            {% endif %}
+        </span><br>
 	   {% if event.public_info %}{{ event.public_info }}{% endif %}
 	</dd>
 {% endfor %}
