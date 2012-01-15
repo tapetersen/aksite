@@ -1,4 +1,4 @@
-https://bitbucket.org/django/django/get/tip.zip
+https://bitbucket.org/django/django/get/c28c564ee9d8.zip
 FeinCMS==1.5.0.pre1
 Jinja2==2.6
 django-mptt==0.5.2
