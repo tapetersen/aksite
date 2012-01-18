@@ -28,7 +28,9 @@ class Template(jinja2.Template):
 class Loader(BaseLoader):
     is_usable = True
     
-    env = jinja2.Environment(loader=jinja2.FileSystemLoader(settings.TEMPLATE_DIRS))
+    env = jinja2.Environment(
+        loader=jinja2.FileSystemLoader(settings.TEMPLATE_DIRS), 
+        autoescape=False,extensions=['jinja2.ext.autoescape'])
     env.template_class = Template
 
     # These are available to all templates.

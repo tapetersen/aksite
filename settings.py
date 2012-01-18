@@ -173,6 +173,7 @@ INSTALLED_APPS = [
     'raven.contrib.django',
     'south',
     'guardian',
+    'storages',
     'app',
     'debug_toolbar',
 ]

@@ -445,8 +445,8 @@ $(function() {
 	*/
 	function playSong(i){
 		var $next_song 		= $list.find('li:nth-child('+ i +')');
-		var mp3				= $next_song.find('.mp_mp3').html();
-		var ogg				= $next_song.find('.mp_ogg').html();
+		var mp3				= $next_song.find('.mp_mp3').attr("href");
+		var ogg				= $next_song.find('.mp_ogg').attr("href");
 		$list.find('.jplayer_playlist_current').removeClass("jplayer_playlist_current");
 		$next_song.find('a').addClass("jplayer_playlist_current");
 		$("#jquery_jplayer").jPlayer("setFile", mp3, ogg).jPlayer("play");
@@ -521,8 +521,8 @@ $(function() {
 			c = 'jplayer_playlist_current';
 		var song_html = "<a href='#' class="+c+" tabindex='1'>" + name + "</a>";
 		song_html 	 += "<span></span>";
-		song_html 	 += "<div class='mp_mp3' style='display:none;'>"+mp3+"</div>";
-		song_html 	 += "<div class='mp_ogg' style='display:none;'>"+ogg+"</div>";
+		song_html 	 += "<a class='mp_mp3' style='display:none;' href='" + mp3 + "'></a>";
+        song_html 	 += "<a class='mp_ogg' style='display:none;' href='" + ogg + "'></a>";
 		var $listItem = $("<li/>",{
 			id			: song_idx,	
 			html 		: song_html
@@ -576,8 +576,8 @@ $(function() {
 		var $this 		= $(this);
 		var $paths		= $this.parent().siblings('.mp_song_info');
 		var title   	= $paths.find('.mp_song_title').html();
-		var mp3			= $paths.find('.mp_mp3').html();
-		var ogg			= $paths.find('.mp_ogg').html();
+		var mp3			= $paths.find('.mp_mp3').attr("href");
+		var ogg			= $paths.find('.mp_ogg').attr("href");
 		var album_id 	= $this.closest('.mp_content').attr('id');
 		var song_index	= $this.parent().parent().index();
 		var song_idx	= album_id + '_' + song_index;
@@ -588,8 +588,8 @@ $(function() {
 		var $this 		= $(this);
 		var $paths		= $this.parent().siblings('.mp_song_info');
 		var title   	= $paths.find('.mp_song_title').html();
-		var mp3			= $paths.find('.mp_mp3').html();
-		var ogg			= $paths.find('.mp_ogg').html();
+		var mp3			= $paths.find('.mp_mp3').attr("href");
+		var ogg			= $paths.find('.mp_ogg').attr("href");
 		var album_id 	= $this.closest('.mp_content').attr('id');
 		var song_index	= $this.parent().parent().index();
 		var song_idx	= album_id + '_' + song_index;
@@ -654,7 +654,7 @@ $(function() {
 					</div>
 					<div class="mp_song_info" style="display:none;">
 						<span class="mp_song_title">{{ tune.audio.translation.caption }}</span>
-						<span class="mp_mp3">{{ tune.audio.file.url }}</span>
+						<a class="mp_mp3" href="{{ tune.audio.file.url }}"></a>
 					</div>
 				</div>
 				{% endfor %}
