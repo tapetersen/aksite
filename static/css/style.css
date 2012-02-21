@@ -306,11 +306,15 @@ header {
 header .ak-logo {
     display:  block;
     position: absolute;
-    height: 75px;
-    width: 366px;
     top: 15px;
     left:15px;
 }
+
+header .ak-logo img {
+  max-width: 450px;
+  width: 96%;
+}
+
 header #main-nav {
     display: block;
     position: absolute;
