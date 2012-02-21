@@ -25,8 +25,8 @@ def mailsender(request):
     i = mail.find("\n\n")
     headers, mail = mail[:i], mail[i:]
     headers = headers.split("\n")
-    allowed = {"MIME-Version", "Message-ID", "In-Reply-To", "Content-Type", 
-               "Date", "Subject", "From", "To", "Bcc", "Cc", "References"}
+    allowed = set(["MIME-Version", "Message-ID", "In-Reply-To", "Content-Type", 
+               "Date", "Subject", "From", "To", "Bcc", "Cc", "References"])
     
     from_ = None
     

@@ -14,5 +14,5 @@ from event import *
 import user
 import page
 
-from .. import mailinglists
+from app import mailinglists
 

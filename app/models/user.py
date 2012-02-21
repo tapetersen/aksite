@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-from ..ak import instrument_choices
+from app.ak import instrument_choices
 
 from django.utils.translation import ugettext_lazy as _
 

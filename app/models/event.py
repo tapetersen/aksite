@@ -7,9 +7,9 @@ from django.contrib.auth.models import User
 from django.contrib.auth.models import User
 from model_utils.managers import InheritanceManager
 from django.utils.translation import ugettext_lazy as _
-from collections import OrderedDict
+from ordereddict import OrderedDict
 
-from ..ak import section_choices
+from app.ak import section_choices
 
 class Event(models.Model):   
     date = models.DateField(_("date"))
