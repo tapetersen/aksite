@@ -258,6 +258,10 @@ DEBUG_TOOLBAR_PANELS = (
         #'debug_toolbar.panels.logger.LoggingPanel', # Breaks with sentry
 )
 
+DEBUG_TOOLBAR_CONFIG = {
+    "INTERCEPT_REDIRECTS":False,
+}
+
 try:
     from local_settings import *
 except ImportError:

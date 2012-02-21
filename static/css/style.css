@@ -288,7 +288,7 @@ html {
     z-index: 1;
     min-height: 100%;
     margin: 0 auto;
-    width: 800px;
+    max-width: 800px;
     background: black;
     border-left: 1px solid #222;
     border-right: 1px solid #222;
@@ -474,6 +474,7 @@ table.address-register {
 	margin-bottom: 10px;
 	margin-top: 10px;
 	border-bottom: dashed 1px #333333;
+  table-layout: fixed;
 }
 
 table.address-register tr {
@@ -481,6 +482,19 @@ table.address-register tr {
 }
 table.address-register tr.header { border-top: none; }
 table.address-register tr.header + tr { border-top: none; }
+
+table.address-register th:first-child {
+  width: 40%;
+}
+
+table.address-register td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+table.address-register th:last-child {
+  width: 10em;
+}
 
 .gigs  {padding: 0 10px;}
 .gigs dt {
@@ -499,12 +513,13 @@ table.signed_up {
 table.signed_up td {
 	border: 1px solid gray;
 	padding: 4px 8px;
-    white-space: nowrap;
+  white-space: nowrap;
 }
 
 table.signed_up td.comment {
-    white-space: normal;
+  white-space: normal;
 }
+
 
 
 /* ==|== non-semantic helper classes ========================================

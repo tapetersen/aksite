@@ -1,22 +1,22 @@
 <table class="address-register">
 {% for instrument, list in kamerers|groupby("instrument") %}
     <tr class="header">
-        <th><h2>{{ list[0].get_instrument_display()|capitalize }}</h2></th>
+        <th><h2>{{ list[0].get_instrument_display()|capitalize }}</h2></th><th/><th/>
     </tr>
 	{% for kamerer in list %}
     <tr>
         <td class="name-email" >
             {{ kamerer.first_name|default }} {{ kamerer.last_name|default }}<br /> 
-            <a href=mailto:{{ kamerer.email }}>{{ kamerer.email }}</a>
+            <a href="mailto:{{ kamerer.email }}">{{ kamerer.email }}</a>
         </td>
         <td>
             {{ kamerer.address|default }}<br />
             {{ kamerer.zip|default }} {{ kamerer.city }}
         </td>
         <td>
-            {{ kamerer.phone|default }}<br />
+            <a href="tel:{{ kamerer.phone }}">{{ kamerer.phone }}</a><br />
             {% if kamerer.second_phone %}
-                {{ kamerer.second_phone }}<br />
+                <a href="tel:{{ kamerer.second_phone }}">{{ kamerer.second_phone }}</a><br />
             {% endif %}
             {{ kamerer.nation|default }}
         </td>
