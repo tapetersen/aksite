@@ -1,13 +1,16 @@
-# encoding: utf-8
+# -*- coding: utf-8 -*-
 import datetime
 from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
 
+
 class Migration(SchemaMigration):
+    depends_on = (
+        ("app", "0001_initial"),
+    )
 
     def forwards(self, orm):
-        
         # Adding model 'Page'
         db.create_table('page_page', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
@@ -17,7 +20,7 @@ class Migration(SchemaMigration):
             ('level', self.gf('django.db.models.fields.PositiveIntegerField')(db_index=True)),
             ('active', self.gf('django.db.models.fields.BooleanField')(default=True)),
             ('title', self.gf('django.db.models.fields.CharField')(max_length=200)),
-            ('slug', self.gf('django.db.models.fields.SlugField')(max_length=150, db_index=True)),
+            ('slug', self.gf('django.db.models.fields.SlugField')(max_length=150)),
             ('parent', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='children', null=True, to=orm['page.Page'])),
             ('in_navigation', self.gf('django.db.models.fields.BooleanField')(default=True)),
             ('override_url', self.gf('django.db.models.fields.CharField')(max_length=300, blank=True)),
@@ -25,10 +28,49 @@ class Migration(SchemaMigration):
             ('_cached_url', self.gf('django.db.models.fields.CharField')(default='', max_length=300, db_index=True, blank=True)),
             ('template_key', self.gf('django.db.models.fields.CharField')(default='1col.html', max_length=255)),
             ('require_login', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('require_permission', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('only_public', self.gf('django.db.models.fields.BooleanField')(default=False)),
             ('_content_title', self.gf('django.db.models.fields.TextField')(blank=True)),
             ('_page_title', self.gf('django.db.models.fields.CharField')(max_length=100, blank=True)),
         ))
         db.send_create_signal('page', ['Page'])
+
+        # Adding model 'AlbumContent'
+        db.create_table('page_page_albumcontent', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('album', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['app.Album'])),
+            ('parent', self.gf('django.db.models.fields.related.ForeignKey')(related_name='albumcontent_set', to=orm['page.Page'])),
+            ('region', self.gf('django.db.models.fields.CharField')(max_length=255)),
+            ('ordering', self.gf('django.db.models.fields.IntegerField')(default=0)),
+        ))
+        db.send_create_signal('page', ['AlbumContent'])
+
+        # Adding model 'AddressRegisterContent'
+        db.create_table('page_page_addressregistercontent', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('parent', self.gf('django.db.models.fields.related.ForeignKey')(related_name='addressregistercontent_set', to=orm['page.Page'])),
+            ('region', self.gf('django.db.models.fields.CharField')(max_length=255)),
+            ('ordering', self.gf('django.db.models.fields.IntegerField')(default=0)),
+        ))
+        db.send_create_signal('page', ['AddressRegisterContent'])
+
+        # Adding model 'GigsContent'
+        db.create_table('page_page_gigscontent', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('parent', self.gf('django.db.models.fields.related.ForeignKey')(related_name='gigscontent_set', to=orm['page.Page'])),
+            ('region', self.gf('django.db.models.fields.CharField')(max_length=255)),
+            ('ordering', self.gf('django.db.models.fields.IntegerField')(default=0)),
+        ))
+        db.send_create_signal('page', ['GigsContent'])
+
+        # Adding model 'UpcomingContent'
+        db.create_table('page_page_upcomingcontent', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('parent', self.gf('django.db.models.fields.related.ForeignKey')(related_name='upcomingcontent_set', to=orm['page.Page'])),
+            ('region', self.gf('django.db.models.fields.CharField')(max_length=255)),
+            ('ordering', self.gf('django.db.models.fields.IntegerField')(default=0)),
+        ))
+        db.send_create_signal('page', ['UpcomingContent'])
 
         # Adding model 'RichTextContent'
         db.create_table('page_page_richtextcontent', (
@@ -85,11 +127,21 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal('page', ['VideoContent'])
 
-
     def backwards(self, orm):
-        
         # Deleting model 'Page'
         db.delete_table('page_page')
+
+        # Deleting model 'AlbumContent'
+        db.delete_table('page_page_albumcontent')
+
+        # Deleting model 'AddressRegisterContent'
+        db.delete_table('page_page_addressregistercontent')
+
+        # Deleting model 'GigsContent'
+        db.delete_table('page_page_gigscontent')
+
+        # Deleting model 'UpcomingContent'
+        db.delete_table('page_page_upcomingcontent')
 
         # Deleting model 'RichTextContent'
         db.delete_table('page_page_richtextcontent')
@@ -106,13 +158,20 @@ class Migration(SchemaMigration):
         # Deleting model 'VideoContent'
         db.delete_table('page_page_videocontent')
 
-
     models = {
+        'app.album': {
+            'Meta': {'object_name': 'Album'},
+            'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'image': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'image'", 'to': "orm['medialibrary.MediaFile']"}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
+            'year': ('django.db.models.fields.IntegerField', [], {})
+        },
         'medialibrary.category': {
             'Meta': {'ordering': "['parent__title', 'title']", 'object_name': 'Category'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'parent': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'children'", 'null': 'True', 'to': "orm['medialibrary.Category']"}),
-            'slug': ('django.db.models.fields.SlugField', [], {'max_length': '150', 'db_index': 'True'}),
+            'slug': ('django.db.models.fields.SlugField', [], {'max_length': '150'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '200'})
         },
         'medialibrary.mediafile': {
@@ -124,6 +183,28 @@ class Migration(SchemaMigration):
             'file_size': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'type': ('django.db.models.fields.CharField', [], {'max_length': '12'})
+        },
+        'page.addressregistercontent': {
+            'Meta': {'ordering': "['ordering']", 'object_name': 'AddressRegisterContent', 'db_table': "'page_page_addressregistercontent'"},
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'ordering': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'parent': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'addressregistercontent_set'", 'to': "orm['page.Page']"}),
+            'region': ('django.db.models.fields.CharField', [], {'max_length': '255'})
+        },
+        'page.albumcontent': {
+            'Meta': {'ordering': "['ordering']", 'object_name': 'AlbumContent', 'db_table': "'page_page_albumcontent'"},
+            'album': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['app.Album']"}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'ordering': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'parent': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'albumcontent_set'", 'to': "orm['page.Page']"}),
+            'region': ('django.db.models.fields.CharField', [], {'max_length': '255'})
+        },
+        'page.gigscontent': {
+            'Meta': {'ordering': "['ordering']", 'object_name': 'GigsContent', 'db_table': "'page_page_gigscontent'"},
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'ordering': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'parent': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'gigscontent_set'", 'to': "orm['page.Page']"}),
+            'region': ('django.db.models.fields.CharField', [], {'max_length': '255'})
         },
         'page.mediafilecontent': {
             'Meta': {'ordering': "['ordering']", 'object_name': 'MediaFileContent', 'db_table': "'page_page_mediafilecontent'"},
@@ -144,12 +225,14 @@ class Migration(SchemaMigration):
             'in_navigation': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'level': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),
             'lft': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),
+            'only_public': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'override_url': ('django.db.models.fields.CharField', [], {'max_length': '300', 'blank': 'True'}),
             'parent': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'children'", 'null': 'True', 'to': "orm['page.Page']"}),
             'redirect_to': ('django.db.models.fields.CharField', [], {'max_length': '300', 'blank': 'True'}),
             'require_login': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'require_permission': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'rght': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),
-            'slug': ('django.db.models.fields.SlugField', [], {'max_length': '150', 'db_index': 'True'}),
+            'slug': ('django.db.models.fields.SlugField', [], {'max_length': '150'}),
             'template_key': ('django.db.models.fields.CharField', [], {'default': "'1col.html'", 'max_length': '255'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
             'tree_id': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'})
@@ -180,6 +263,13 @@ class Migration(SchemaMigration):
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'ordering': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'parent': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'templatecontent_set'", 'to': "orm['page.Page']"}),
+            'region': ('django.db.models.fields.CharField', [], {'max_length': '255'})
+        },
+        'page.upcomingcontent': {
+            'Meta': {'ordering': "['ordering']", 'object_name': 'UpcomingContent', 'db_table': "'page_page_upcomingcontent'"},
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'ordering': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'parent': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'upcomingcontent_set'", 'to': "orm['page.Page']"}),
             'region': ('django.db.models.fields.CharField', [], {'max_length': '255'})
         },
         'page.videocontent': {
