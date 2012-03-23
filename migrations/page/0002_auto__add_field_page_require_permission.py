@@ -8,103 +8,14 @@ class Migration(SchemaMigration):
 
     def forwards(self, orm):
         
-        # Adding model 'Page'
-        db.create_table('page_page', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('lft', self.gf('django.db.models.fields.PositiveIntegerField')(db_index=True)),
-            ('rght', self.gf('django.db.models.fields.PositiveIntegerField')(db_index=True)),
-            ('tree_id', self.gf('django.db.models.fields.PositiveIntegerField')(db_index=True)),
-            ('level', self.gf('django.db.models.fields.PositiveIntegerField')(db_index=True)),
-            ('active', self.gf('django.db.models.fields.BooleanField')(default=True)),
-            ('title', self.gf('django.db.models.fields.CharField')(max_length=200)),
-            ('slug', self.gf('django.db.models.fields.SlugField')(max_length=150, db_index=True)),
-            ('parent', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='children', null=True, to=orm['page.Page'])),
-            ('in_navigation', self.gf('django.db.models.fields.BooleanField')(default=True)),
-            ('override_url', self.gf('django.db.models.fields.CharField')(max_length=300, blank=True)),
-            ('redirect_to', self.gf('django.db.models.fields.CharField')(max_length=300, blank=True)),
-            ('_cached_url', self.gf('django.db.models.fields.CharField')(default='', max_length=300, db_index=True, blank=True)),
-            ('template_key', self.gf('django.db.models.fields.CharField')(default='1col.html', max_length=255)),
-            ('require_login', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('_content_title', self.gf('django.db.models.fields.TextField')(blank=True)),
-            ('_page_title', self.gf('django.db.models.fields.CharField')(max_length=100, blank=True)),
-        ))
-        db.send_create_signal('page', ['Page'])
-
-        # Adding model 'RichTextContent'
-        db.create_table('page_page_richtextcontent', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('text', self.gf('django.db.models.fields.TextField')(blank=True)),
-            ('parent', self.gf('django.db.models.fields.related.ForeignKey')(related_name='richtextcontent_set', to=orm['page.Page'])),
-            ('region', self.gf('django.db.models.fields.CharField')(max_length=255)),
-            ('ordering', self.gf('django.db.models.fields.IntegerField')(default=0)),
-        ))
-        db.send_create_signal('page', ['RichTextContent'])
-
-        # Adding model 'MediaFileContent'
-        db.create_table('page_page_mediafilecontent', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('parent', self.gf('django.db.models.fields.related.ForeignKey')(related_name='mediafilecontent_set', to=orm['page.Page'])),
-            ('region', self.gf('django.db.models.fields.CharField')(max_length=255)),
-            ('ordering', self.gf('django.db.models.fields.IntegerField')(default=0)),
-            ('mediafile', self.gf('feincms.module.medialibrary.fields.MediaFileForeignKey')(related_name='+', to=orm['medialibrary.MediaFile'])),
-            ('type', self.gf('django.db.models.fields.CharField')(default='default', max_length=20)),
-        ))
-        db.send_create_signal('page', ['MediaFileContent'])
-
-        # Adding model 'RSSContent'
-        db.create_table('page_page_rsscontent', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('parent', self.gf('django.db.models.fields.related.ForeignKey')(related_name='rsscontent_set', to=orm['page.Page'])),
-            ('region', self.gf('django.db.models.fields.CharField')(max_length=255)),
-            ('ordering', self.gf('django.db.models.fields.IntegerField')(default=0)),
-            ('title', self.gf('django.db.models.fields.CharField')(max_length=50)),
-            ('link', self.gf('django.db.models.fields.URLField')(max_length=200)),
-            ('rendered_content', self.gf('django.db.models.fields.TextField')(blank=True)),
-            ('last_updated', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
-            ('max_items', self.gf('django.db.models.fields.IntegerField')(default=5)),
-        ))
-        db.send_create_signal('page', ['RSSContent'])
-
-        # Adding model 'TemplateContent'
-        db.create_table('page_page_templatecontent', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('parent', self.gf('django.db.models.fields.related.ForeignKey')(related_name='templatecontent_set', to=orm['page.Page'])),
-            ('region', self.gf('django.db.models.fields.CharField')(max_length=255)),
-            ('ordering', self.gf('django.db.models.fields.IntegerField')(default=0)),
-            ('filename', self.gf('django.db.models.fields.CharField')(max_length=100)),
-        ))
-        db.send_create_signal('page', ['TemplateContent'])
-
-        # Adding model 'VideoContent'
-        db.create_table('page_page_videocontent', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('parent', self.gf('django.db.models.fields.related.ForeignKey')(related_name='videocontent_set', to=orm['page.Page'])),
-            ('region', self.gf('django.db.models.fields.CharField')(max_length=255)),
-            ('ordering', self.gf('django.db.models.fields.IntegerField')(default=0)),
-            ('video', self.gf('django.db.models.fields.URLField')(max_length=200)),
-        ))
-        db.send_create_signal('page', ['VideoContent'])
+        # Adding field 'Page.require_permission'
+        db.add_column('page_page', 'require_permission', self.gf('django.db.models.fields.BooleanField')(default=False), keep_default=False)
 
 
     def backwards(self, orm):
         
-        # Deleting model 'Page'
-        db.delete_table('page_page')
-
-        # Deleting model 'RichTextContent'
-        db.delete_table('page_page_richtextcontent')
-
-        # Deleting model 'MediaFileContent'
-        db.delete_table('page_page_mediafilecontent')
-
-        # Deleting model 'RSSContent'
-        db.delete_table('page_page_rsscontent')
-
-        # Deleting model 'TemplateContent'
-        db.delete_table('page_page_templatecontent')
-
-        # Deleting model 'VideoContent'
-        db.delete_table('page_page_videocontent')
+        # Deleting field 'Page.require_permission'
+        db.delete_column('page_page', 'require_permission')
 
 
     models = {
@@ -148,6 +59,7 @@ class Migration(SchemaMigration):
             'parent': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'children'", 'null': 'True', 'to': "orm['page.Page']"}),
             'redirect_to': ('django.db.models.fields.CharField', [], {'max_length': '300', 'blank': 'True'}),
             'require_login': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'require_permission': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'rght': ('django.db.models.fields.PositiveIntegerField', [], {'db_index': 'True'}),
             'slug': ('django.db.models.fields.SlugField', [], {'max_length': '150', 'db_index': 'True'}),
             'template_key': ('django.db.models.fields.CharField', [], {'default': "'1col.html'", 'max_length': '255'}),

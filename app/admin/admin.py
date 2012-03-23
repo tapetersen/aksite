@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.db import models
 
-from app.models import Album, Signup, Rehearsal, Event, Gig
+from ..models import Album, Signup, Rehearsal, Event, Gig
 
 from widgets import RichEditor
 from util import DefaultListFilter

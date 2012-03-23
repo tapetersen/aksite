@@ -1,19 +1,19 @@
-# -*- coding: utf-8 -*-
+# encoding: utf-8
 import datetime
 from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
 
-
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
+        
         # Adding model 'Category'
         db.create_table('medialibrary_category', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('title', self.gf('django.db.models.fields.CharField')(max_length=200)),
             ('parent', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='children', null=True, to=orm['medialibrary.Category'])),
-            ('slug', self.gf('django.db.models.fields.SlugField')(max_length=150)),
+            ('slug', self.gf('django.db.models.fields.SlugField')(max_length=150, db_index=True)),
         ))
         db.send_create_signal('medialibrary', ['Category'])
 
@@ -46,7 +46,9 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal('medialibrary', ['MediaFileTranslation'])
 
+
     def backwards(self, orm):
+        
         # Deleting model 'Category'
         db.delete_table('medialibrary_category')
 
@@ -59,12 +61,13 @@ class Migration(SchemaMigration):
         # Deleting model 'MediaFileTranslation'
         db.delete_table('medialibrary_mediafiletranslation')
 
+
     models = {
         'medialibrary.category': {
             'Meta': {'ordering': "['parent__title', 'title']", 'object_name': 'Category'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'parent': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'children'", 'null': 'True', 'to': "orm['medialibrary.Category']"}),
-            'slug': ('django.db.models.fields.SlugField', [], {'max_length': '150'}),
+            'slug': ('django.db.models.fields.SlugField', [], {'max_length': '150', 'db_index': 'True'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '200'})
         },
         'medialibrary.mediafile': {

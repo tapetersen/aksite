@@ -1,7 +1,0 @@
-- fields: {
-    codename: can_view,
-    content_type: [page, page],
-    name: Can view page 
-  }
-  model: auth.permission
-  pk: 31337

@@ -28,10 +28,10 @@ instruments = {
 }
 instrument_choices = [(i[0]+i[-1], i) for i in sorted(instruments.keys())]
 
-instrument_to_short = dict((instrument,str(short)) for short, instrument in instrument_choices)
-short_to_instrument = dict((str(short),instrument) for short, instrument in instrument_choices)
+instrument_to_short = {instrument:str(short) for short, instrument in instrument_choices}
+short_to_instrument = {str(short):instrument for short, instrument in instrument_choices}
 
-section_to_short_instruments = dict((section,[
+section_to_short_instruments = {section:[
         instrument_to_short[instrument] for instrument in instruments 
                 if instruments[instrument] == section
-        ]) for section in sections)
+        ] for section in sections}

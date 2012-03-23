@@ -8,48 +8,19 @@ class Migration(SchemaMigration):
 
     def forwards(self, orm):
         
-        # Adding model 'CalendarEntry'
-        db.create_table('app_calendarentry', (
+        # Adding model 'MailVerificationSent'
+        db.create_table('app_mailverificationsent', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('date', self.gf('django.db.models.fields.DateField')()),
-            ('time_location', self.gf('django.db.models.fields.TimeField')(null=True, blank=True)),
-            ('insiderinfo', self.gf('django.db.models.fields.TextField')(blank=True)),
-            ('info', self.gf('django.db.models.fields.TextField')(blank=True)),
+            ('email', self.gf('django.db.models.fields.CharField')(max_length=128)),
+            ('sent', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
         ))
-        db.send_create_signal('app', ['CalendarEntry'])
-
-        # Adding model 'Rehearsal'
-        db.create_table('app_rehearsal', (
-            ('calendarentry_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['app.CalendarEntry'], unique=True, primary_key=True)),
-            ('fika', self.gf('django.db.models.fields.CharField')(max_length=2)),
-            ('location', self.gf('django.db.models.fields.CharField')(default=u'H\xe5lan', max_length=128)),
-            ('time_hole', self.gf('django.db.models.fields.TimeField')(default=datetime.time(19, 0))),
-            ('signup', self.gf('django.db.models.fields.BooleanField')(default=False)),
-        ))
-        db.send_create_signal('app', ['Rehearsal'])
-
-        # Adding model 'Gig'
-        db.create_table('app_gig', (
-            ('calendarentry_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['app.CalendarEntry'], unique=True, primary_key=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=128)),
-            ('time_playing', self.gf('django.db.models.fields.TimeField')(null=True, blank=True)),
-            ('location', self.gf('django.db.models.fields.CharField')(max_length=128, null=True, blank=True)),
-            ('time_hole', self.gf('django.db.models.fields.TimeField')(null=True, blank=True)),
-            ('signup', self.gf('django.db.models.fields.BooleanField')(default=True)),
-        ))
-        db.send_create_signal('app', ['Gig'])
+        db.send_create_signal('app', ['MailVerificationSent'])
 
 
     def backwards(self, orm):
         
-        # Deleting model 'CalendarEntry'
-        db.delete_table('app_calendarentry')
-
-        # Deleting model 'Rehearsal'
-        db.delete_table('app_rehearsal')
-
-        # Deleting model 'Gig'
-        db.delete_table('app_gig')
+        # Deleting model 'MailVerificationSent'
+        db.delete_table('app_mailverificationsent')
 
 
     models = {
@@ -69,6 +40,12 @@ class Migration(SchemaMigration):
             'signup': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'time_hole': ('django.db.models.fields.TimeField', [], {'null': 'True', 'blank': 'True'}),
             'time_playing': ('django.db.models.fields.TimeField', [], {'null': 'True', 'blank': 'True'})
+        },
+        'app.mailverificationsent': {
+            'Meta': {'object_name': 'MailVerificationSent'},
+            'email': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'sent': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'})
         },
         'app.rehearsal': {
             'Meta': {'ordering': "['date']", 'object_name': 'Rehearsal', '_ormbases': ['app.CalendarEntry']},
