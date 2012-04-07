@@ -32,6 +32,8 @@
 
     <!-- Mobile viewport optimized: j.mp/bplateviewport -->
   	<meta name="viewport" content="width=device-width,initial-scale=1">
+    
+    <meta name="ip" content="{{request.META['REMOTE_ADDR']}}">
 
     <link rel="stylesheet" href="{{STATIC_URL}}css/style.css?v=2">
     <link rel="stylesheet" href="{{STATIC_URL}}mediaelement/mediaelementplayer.css" />
