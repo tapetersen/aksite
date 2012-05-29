@@ -262,4 +262,11 @@ DEBUG_TOOLBAR_CONFIG = {
     "INTERCEPT_REDIRECTS":False,
 }
 
-from local_settings import *
+EMAIL_BACKEND = 'django_ses.SESBackend'
+
+try
+    from local_settings import *
+except ImportError:
+    AWS_ACCESS_KEY_ID = os.environ["AWS_ACCESS_KEY_ID"]
+    AWS_SECRET_ACCESS_KEY = os.environ["AWS_SECRET_ACCESS_KEY"]
+    SECRET_KEY = os.environ["SECRET_KEY"]
