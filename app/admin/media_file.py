@@ -1,7 +1,7 @@
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import permission_required
 from django.contrib import messages
-from feincms.module.medialibrary.models import Category, MediaFileAdmin, MediaFile, MediaFileTranslation
+from feincms.module.medialibrary.models import Category, MediaFileAdmin, MediaFile, MediaFileTranslation, MediaFileBase
 from django.http import HttpResponseRedirect
 from django.conf import settings
 
@@ -45,6 +45,25 @@ def bulk_upload(request):
             
     return HttpResponseRedirect(reverse('admin:medialibrary_mediafile_changelist'))
 MediaFileAdmin.bulk_upload = bulk_upload
+
+def save(self, *args, **kwargs):
+    if not self.id and not self.created:
+        self.created = datetime.now()
+
+    self.type = self.determine_file_type(self.file.name)
+    if self.file:
+        try:
+            self.file_size = self.file.size
+        except (OSError, IOError, ValueError), e:
+            logging.error("Unable to read file size for %s: %s", self, e)
+
+    if getattr(self, '_original_file_name', None):
+        if self.file.name != self._original_file_name:
+            self.file.storage.delete(self._original_file_name)
+
+    super(MediaFileBase, self).save(*args, **kwargs)
+    self.purge_translation_cache()
+MediaFileBase.save = save
 
 class Media:
     js = (getattr(settings,'JQUERY_URL','js/jquery.js'),

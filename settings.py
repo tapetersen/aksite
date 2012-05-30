@@ -10,16 +10,8 @@ ADMINS = ()
 
 MANAGERS = ADMINS
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': os.path.join(PROJECT_ROOT, 'db/site.db'),  # Or path to database file if using sqlite3.
-        'USER': '',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
-    }
-}
+import dj_database_url
+DATABASES = {'default': dj_database_url.config(default='sqlite://localhost/db/site.db')}
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -173,7 +165,7 @@ INSTALLED_APPS = [
     'raven.contrib.django',
     'south',
     'guardian',
-    #'storages',
+    'storages',
     'app',
     'debug_toolbar',
 ]
@@ -260,13 +252,26 @@ DEBUG_TOOLBAR_PANELS = (
 
 DEBUG_TOOLBAR_CONFIG = {
     "INTERCEPT_REDIRECTS":False,
+    "SHOW_TOOLBAR_CALLBACK": lambda request: hasattr(request.user, "email") and request.user.email in [a[1] for a in ADMINS]
 }
 
 EMAIL_BACKEND = 'django_ses.SESBackend'
 
-try
+try:
     from local_settings import *
 except ImportError:
     AWS_ACCESS_KEY_ID = os.environ["AWS_ACCESS_KEY_ID"]
     AWS_SECRET_ACCESS_KEY = os.environ["AWS_SECRET_ACCESS_KEY"]
     SECRET_KEY = os.environ["SECRET_KEY"]
+    ADMINS = [user.split(":") for user in os.environ["ADMINS"].split(";")]
+
+INTERNAL_IPS = ()
+    
+DEFAULT_FILE_STORAGE = 'storages.backends.s3.S3Storage'
+AWS_STORAGE_BUCKET_NAME = 'elvegris'
+from S3 import CallingFormat
+AWS_CALLING_FORMAT = CallingFormat.SUBDOMAIN
+
+AWS_HEADERS = {
+    'Cache-Control': 'max-age=86400',
+}

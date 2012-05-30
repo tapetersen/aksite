@@ -5,7 +5,9 @@ from south.v2 import SchemaMigration
 from django.db import models
 
 class Migration(SchemaMigration):
-
+    depends_on = (
+        ("medialibrary", "0001_initial"),
+    )
     def forwards(self, orm):
         
         # Adding model 'Album'

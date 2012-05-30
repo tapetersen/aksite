@@ -5,7 +5,9 @@ from south.v2 import SchemaMigration
 from django.db import models
 
 class Migration(SchemaMigration):
-
+    depends_on = (
+        ("app", "0010_auto__add_medal__add_field_gig_secret"),
+    )
     def forwards(self, orm):
         
         # Adding M2M table for field medals on 'User'
