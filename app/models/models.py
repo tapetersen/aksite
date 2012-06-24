@@ -1,5 +1,5 @@
 ﻿#coding: utf-8
-import datetime
+import datetime, os
 
 from django.db import models
 from django.contrib.auth.models import User
@@ -41,3 +41,8 @@ class Tune(models.Model):
         verbose_name_plural = _('tunes')
         
 Album.create_content_type(Tune)
+
+
+def MediaFile__unicode__(self):
+    return os.path.basename(self.file.name)
+MediaFile.__unicode__ = MediaFile__unicode__
