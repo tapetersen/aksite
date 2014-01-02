@@ -11,6 +11,9 @@ ADMINS = ()
 MANAGERS = ADMINS
 
 import dj_database_url
+if 'OPENSHIFT_POSTGRESQL_DB_URL' in os.environ:
+	os.environ["DATABASE_URL"] = os.environ['OPENSHIFT_POSTGRESQL_DB_URL'] + "/" + os.environ['OPENSHIFT_APP_NAME']
+	
 DATABASES = {'default': dj_database_url.config(default='sqlite://localhost/db/site.db')}
 
 # Local time zone for this installation. Choices can be found here:
@@ -60,6 +63,8 @@ MEDIA_URL = '/media/'
 # Example: "/home/media/media.lawrence.com/static/"
 #STATIC_ROOT = '/usr/local/www/aksite/static/'
 STATIC_ROOT = os.path.join(PROJECT_ROOT, "static_collected")
+if "DOCUMENT_ROOT" in os.environ:
+	STATIC_ROOT = os.environ["DOCUMENT_ROOT"] + "/static"
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -264,7 +269,7 @@ except ImportError:
     AWS_ACCESS_KEY_ID = os.environ["AWS_ACCESS_KEY_ID"]
     AWS_SECRET_ACCESS_KEY = os.environ["AWS_SECRET_ACCESS_KEY"]
     SECRET_KEY = os.environ["SECRET_KEY"]
-    ADMINS = [user.split(":") for user in os.environ["ADMINS"].split(";")]
+    ADMINS = [user.split(":") for user in os.environ.get("ADMINS", "").split(";")]
 
 INTERNAL_IPS = ()
     
