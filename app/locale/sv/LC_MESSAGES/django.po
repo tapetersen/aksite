@@ -148,6 +148,10 @@ msgstr "kommer"
 msgid "can bring car"
 msgstr "har bil"
 
+#: .\models\event.py:91
+msgid "brings own instrument"
+msgstr "tar med instrument själv"
+
 #: .\models\models.py:92
 msgid "comment"
 msgstr "kommentar"

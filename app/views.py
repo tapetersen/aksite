@@ -23,7 +23,7 @@ def require_login_processor(page, request):
     else:
         return None
 
-Page.register_request_processors(require_login_processor)
+Page.register_request_processor(require_login_processor)
 
 CONTENT_TYPES = ('text/html','application/xhtml+xml','application/xml')
 HEADER_VALUE = getattr(settings, 'X_UA_COMPATIBLE', 'IE=edge,chrome=1')
@@ -35,7 +35,7 @@ def set_XUACompatible_processor(page, request, response):
             response['X-UA-Compatible'] = HEADER_VALUE
     return response
 
-Page.register_response_processors(set_XUACompatible_processor)
+Page.register_response_processor(set_XUACompatible_processor)
 
 from feincms.views.cbv.views import Handler
 class GenericFeinView(Handler):
@@ -48,14 +48,14 @@ class GenericFeinView(Handler):
     
 from django import forms
 from django.contrib.auth.decorators import login_required
-    
+
 class EventSignup(UpdateView):
     model = Signup
     
     class form_class(forms.ModelForm):
         class Meta:
             model = Signup
-            fields = ("coming", "car", "comment")
+            fields = ("coming", "car", "own_instrument", "comment")
             widgets = { 'coming': forms.RadioSelect }
 
     def get_object(self):
@@ -74,6 +74,9 @@ class EventSignup(UpdateView):
                 .select_related('user')
 
         return context
+
+    def get_success_url(self):
+        return "/upcoming/#event_{}".format(self.kwargs["event_pk"])
     
     def form_valid(self, form):
         form.instance.event = Event.objects.get(pk=self.kwargs["event_pk"])
@@ -85,7 +88,7 @@ class EventSignup(UpdateView):
         return super(EventSignup, self).dispatch(*args, **kwargs)
     
 from django.contrib.auth import REDIRECT_FIELD_NAME
-from django.contrib.auth.decorators import user_passes_test, login_required
+from django.contrib.auth.decorators import user_passes_test
 def is_active_required(function):
     actual_decorator = user_passes_test(
         lambda u: u.is_active,

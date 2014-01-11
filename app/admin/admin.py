@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.auth.models import User
 from django.db import models
 
 from ..models import Album, Signup, Rehearsal, Event, Gig
@@ -54,7 +55,7 @@ admin.site.register(Rehearsal, RehearsalAdmin)
 class GigAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {'fields': ('name', 'location', 'date', 
-            "time_hole", "time_location", "time_playing", "signup",
+            "time_hole", "time_location", "time_playing", ("signup", "secret"),
             "info", "public_info")} ),
     )
     list_display = ('name', 'location', "date")
@@ -71,21 +72,39 @@ admin.site.register(Gig, GigAdmin)
 class EventListFilter(admin.SimpleListFilter):
     title = _('event')
     parameter_name = 'event'
-    
+
     def lookups(self, request, model_admin):
         #Only list events in the current timespan
         queryset = Event.objects
-        if request.GET.has_key("when"):
-            if request.GET["when"] == "future":
-                queryset = queryset.filter(date__gte=datetime.date.today())
-            elif request.GET["when"] == "past":
-                queryset = queryset.filter(date__lt=datetime.date.today())
+
+        when = request.GET.get("when", "future")
+
+        if when == "future":
+            queryset = queryset.filter(date__gte=datetime.date.today())
+        elif when == "past":
+            queryset = queryset.filter(date__lt=datetime.date.today())
+        elif when == "all":
+            return []
+
         return [(str(e.pk), e) for e in queryset.select_subclasses()]
-        
+
     def queryset(self, request, queryset):
         if self.value():
             return queryset.filter(event=self.value())
-        
+
+class UserFilter(admin.SimpleListFilter):
+    title = _('user')
+    parameter_name = 'user'
+
+    def lookups(self, request, model_admin):
+        queryset = User.objects.filter(is_active=True).order_by("first_name", "last_name")
+
+        return [(str(e.pk), e) for e in queryset]
+
+    def queryset(self, request, queryset):
+        if self.value():
+            return queryset.filter(user=self.value())
+
 class FutureSignupFilter(DefaultListFilter):
     title = _('when')
     parameter_name = 'when'
@@ -105,11 +124,16 @@ class FutureSignupFilter(DefaultListFilter):
             return queryset.filter(event__date__lt=datetime.date.today())
 
 class SignupAdmin(admin.ModelAdmin):
-    list_display = ("user", "event", "coming", "car", "comment", "last_modified")
-    list_filter = (FutureSignupFilter, EventListFilter, "coming", "car")
+    list_display = ("user", "event", "coming", "own_instrument", "car", "comment", "created", "last_modified")
+    list_filter = (FutureSignupFilter, "coming", "car", EventListFilter, UserFilter)
     def list_mail(self, request, queryset):
         self.message_user(request, u";".join(signup.user.email for signup in queryset))
     actions = ["list_mail"]
+
+    def get_queryset(self, request):
+        qs = super(admin.ModelAdmin, self).get_queryset(request)
+        #qs.subclasses = ("event__rehearsal", "event__gig")
+        return qs.select_related("user", "event__rehearsal", "event__gig")
 
 admin.site.register(Signup, SignupAdmin)
 

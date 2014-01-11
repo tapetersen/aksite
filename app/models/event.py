@@ -20,9 +20,8 @@ class Event(models.Model):
     
     last_modified = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
-    
-    name = u"Event"
-    
+
+    name = "Event"
 
     # assumes objects annotated
     def get_signup(self, user):
@@ -53,7 +52,13 @@ class Event(models.Model):
         app_label = "app"
     
     def __unicode__(self):
-        return u"%s - %s" % (self.name, self.date)
+        name = self.name
+        if self.__class__ == Event:
+            if hasattr(self, "gig"):
+                name = self.gig.name
+            if hasattr(self, "rehearsal"):
+                name = self.rehearsal.name
+        return u"%s - %s" % (name, self.date)
 
 class Rehearsal(Event):
     fika = models.CharField(_("fika"), max_length=2, choices=section_choices)
@@ -88,7 +93,6 @@ class Gig(Event):
     
     secret = models.BooleanField(_("secret"), default=False)
         
-        
     def isGig(self): return True
     
     class Meta:
@@ -97,6 +101,7 @@ class Gig(Event):
         app_label = "app"
 
 class Signup(models.Model):
+    objects = InheritanceManager()
 
     user = models.ForeignKey(User)
     event = models.ForeignKey(Event, editable=False)
@@ -112,8 +117,10 @@ class Signup(models.Model):
     coming = models.CharField(_("coming"), max_length=1, choices=COMING_CHOICES, default="H")
 
     car = models.BooleanField(_("can bring car"))
+    own_instrument = models.BooleanField(_("brings own instrument"))
     comment = models.CharField(_("comment"), max_length=128, blank=True)
     last_modified = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
     
     class Meta:
         unique_together = ("user", "event")

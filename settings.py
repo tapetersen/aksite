@@ -12,9 +12,19 @@ MANAGERS = ADMINS
 
 import dj_database_url
 if 'OPENSHIFT_POSTGRESQL_DB_URL' in os.environ:
-	os.environ["DATABASE_URL"] = os.environ['OPENSHIFT_POSTGRESQL_DB_URL'] + "/" + os.environ['OPENSHIFT_APP_NAME']
-	
+    os.environ["DATABASE_URL"] = os.environ['OPENSHIFT_POSTGRESQL_DB_URL'] + "/" + os.environ['OPENSHIFT_APP_NAME']
+
 DATABASES = {'default': dj_database_url.config(default='sqlite://localhost/db/site.db')}
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'TIMEOUT': 300,
+        'OPTIONS': {
+            'MAX_ENTRIES': 3000,
+        }
+    }
+}
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -51,7 +61,7 @@ MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media/')
 
 if "EPIO_DATA_DIRECTORY" in os.environ:
     MEDIA_ROOT = os.environ["EPIO_DATA_DIRECTORY"]
-    
+
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
@@ -64,7 +74,7 @@ MEDIA_URL = '/media/'
 #STATIC_ROOT = '/usr/local/www/aksite/static/'
 STATIC_ROOT = os.path.join(PROJECT_ROOT, "static_collected")
 if "DOCUMENT_ROOT" in os.environ:
-	STATIC_ROOT = os.environ["DOCUMENT_ROOT"] + "/static"
+    STATIC_ROOT = os.environ["DOCUMENT_ROOT"] + "/static"
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -132,15 +142,15 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     #django.middleware.locale.LocaleMiddleware',
-    'sentry.client.middleware.Sentry404CatchMiddleware',
+    #'sentry.client.middleware.Sentry404CatchMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 
-INTERNAL_IPS = ('127.0.0.1')
+INTERNAL_IPS = ('127.0.0.1',)
 
 ROOT_URLCONF = 'urls'
 LOGIN_URL = "/users/login"
-LOGIN_REDIRECT_URL  = "/users/profile"
+LOGIN_REDIRECT_URL = "/users/profile"
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -160,14 +170,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'mptt',
+    'django.contrib.admin',
+    'django.contrib.admindocs',
     'feincms',
     'feincms.module.page',
     'feincms.content.richtext',
     'feincms.module.medialibrary',
-    'django.contrib.admin',
-    'django.contrib.admindocs',
     'django_ses',
-    'sentry',
+    #'sentry',
     'raven.contrib.django',
     'south',
     'guardian',
@@ -244,21 +254,9 @@ AUTHENTICATION_BACKENDS = (
     'guardian.backends.ObjectPermissionBackend',
 )
 
-DEBUG_TOOLBAR_PANELS = (
-        'debug_toolbar.panels.version.VersionDebugPanel',
-        'debug_toolbar.panels.timer.TimerDebugPanel',
-        'debug_toolbar.panels.settings_vars.SettingsVarsDebugPanel',
-        'debug_toolbar.panels.headers.HeaderDebugPanel',
-        'debug_toolbar.panels.request_vars.RequestVarsDebugPanel',
-        'debug_toolbar.panels.template.TemplateDebugPanel',
-        'debug_toolbar.panels.sql.SQLDebugPanel',
-        'debug_toolbar.panels.signals.SignalDebugPanel',
-        #'debug_toolbar.panels.logger.LoggingPanel', # Breaks with sentry
-)
-
 DEBUG_TOOLBAR_CONFIG = {
-    "INTERCEPT_REDIRECTS":False,
-    "SHOW_TOOLBAR_CALLBACK": lambda request: hasattr(request.user, "email") and request.user.email in [a[1] for a in ADMINS]
+    "INTERCEPT_REDIRECTS": False,
+    "SHOW_TOOLBAR_CALLBACK": "app.should_show_toolbar"
 }
 
 EMAIL_BACKEND = 'django_ses.SESBackend'
@@ -271,8 +269,6 @@ except ImportError:
     SECRET_KEY = os.environ["SECRET_KEY"]
     ADMINS = [user.split(":") for user in os.environ.get("ADMINS", "").split(";")]
 
-INTERNAL_IPS = ()
-    
 DEFAULT_FILE_STORAGE = 'storages.backends.s3.S3Storage'
 AWS_STORAGE_BUCKET_NAME = 'elvegris'
 from S3 import CallingFormat

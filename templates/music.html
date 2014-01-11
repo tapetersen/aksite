@@ -582,7 +582,7 @@ $(function() {
 {% block content %}
 
 <div class="mp_wrapper">
-    {% set albums = feincms_page.content.albums %}
+    {% set albums = feincms_page.albumcontent_set.prefetch_related("album", "album__image", "album__tune_set", "album__tune_set__audio") %}
 	<div id="mp_content_wrapper" class="mp_content_wrapper">
 		{% for album_content in albums %}
 		{% set album = album_content.album %}
@@ -592,7 +592,7 @@ $(function() {
 			</div>
 			<a href="#" class="mp_playall">Play all</a>
             <div class="mp_songs">
-				{% for tune in album.content.tunes %}
+				{% for tune in album.tune_set.all() %}
 				<div>
 					<h3>{{ tune.audio.translation }}</h3>
 					<div class="mp_options">

@@ -20,7 +20,7 @@
 	<tr>
 		<td>{{ signup.user.first_name }} {{ signup.user.last_name }}</td>
 		<td>{{ signup.user.get_instrument_display() }}</td>
-		<td>{{ signup.get_coming_display() }}{% if signup.car %}, har bil{% endif %}</td>
+		<td>{{ signup.get_coming_display() }}{% if signup.car %}, har bil{% endif %}{% if signup.own_instrument %}, eget instrument{% endif %}</td>
 		<td class="comment">{{ signup.comment }}</td>
 	</tr>
 {% endfor %}

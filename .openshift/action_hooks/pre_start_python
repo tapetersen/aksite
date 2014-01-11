@@ -1,0 +1,5 @@
+#!/bin/sh
+echo "pre_start_python"
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/rh/postgresql92/root/usr/lib64/
+
+ln -sf $OPENSHIFT_REPO_DIR/static $OPENSHIFT_REPO_DIR/wsgi/static

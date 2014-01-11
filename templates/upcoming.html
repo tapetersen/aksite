@@ -6,7 +6,7 @@
         <h2>{{ list[0].date|date("F")}}</h2>
             
         {% for event in list %}
-            <div class="cell" style="clear: both; font-weight: bold;">
+            <div id="event_{{ event.pk }}" class="cell" style="clear: both; font-weight: bold;">
                 <p>{{ event.date|date("l d/m")}}</p>
             {% if event.isGig() %}
                 <p>{{ event.name }}</p>

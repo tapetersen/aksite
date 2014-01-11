@@ -6,7 +6,7 @@ from django.db import models
 
 class Migration(SchemaMigration):
     depends_on = (
-        ("app", "0010_auto__add_medal__add_field_gig_secret"),
+        ("app", "0001_initial"),
     )
     def forwards(self, orm):
         

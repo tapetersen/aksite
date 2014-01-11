@@ -1,6 +1,6 @@
 from feincms.module.page.models import Page
 from models import Album
-from event  import *
+from event import *
 from user import User
 from django.db import models
 import datetime
@@ -72,7 +72,7 @@ Page.create_content_type(
     get_object("feincms.content.richtext.models.RichTextContent"),
     regions=common_regions)
 
-from feincms.content.medialibrary.v2 import MediaFileContent
+from feincms.content.medialibrary.models import MediaFileContent
 Page.create_content_type(MediaFileContent, TYPE_CHOICES=(
             ('default', _('Default')),
             ('left', _('Left')),
@@ -92,4 +92,4 @@ from feincms.content.video.models import VideoContent
 Page.create_content_type(VideoContent, regions=common_regions)
 
 
-Page.register_extensions('titles')
+Page.register_extensions('feincms.module.page.extensions.titles')

@@ -1,7 +1,10 @@
+import datetime
+import logging
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import permission_required
 from django.contrib import messages
-from feincms.module.medialibrary.models import Category, MediaFileAdmin, MediaFile, MediaFileTranslation, MediaFileBase
+from feincms.module.medialibrary.modeladmins import MediaFileAdmin
+from feincms.module.medialibrary.models import Category, MediaFile, MediaFileTranslation, MediaFileBase
 from django.http import HttpResponseRedirect
 from django.conf import settings
 

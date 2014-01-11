@@ -1,13 +1,16 @@
-from django.conf.urls.defaults import patterns, include, url
+from django.conf.urls import patterns, include
 from django.conf.urls.static import static
 
 from django.views.generic.edit import UpdateView
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 
-from feincms.module.page.sitemap import PageSitemap, Page
+from feincms.module.page.sitemap import PageSitemap
+from feincms.module.page.models import Page
 
 import settings
+
+from app import models
 
 from django.contrib import admin
 admin.autodiscover()
@@ -40,7 +43,7 @@ urlpatterns = patterns('',
     (r'^event/signup/(?P<event_pk>\d+)$', views.is_active_required(
         views.EventSignup.as_view(success_url="/upcoming/"))),
 
-    (r'^sentry/', include('sentry.web.urls')),
+    #(r'^sentry/', include('sentry.web.urls')),
     (r'^sitemap\.xml$', 'django.contrib.sitemaps.views.sitemap', 
         {'sitemaps': {'pages': PageSitemap(
             queryset=Page.objects.filter(require_login=False,
