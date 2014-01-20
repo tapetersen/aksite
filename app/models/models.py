@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from model_utils.managers import InheritanceManager
 from django.utils.translation import ugettext_lazy as _
 
-from event import Event
+from .event import Event
 
 from feincms.module.medialibrary.models import MediaFile, Category
 from feincms.models import create_base_model
@@ -24,7 +24,7 @@ class Album(create_base_model()):
         verbose_name_plural = _('albums')
         app_label = "app"
         
-    def __unicode__(self):
+    def __str__(self):
         return u"%d - %s" % (self.year, self.name)
     
 Album.register_regions(

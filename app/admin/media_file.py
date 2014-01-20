@@ -57,7 +57,7 @@ def save(self, *args, **kwargs):
     if self.file:
         try:
             self.file_size = self.file.size
-        except (OSError, IOError, ValueError), e:
+        except (OSError, IOError, ValueError) as e:
             logging.error("Unable to read file size for %s: %s", self, e)
 
     if getattr(self, '_original_file_name', None):

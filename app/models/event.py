@@ -51,12 +51,12 @@ class Event(models.Model):
         verbose_name_plural = _('events')
         app_label = "app"
     
-    def __unicode__(self):
+    def __str__(self):
         name = self.name
         if self.__class__ == Event:
-            if hasattr(self, "gig"):
+            if self._gig_cache is not None:
                 name = self.gig.name
-            if hasattr(self, "rehearsal"):
+            if self._rehearsal_cache is not None:
                 name = self.rehearsal.name
         return u"%s - %s" % (name, self.date)
 

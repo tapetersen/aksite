@@ -1,6 +1,6 @@
 # endcoding: utf-8
 
-import ak
+from . import ak
 from django.db import models
 from django.contrib.auth.models import User
 from django.http import HttpResponse

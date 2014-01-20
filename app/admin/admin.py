@@ -2,10 +2,11 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 from django.db import models
 
-from ..models import Album, Signup, Rehearsal, Event, Gig
+from ..models.models import Album
+from ..models.event import Event, Signup, Rehearsal, Gig
 
-from widgets import RichEditor
-from util import DefaultListFilter
+from .widgets import RichEditor
+from .util import DefaultListFilter
 
 import datetime
 

@@ -6,13 +6,11 @@ Make sure to import all modules containing models from here.
 
 from django.utils.translation import ugettext_lazy as _
 
-import templates
+#import templates
 
-from models import *
-from event import *
+#from .models import *
+#from .event import *
 
-import user
-import page
 
-from .. import mailinglists
+#from .. import mailinglists
 

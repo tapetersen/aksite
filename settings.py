@@ -10,6 +10,8 @@ ADMINS = ()
 
 MANAGERS = ADMINS
 
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '127.0.0.1:8000', 'localhost:8000', '*']
+
 import dj_database_url
 if 'OPENSHIFT_POSTGRESQL_DB_URL' in os.environ:
     os.environ["DATABASE_URL"] = os.environ['OPENSHIFT_POSTGRESQL_DB_URL'] + "/" + os.environ['OPENSHIFT_APP_NAME']
@@ -59,9 +61,6 @@ LANGUAGES = (("sv", "Swedish"),
 #else:
 MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media/')
 
-if "EPIO_DATA_DIRECTORY" in os.environ:
-    MEDIA_ROOT = os.environ["EPIO_DATA_DIRECTORY"]
-
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
@@ -73,8 +72,8 @@ MEDIA_URL = '/media/'
 # Example: "/home/media/media.lawrence.com/static/"
 #STATIC_ROOT = '/usr/local/www/aksite/static/'
 STATIC_ROOT = os.path.join(PROJECT_ROOT, "static_collected")
-if "DOCUMENT_ROOT" in os.environ:
-    STATIC_ROOT = os.environ["DOCUMENT_ROOT"] + "/static"
+if "OPENSHIFT_DATA_DIR" in os.environ:
+    STATIC_ROOT = os.path.join(os.environ["OPENSHIFT_DATA_DIR"], "static")
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -170,19 +169,19 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'mptt',
-    'django.contrib.admin',
-    'django.contrib.admindocs',
     'feincms',
     'feincms.module.page',
     'feincms.content.richtext',
     'feincms.module.medialibrary',
-    'django_ses',
+    'django.contrib.admin',
+    'django.contrib.admindocs',
+    #'django_ses',
     #'sentry',
     'raven.contrib.django',
     'south',
+    'app',
     'guardian',
     'storages',
-    'app',
     'debug_toolbar',
 ]
 
@@ -223,6 +222,11 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': True,
         },
+        'raven': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+            'propagate': False,
+        },
         '': {
             'handlers': ['sentry'],
             'level': 'WARNING',
@@ -259,7 +263,7 @@ DEBUG_TOOLBAR_CONFIG = {
     "SHOW_TOOLBAR_CALLBACK": "app.should_show_toolbar"
 }
 
-EMAIL_BACKEND = 'django_ses.SESBackend'
+#EMAIL_BACKEND = 'django_ses.SESBackend'
 
 try:
     from local_settings import *
@@ -271,8 +275,7 @@ except ImportError:
 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3.S3Storage'
 AWS_STORAGE_BUCKET_NAME = 'elvegris'
-from S3 import CallingFormat
-AWS_CALLING_FORMAT = CallingFormat.SUBDOMAIN
+AWS_CALLING_FORMAT = 2
 
 AWS_HEADERS = {
     'Cache-Control': 'max-age=86400',

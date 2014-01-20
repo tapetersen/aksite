@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User, Group
 
-from util import DefaultListFilter
+from .util import DefaultListFilter
 
 from django.utils.translation import ugettext_lazy as _
 

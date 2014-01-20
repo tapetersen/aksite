@@ -1,19 +1,25 @@
+import app.models.templates
+
 from django.conf.urls import patterns, include
 from django.conf.urls.static import static
 
 from django.views.generic.edit import UpdateView
-from django.contrib import auth
+from django.contrib import auth, admin
 from django.contrib.auth.decorators import login_required
 
 from feincms.module.page.sitemap import PageSitemap
-from feincms.module.page.models import Page
 
 import settings
 
-from app import models
+import app.models.templates
+import app.models.user
+import app.models.models
+import app.models.event
+from app.models.page import Page
 
-from django.contrib import admin
-admin.autodiscover()
+import feincms.module.medialibrary.admin
+import app.admin
+import django.contrib.sites.admin
 
 from app import views, mailinglists, forms, ical
 
@@ -29,7 +35,7 @@ urlpatterns = patterns('',
     
     (r"^mailsender/$", mailinglists.mailsender),
                        
-    (r"^ical(.php|.ics)?/$", ical.CalEvents()),
+    (r"^ical(.php|.ics)?/$", ical.cal_events),
     
     (r'^users/login/$', 'django.contrib.auth.views.login', 
         dict(authentication_form=forms.LoginForm)),
@@ -53,4 +59,15 @@ urlpatterns = patterns('',
 )
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+"""
+_urlpatterns = urlpatterns
+def u():
+    for _u in _urlpatterns:
+        try:
+            yield _u
+        except TypeError as e:
+            raise Exception(str(e))
+
+urlpatterns = list(u())
+"""
 

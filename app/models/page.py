@@ -1,7 +1,8 @@
 from feincms.module.page.models import Page
-from models import Album
-from event import *
-from user import User
+
+from .models import Album
+from .event import *
+from .user import User
 from django.db import models
 import datetime
 

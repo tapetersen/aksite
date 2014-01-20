@@ -1,4 +1,1 @@
-import admin
-import user
-import page
-import media_file
+from . import admin, user, page, media_file

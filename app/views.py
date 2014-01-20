@@ -4,8 +4,7 @@ from django.views.generic.edit import UpdateView
 from django.utils.decorators import method_decorator
 from django.http import HttpResponseRedirect
 from django.utils.http import urlquote
-from models import Event, Signup
-import ak
+from .models.event import Event, Signup
 import settings
 
 from django.utils.translation import ugettext_lazy as _
