@@ -182,7 +182,7 @@ INSTALLED_APPS = [
     'app',
     'guardian',
     'storages',
-    'debug_toolbar',
+    #'debug_toolbar',
 ]
 
 LOGGING = {
