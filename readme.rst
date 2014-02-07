@@ -13,7 +13,7 @@ Then run::
 
     git clone git@github.com:tapetersen/aksite.git
     cd aksite
-    pip install virualenv
+    pip install virtualenv
     virtualenv ~/.virtualenvs/aksite
     ~/.virtualenvs/aksite/scripts/activate
     pip install -r requirements.txt
