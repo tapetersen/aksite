@@ -594,7 +594,7 @@ $(function() {
             <div class="mp_songs">
 				{% for tune in album.tune_set.all() %}
 				<div>
-					<h3>{{ tune.audio.translation }}</h3>
+					<a href="{{ tune.audio.file.url }}"><h3>{{ tune.audio.translation }}</h3></a>
 					<div class="mp_options">
 						<span class="mp_play">Play</span>
 						<span class="mp_addpl">Add to playlist</span>
