@@ -12,6 +12,13 @@ MANAGERS = ADMINS
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '127.0.0.1:8000', 'localhost:8000', '*']
 
+try:
+    for line in (l for l in open(PROJECT_ROOT + "env.txt") if l.strip()):
+        key, value = line.split("=")
+        os.environ[key] = value
+except IOError:
+    pass
+
 import dj_database_url
 if 'OPENSHIFT_POSTGRESQL_DB_URL' in os.environ:
     os.environ["DATABASE_URL"] = os.environ['OPENSHIFT_POSTGRESQL_DB_URL'] + "/" + os.environ['OPENSHIFT_APP_NAME']
