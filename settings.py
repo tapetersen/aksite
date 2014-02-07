@@ -21,7 +21,7 @@ DATABASES = {'default': dj_database_url.config(default='sqlite://localhost/db/si
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'TIMEOUT': 300,
+        'TIMEOUT': 60*60*24,
         'OPTIONS': {
             'MAX_ENTRIES': 3000,
         }
