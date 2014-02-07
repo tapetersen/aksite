@@ -51,7 +51,7 @@ You can also ssh and dump the data if you want to use SQLite locally or somethin
     source ../data/virtualenv/bin/activate
     python manage.py dumpdata app page medialibrary auth.group auth.user sites guardian --natural --format=xml > data.xml
 
-Transfer it in some way (please write it here if you do) and run locally::
+Transfer it in some way (please write how here if you do) and run locally::
 
     python manage.py loaddata data.xml
 
