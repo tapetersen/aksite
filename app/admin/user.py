@@ -47,7 +47,7 @@ def groups_display(user):
 groups_display.short_description = _("groups")
     
 UserAdmin.list_display =  ('first_name', 'last_name', "instrument", groups_display)
-UserAdmin.list_filter = ('instrument', ActiveFilter, GroupFilter)
+UserAdmin.list_filter = ('instrument', ActiveFilter, GroupFilter, "is_staff", "is_superuser", "has_key")
 def list_mail(self, request, queryset):
     self.message_user(request, u";".join(user.email for user in queryset))
 UserAdmin.actions = [list_mail]
