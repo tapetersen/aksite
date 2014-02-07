@@ -6,9 +6,9 @@ from ..ak import instrument_choices
 from django.utils.translation import ugettext_lazy as _
 
 User.__unicode__ = lambda self: u"%s %s" % (self.first_name, self.last_name)
-User._meta.fields[2].blank = False # First name
-User._meta.fields[3].blank = False # Last name
-User._meta.fields[4].blank = False # Email
+next(field for field in User._meta.fields if field.name == "first_name").blank = False
+next(field for field in User._meta.fields if field.name == "last_name").blank = False
+next(field for field in User._meta.fields if field.name == "email").blank = False
 User.add_to_class("address", models.CharField(_("address"), max_length=128, blank=True, null=True))
 User.add_to_class("zip", models.CharField(_("zip"), max_length=5, blank=True, null=True))
 User.add_to_class("city", models.CharField(_("city"), max_length=128, blank=True, null=True))
