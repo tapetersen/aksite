@@ -7,7 +7,7 @@
     <form action="" method="post">
     <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
     <table class="form">
-        {{ form.as_table() }}
+        {{ form.as_ul() }}
     </table>
     <input type="submit" value="Submit" />
     </form>
@@ -50,6 +50,7 @@
     </div>
 </div>
 
+{% if coming %}
 <h2>Kommer</h2>
 <table class="signed_up">
 {% for signup in coming.order_by("user__instrument", 
@@ -62,6 +63,8 @@
 	</tr>
 {% endfor %}
 </table>
+{% endif %}
+{% if not_coming %}
 <h2>Kommer inte</h2>
 <table class="signed_up">
 {% for signup in not_coming.order_by("user__instrument", 
@@ -73,5 +76,7 @@
 	</tr>
 {% endfor %}
 </table>
+{% endif %}
 {% endblock %}
+
 

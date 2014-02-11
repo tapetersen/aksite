@@ -110,8 +110,8 @@ class Signup(models.Model):
     DIRECT = 'D'
     NOT_COMING = 'I'
     COMING_CHOICES = (
-        (HOLE, u"Kommer till hålan"),
-        (DIRECT, u"Kommer direkt"),
+        (HOLE, u"Till hålan"),
+        (DIRECT, u"Direkt"),
         (NOT_COMING, u"Kan inte komma"),
     )
     coming = models.CharField(_("coming"), max_length=1, choices=COMING_CHOICES, default="H")

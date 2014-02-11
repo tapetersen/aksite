@@ -437,7 +437,7 @@ form table td {
 }
 
 form table tr:hover {
-    background-color: #333333;
+    background-color: #202020;
 }
 
 form table ul.errorlist {
@@ -562,6 +562,10 @@ table.signed_up {
     width: 100%;
 }
 
+table.signed_up td {
+    vertical-align: middle;
+}
+
 table.signed_up td:nth-of-type(n+2) {
     border-left: thick solid black;
     padding: 4px 8px;
@@ -650,4 +654,12 @@ hr {
   h2, h3 { page-break-after: avoid; }
   .noprint { display: none; }
   #container { border: none; }
+  table.signed_up tr:nth-of-type(n+2) {
+    border-left: none;
+    border-top: 1px solid black;
+  }
+  table.signed_up td {
+      border: none !important;
+      font-size: 80%;
+  }
 }
