@@ -55,16 +55,28 @@ class UserForm(forms.ModelForm):
         return self.cleaned_data
 
 
+class AutoFocusCharField(forms.CharField):
+    def widget_attrs(self, widget):
+        attrs = super().widget_attrs(widget)
+        attrs.update({'autofocus': ''})
+        return attrs
+
+
 class LoginForm(AuthenticationForm):
+    username = AutoFocusCharField(max_length=254)
+
     """Does not require is_active"""
     def clean(self):
         username = self.cleaned_data.get('username')
         password = self.cleaned_data.get('password')
 
         if username and password:
-            self.user_cache = authenticate(username=username, password=password)
+            self.user_cache = authenticate(username=username,
+                                           password=password)
             if self.user_cache is None:
-                raise forms.ValidationError(_("Please enter a correct username and password. Note that both fields are case-sensitive."))
-        self.check_for_test_cookie()
+                raise forms.ValidationError(
+                    self.error_messages['invalid_login'],
+                    code='invalid_login',
+                    params={'username': self.username_field.verbose_name},
+                )
         return self.cleaned_data
-    
