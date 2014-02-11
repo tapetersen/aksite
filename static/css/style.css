@@ -569,11 +569,9 @@ table.signed_up td {
 table.signed_up td:nth-of-type(n+2) {
     border-left: thick solid black;
     padding: 4px 8px;
-    white-space: nowrap;
 }
 
 table.signed_up td.comment {
-    white-space: normal;
     min-width: 30%;
 }
 
