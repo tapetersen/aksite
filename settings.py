@@ -13,10 +13,10 @@ MANAGERS = ADMINS
 ALLOWED_HOSTS = ['192.168.0.10:8000', '127.0.0.1', 'localhost', '127.0.0.1:8000', 'localhost:8000', '*']
 
 try:
-    for line in (l for l in open(PROJECT_ROOT + "env.txt") if l.strip()):
-        key, value = line.split("=")
+    for line in (l for l in open(os.path.join(PROJECT_ROOT, "env.txt")) if l.strip()):
+        key, value = line.split("=", 1)
         os.environ[key] = value
-except IOError:
+except IOError as e:
     pass
 
 import dj_database_url
@@ -272,13 +272,19 @@ DEBUG_TOOLBAR_CONFIG = {
 
 #EMAIL_BACKEND = 'django_ses.SESBackend'
 
+if "AWS_ACCESS_KEY_ID" in os.environ:
+    AWS_ACCESS_KEY_ID = os.environ["AWS_ACCESS_KEY_ID"]
+if "AWS_SECRET_ACCESS_KEY" in os.environ:
+    AWS_SECRET_ACCESS_KEY = os.environ["AWS_SECRET_ACCESS_KEY"]
+if "SECRET_KEY" in os.environ:
+    SECRET_KEY = os.environ["SECRET_KEY"]
+if "ADMINS" in os.environ:
+    ADMINS = [user.split(":") for user in os.environ.get("ADMINS", "").split(";")]
+
 try:
     from local_settings import *
 except ImportError:
-    AWS_ACCESS_KEY_ID = os.environ["AWS_ACCESS_KEY_ID"]
-    AWS_SECRET_ACCESS_KEY = os.environ["AWS_SECRET_ACCESS_KEY"]
-    SECRET_KEY = os.environ["SECRET_KEY"]
-    ADMINS = [user.split(":") for user in os.environ.get("ADMINS", "").split(";")]
+    pass
 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3.S3Storage'
 AWS_STORAGE_BUCKET_NAME = 'elvegris'
