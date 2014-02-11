@@ -214,11 +214,11 @@ td { vertical-align: top; }
 
 /* Typography */
 
-body { 
-	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
-	color: #dddddd;
-	font-size: 15px;
-} 
+body {
+    font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+    color: #dddddd;
+    font-size: 15px;
+}
 
 a { text-decoration: none; }
 a:hover { text-decoration: underline; }
@@ -248,7 +248,7 @@ h3 {
   font-weight: bold;
   margin-top: 0;
   margin-bottom: 0;
-  
+
   color: #b10000;
 }
 
@@ -274,7 +274,7 @@ h5 {
 /* General Layout */
 
 body {
-    background: url('../images/background.png') repeat scroll; 
+    background: url('../images/background.png') repeat scroll;
     height: 100%;
 }
 
@@ -315,7 +315,7 @@ header .ak-logo img {
   width: 96%;
 }
 
-header #main-nav {
+#main-nav {
     display: block;
     position: absolute;
     bottom: 1px;
@@ -323,69 +323,78 @@ header #main-nav {
     margin: 0px;
 }
 
-header #main-nav > * {
+#main-nav > * {
     display: inline-block;
 }
 
-.ie7 header #main-nav > * {
+.ie7 #main-nav > * {
     display: inline;
 }
 
-header #main-nav a {
-	font-weight: bold;
+#main-nav a {
+    font-weight: bold;
     display: block;
-	color: #999999;
+    color: #999999;
     border-bottom: 4px solid white;
     font-size: 12px;
-	padding-bottom: 3px;
-	margin-left: 4px;
-}
-header #main-nav a.active,
-header #main-nav a:hover {
-    display: block;
-	color: #CCCCCC;
-    border-bottom-color: red;
-	text-decoration: none;
+    padding-bottom: 3px;
+    margin-left: 4px;
 }
 
-header #main-nav li ul {
+#main-nav a.active,
+#main-nav a:hover {
+    display: block;
+    color: #CCCCCC;
+    border-color: red;
+    text-decoration: none;
+}
+
+#main-nav li ul {
     display: none;
-   	position: absolute;
-   	list-style: none;
-   	background-color: black;
-   	padding: 0px;
-   	margin: 0px;
-   	border:1px solid black;
-	border-radius: 0 10px 10px 10px;
+    position: absolute;
+    list-style: none;
+    background-color: black;
+    padding: 0;
+    margin: 0;
+    border:1px solid black;
+    border-radius: 0 10px 10px 10px;
     z-index:10;
 }
 
-header #main-nav li {
-   	position: relative;
+#main-nav li {
+    position: relative;
+    background-color: black;
 }
 
-header #main-nav li ul li {
-   	margin: 0px;
-   	padding: 8px;
-   	padding-left: 0;
+#main-nav li ul li {
+    margin: 0;
+    padding: 2px 2px 2px 0;
 }
 
-header #main-nav li:hover ul { display: block; }
+#main-nav li ul li a {
+    border-bottom: none;
+    border-left: 4px solid white;
+    padding-left: 4px;
+}
+
+#main-nav li:hover ul { display: block; }
 
 ul.feedlist {
-   	list-style: none;
+    list-style: none;
 }
 
 div.user {
-	text-align: right; 
-	padding: 5px;
-	color: #444444;
+    text-align: right;
+    padding: 5px;
+    color: #444444;
+    z-index: 10;
+    position: relative;
 }
 
 img.block {
-	display: block;
-	margin-left: auto;
-	margin-right: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 #main { padding: 20px; }
@@ -401,37 +410,65 @@ img.block {
     margin: 15px;
 }
 
+@media (max-width: 600px)  {
+    .col-1 {
+        float: left;
+        width: 90%;
+        margin: 15px;
+    }
+    .col-2 {
+        float: left;
+        width: 90%;
+        margin: 15px;
+    }
+}
+
 form table th {
-	text-align: left;
-	vertical-align: top;
-	padding: 5px;
+    text-align: left;
+    vertical-align: top;
+    padding: 5px;
 }
 form table td {
-	padding: 5px;
+    padding: 5px;
 }
 
 form table tr:hover {
-	background-color: #333333;
+    background-color: #333333;
 }
 
 form table ul.errorlist {
-	color: #b10000;
-	margin: 3px 0;
-	font-weight: bold;
+    color: #b10000;
+    margin: 3px 0;
+    font-weight: bold;
 }
 
 form table ul {
-	list-style: none
+    list-style: none
 }
 
 form table input[type=text],
 form table input[type=password]  {
-	width: 300px;
+    width: 300px;
 }
 
 form input[type=submit] {
-	margin: 10px;
-	margin-left: 100px;
+    margin: 10px;
+}
+
+form li {
+    list-style: none;
+    padding: 2px;
+}
+
+form li label {
+    min-width: 200px;
+    display: inline-block;
+}
+
+form li input[type='text'],
+form li input[type='password']
+{
+    min-width: 200px;
 }
 
 table td {
@@ -448,56 +485,63 @@ table ul {
 }
 
 p.infobox {
-  background-color: #6e1601;
-  color: dddddd;
-  border: 5px solid #430800;
-  border-radius: 10px;
-  padding: 10px;
-  margin: 40px 0;
+    background-color: #6e1601;
+    color: #dddddd;
+    border: 5px solid #430800;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 40px 0;
 }
 
 
 #upcoming div {
-	padding: 5px;
+    padding: 5px;
 }
 
 #upcoming div.cell {
-	display: inline-block;
-	float: left;
-	width: 30%;
-	padding-left: 1%;
-	padding-right: 1%;
+    display: inline-block;
+    float: left;
+    width: 30%;
+    padding-left: 1%;
+    padding-right: 1%;
 }
 
 #upcoming div.cell p {
-	margin: 3px 0;
+    margin: 3px 0;
 }
 
-table.address-register {
-	width: 100%;
-	margin-bottom: 10px;
-	margin-top: 10px;
-	border-bottom: dashed 1px #333333;
-  table-layout: fixed;
+#instrument-shortcut {
+    font-size: 80%;
 }
 
-table.address-register tr {
-	border-top: dashed 1px #333333;
-}
-table.address-register tr.header { border-top: none; }
-table.address-register tr.header + tr { border-top: none; }
-
-table.address-register th:first-child {
-  width: 40%;
+#address-register .kamerer {
+    padding-bottom: 4px;
 }
 
-table.address-register td {
-  overflow: hidden;
-  text-overflow: ellipsis;
+#address-register .kamerer:nth-of-type(n+2) {
+    border-top: dashed 1px #333333;
+    padding-top: 4px;
 }
 
-table.address-register th:last-child {
-  width: 10em;
+#address-register .kamerer > div {
+    display: inline-block;
+    vertical-align: top;
+}
+
+#address-register .kamerer div:first-child {
+    width: 20em;
+}
+
+#address-register .kamerer div:nth-child(2) {
+    width: 15em;
+}
+
+#address-register .kamerer div:nth-child(3) {
+    width: 10em;
+}
+
+#address-register a {
+    white-space: nowrap;
 }
 
 .gigs  {padding: 0 10px;}
@@ -511,20 +555,31 @@ table.address-register th:last-child {
 }
 
 table.signed_up {
-	width: 100%;
+    width: 100%;
 }
 
-table.signed_up td {
-	border: 1px solid gray;
-	padding: 4px 8px;
-  white-space: nowrap;
+table.signed_up td:nth-of-type(n+2) {
+    border-left: thick solid black;
+    padding: 4px 8px;
+    white-space: nowrap;
 }
 
 table.signed_up td.comment {
-  white-space: normal;
+    white-space: normal;
+    min-width: 30%;
 }
 
+table.signed_up tr:nth-of-type(2n) {
+    background: #1e0500;
+}
 
+table.signed_up tr:nth-of-type(2n+1) {
+    background: #430800;
+}
+
+hr {
+    border-top: 3px solid #430800;
+}
 
 /* ==|== non-semantic helper classes ========================================
    Please define your styles before this section.
@@ -546,7 +601,7 @@ table.signed_up td.comment {
 /* Hide visually and from screenreaders, but maintain layout */
 .invisible { visibility: hidden; }
 
-/* Contain floats: h5bp.com/q */ 
+/* Contain floats: h5bp.com/q */
 .clearfix:before, .clearfix:after { content: ""; display: table; }
 .clearfix:after { clear: both; }
 .clearfix { zoom: 1; }
@@ -575,7 +630,7 @@ table.signed_up td.comment {
    Print styles.
    Inlined to avoid required HTTP connection: h5bp.com/r
    ========================================================================== */
- 
+
 @media print {
   * { background: transparent !important; color: black !important; text-shadow: none !important; filter:none !important; -ms-filter: none !important; } /* Black prints faster: h5bp.com/s */
   a, a:visited { text-decoration: underline; }
@@ -589,4 +644,6 @@ table.signed_up td.comment {
   @page { margin: 0.5cm; }
   p, h2, h3 { orphans: 3; widows: 3; }
   h2, h3 { page-break-after: avoid; }
+  .noprint { display: none; }
+  #container { border: none; }
 }
