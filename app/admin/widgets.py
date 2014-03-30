@@ -4,9 +4,7 @@ from django.utils.safestring import mark_safe
 
 class WYMEditor(forms.Textarea):
     class Media:
-        js = (getattr(settings,'JQUERY_URL','js/jquery.js'),
-              getattr(settings,'WYMEDITOR_URL','js/wymeditor/jquery.wymeditor.js'),
-        )
+        js = (settings.JQUERY_URL, settings.WYMEDITOR_URL,)
 
     def __init__(self, language=None, attrs=None):
         self.language = language or settings.LANGUAGE_CODE[:2]

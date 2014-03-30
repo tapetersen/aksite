@@ -1,32 +1,45 @@
-{% if WYMEDITOR_JS_URL %}
 <script type="text/javascript">
     // Let wymeditor use the aleady loaded jQuery
     jQuery = feincms.jQuery;
 </script>
 
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery-migrate/1.2.1/jquery-migrate.min.js"></script>
 <script type="text/javascript" src="{{ WYMEDITOR_JS_URL }}"></script>
-{% endif %}
 
 <script type="text/javascript">
 {% block functions %}{% endblock %}
 
     (function($){
-        var richtext_init_fn = function(){
-			$('{% block selectors %}.order-machine textarea[class=item-richtext]:not(.wymified), #frontend_editor textarea[class=item-richtext]:not(.wymified){% endblock %}').wymeditor({
-				updateSelector: '.submit-row input[type=submit]',
-				updateEvent:    "click",
-                classesItems: [
-                    {'name': 'infobox', 'title': 'PARA: Infobox', 'expr': 'p'}
-                ],
-                editorStyles: [
-                    {'name': '.infobox', 'css': 'border: 2px solid #ff0000;'}
-                ]
-			}).addClass('wymified');
-		};
-{% block enable %}
-        contentblock_init_handlers.push(richtext_init_fn);
-{% endblock %}
+        contentblock_init_handlers.push(function(){
+            $('.order-machine textarea.item-richtext, #frontend_editor textarea.item-richtext').each(function(){
+                feincms_richtext_add_ckeditor(this);
+            });
 
+            contentblock_move_handlers.poorify.push(function(item) {
+                item.find('textarea.item-richtext').each(feincms_richtext_remove_ckeditor);
+            });
+            contentblock_move_handlers.richify.push(function(item) {
+                item.find('textarea.item-richtext').each(feincms_richtext_add_ckeditor);
+            });
+        });
     })(feincms.jQuery);
+
+    function feincms_richtext_remove_ckeditor(field) {
+        //$(field || this)
+    }
+
+    function feincms_richtext_add_ckeditor(field) {
+        $(field || this).filter(":not(.wymified)").wymeditor({
+            updateSelector: '.submit-row input[type=submit]',
+            updateEvent:    "click",
+            classesItems: [
+                {'name': 'infobox', 'title': 'PARA: Infobox', 'expr': 'p'}
+            ],
+            editorStyles: [
+                {'name': '.infobox', 'css': 'border: 2px solid #ff0000;'}
+            ],
+            basePath: "/static/js/wymeditor/"
+        }).addClass('wymified');
+    }
 
 </script>

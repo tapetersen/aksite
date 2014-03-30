@@ -69,7 +69,7 @@ def save(self, *args, **kwargs):
 MediaFileBase.save = save
 
 class Media:
-    js = (getattr(settings,'JQUERY_URL','js/jquery.js'),
+    js = (settings.JQUERY_URL,
           #"js/libs/jquery.html5_upload.js",
           "js/upload.js")
     

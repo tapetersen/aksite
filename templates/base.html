@@ -40,7 +40,7 @@
     
     {% block extra_css %}{% endblock %}
 
-    <script src="{{ STATIC_URL }}js/libs/modernizr-2.0.6.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.7.1/modernizr.min.js"></script>
 </head>
 <body>
     <a id="af" class="noprint" href="http://www.af.lu.se" style="position: absolute; right: 0; margin: 20px;">
@@ -123,9 +123,8 @@
     
     <!-- JavaScript at the bottom for fast page loading -->
     
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
-  	<script>window.jQuery || document.write('<script src="{{ STATIC_URL }}js/libs/jquery-1.7.min.js"><\/script>')</script>
-  	
+    <script src="{{ JQUERY_URL }}"></script>
+
     <script src="{{ STATIC_URL }}mediaelement/mediaelement-and-player.min.js"></script>
     <script src="{{ STATIC_URL }}js/plugins.js"></script>
     <script src="{{ STATIC_URL }}js/script.js"></script>
