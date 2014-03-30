@@ -92,5 +92,4 @@ Page.create_content_type(TemplateContent, regions=common_regions)
 from feincms.content.video.models import VideoContent
 Page.create_content_type(VideoContent, regions=common_regions)
 
-
 Page.register_extensions('feincms.module.page.extensions.titles')
