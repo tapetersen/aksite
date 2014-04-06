@@ -1,5 +1,5 @@
 # Django settings for aksite project.
-import os
+import os, sys
 
 PROJECT_ROOT = os.path.dirname(os.path.realpath(__file__))
 
@@ -13,11 +13,14 @@ MANAGERS = ADMINS
 ALLOWED_HOSTS = ['192.168.0.10:8000', '127.0.0.1', 'localhost', '127.0.0.1:8000', 'localhost:8000', '*']
 
 try:
-    for line in (l for l in open(os.path.join(PROJECT_ROOT, "env.txt")) if l.strip()):
-        key, value = line.split("=", 1)
+    for line in (l.strip(' \n') for l in open(PROJECT_ROOT + "/env.txt")):
+        splits = line.split("=")
+        key=splits[0]
+        value="".join(splits[1:])
         os.environ[key] = value
-except IOError as e:
-    pass
+except IOError:
+    print("IOERROR: couldn't open: " + PROJECT_ROOT + "env.txt")
+    sys.exit(1)
 
 import dj_database_url
 if 'OPENSHIFT_POSTGRESQL_DB_URL' in os.environ:
@@ -132,7 +135,7 @@ STATICFILES_FINDERS = (
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'mbmt085yg^&^d7n7g7f+yeba-_6#wxnsi##=#o!rgzsvmy1ra('
-
+os.environ["SECRET_KEY"] = SECRET_KEY
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'jinja2_for_django.Loader',
