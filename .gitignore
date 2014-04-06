@@ -1,4 +1,5 @@
 *.pyc
+env.txt
 /db/*
 /local_settings.py
 /media/*
