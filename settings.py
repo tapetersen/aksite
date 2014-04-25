@@ -12,15 +12,14 @@ MANAGERS = ADMINS
 
 ALLOWED_HOSTS = ['192.168.0.10:8000', '127.0.0.1', 'localhost', '127.0.0.1:8000', 'localhost:8000', '*']
 
-try:
-    for line in (l.strip(' \n') for l in open(PROJECT_ROOT + "/env.txt")):
-        splits = line.split("=")
-        key=splits[0]
-        value="".join(splits[1:])
-        os.environ[key] = value
-except IOError:
-    print("IOERROR: couldn't open: " + PROJECT_ROOT + "env.txt")
-    sys.exit(1)
+if "SECRET_KEY" not in os.environ:
+    try:
+        for line in (l.strip(' \n') for l in open(os.path.join(PROJECT_ROOT, "env.txt")) if l.strip(' \n')):
+            key, value = line.split("=", 1)
+            os.environ[key] = value
+    except IOError:
+        print("IOERROR: couldn't open: " + os.path.join(PROJECT_ROOT, "env.txt"))
+        sys.exit(1)
 
 import dj_database_url
 if 'OPENSHIFT_POSTGRESQL_DB_URL' in os.environ:
