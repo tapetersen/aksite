@@ -36,6 +36,7 @@ class Loader(BaseLoader):
     # These are available to all templates.
     env.globals['url_for'] = urlresolvers.reverse
     env.globals['MEDIA_URL'] = settings.MEDIA_URL
+    env.globals['JQUERY_URL'] = settings.JQUERY_URL
     #env.globals['STATIC_URL'] = settings.STATIC_URL
     
     for fname in jinja.__all__:
