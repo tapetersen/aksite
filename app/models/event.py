@@ -4,7 +4,6 @@ import datetime
 from django.db import models
 from django.db.models import Count
 from django.contrib.auth.models import User
-from django.contrib.auth.models import User
 from model_utils.managers import InheritanceManager
 from django.utils.translation import ugettext_lazy as _
 from collections import OrderedDict
@@ -54,9 +53,9 @@ class Event(models.Model):
     def __str__(self):
         name = self.name
         if self.__class__ == Event:
-            if self._gig_cache is not None:
+            if hasattr(self, "_gig_cache") and self._gig_cache is not None:
                 name = self.gig.name
-            if self._rehearsal_cache is not None:
+            if hasattr(self, "_rehearsal_cache") and self._rehearsal_cache is not None:
                 name = self.rehearsal.name
         return u"%s - %s" % (name, self.date)
 
